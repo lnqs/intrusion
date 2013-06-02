@@ -1,6 +1,6 @@
 CC = clang
-CFLAGS = -std=c99 -Wall -Werror -ggdb -O0
-LDFLAGS =
+CFLAGS = -std=c99 -Wall -Werror -ggdb -O0 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl)
+LDFLAGS = $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl)
 
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
