@@ -1,4 +1,4 @@
 *.d
 *.o
-demo
+shader_code.h
 planeshift
