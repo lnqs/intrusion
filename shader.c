@@ -62,3 +62,9 @@ void uniform_vector3(GLuint program, const char* identifier, const vector3 value
     glUniform3fv(location, 1, value);
 }
 
+void uniform_matrix3(GLuint program, const char* identifier, const matrix3 value)
+{
+    GLint location = glGetUniformLocation(program, identifier);
+    glUniformMatrix3fv(location, 1, GL_TRUE, (const GLfloat*)value);
+}
+

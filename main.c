@@ -10,6 +10,7 @@ static const int resolution_y = 480;
 static bool fullscreen = false;
 static char* window_caption = "Planeshift";
 static const float movement_speed = 0.5;
+static const float mouse_speed = 0.5;
 
 static const float window_ratio = (float)resolution_x / resolution_y;
 
@@ -46,17 +47,17 @@ static void setup_viewport()
     glLoadIdentity();
 }
 
-static void move(const vector3 axis, float ticks_elapsed, vector3 position)
+static void move(const vector3 axis, float ticks_elapsed, vector3 position, matrix3 orientation)
 {
     vector3 movement;
     vector3_copy(movement, axis);
     vector3_multiply(movement, ticks_elapsed / 1000.0 * movement_speed);
+    vector3_rotate(movement, orientation);
     vector3_add(position, movement);
 }
 
-static bool handle_input(Uint32 ticks_elapsed, vector3 position)
+static bool handle_keyboard(Uint32 ticks_elapsed, vector3 position, matrix3 orientation)
 {
-    SDL_PumpEvents();
     Uint8* keystate = SDL_GetKeyState(NULL);
 
     if (keystate[SDLK_ESCAPE])
@@ -66,41 +67,66 @@ static bool handle_input(Uint32 ticks_elapsed, vector3 position)
 
     if (keystate[SDLK_w])
     {
-        move(VECTOR3_NEGATIVE_UNIT_Z, ticks_elapsed, position);
+        move(VECTOR3_NEGATIVE_UNIT_Z, ticks_elapsed, position, orientation);
     }
 
     if (keystate[SDLK_a])
     {
-        move(VECTOR3_NEGATIVE_UNIT_X, ticks_elapsed, position);
+        move(VECTOR3_NEGATIVE_UNIT_X, ticks_elapsed, position, orientation);
     }
 
     if (keystate[SDLK_s])
     {
-        move(VECTOR3_UNIT_Z, ticks_elapsed, position);
+        move(VECTOR3_UNIT_Z, ticks_elapsed, position, orientation);
     }
 
     if (keystate[SDLK_d])
     {
-        move(VECTOR3_UNIT_X, ticks_elapsed, position);
+        move(VECTOR3_UNIT_X, ticks_elapsed, position, orientation);
     }
 
     return true;
 }
 
+static void handle_mouse(Uint32 ticks_elapsed, matrix3 orientation)
+{
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    x -= resolution_x / 2;
+    y -= resolution_y / 2;
+
+    matrix3 rotation = MATRIX3_IDENTITY;
+    matrix3_rotate(rotation, VECTOR3_UNIT_X, -y * (ticks_elapsed / 1000.0) * mouse_speed);
+    matrix3_rotate(rotation, VECTOR3_UNIT_Y, -x * (ticks_elapsed / 1000.0) * mouse_speed);
+    matrix3_multiply(orientation, rotation);
+
+    SDL_WarpMouse(resolution_x / 2, resolution_y / 2);
+}
+
+static bool handle_input(Uint32 ticks_elapsed, vector3 position, matrix3 orientation)
+{
+    SDL_PumpEvents();
+
+    handle_mouse(ticks_elapsed, orientation);
+    return handle_keyboard(ticks_elapsed, position, orientation);
+}
+
 static void mainloop(GLint program)
 {
     vector3 position = { 0.0, 0.0, 2.5 };
+    matrix3 orientation = MATRIX3_IDENTITY;
 
     glUseProgram(program);
 
     Uint32 ticks = SDL_GetTicks();
     Uint32 ticks_elapsed = 0;
 
-    while (handle_input(ticks_elapsed, position))
+    while (handle_input(ticks_elapsed, position, orientation))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         uniform_vector3(program, "position", position);
+        uniform_matrix3(program, "orientation", orientation);
 
         glBegin(GL_QUADS);
         glVertex3f(-window_ratio, -1.0, 0.0);

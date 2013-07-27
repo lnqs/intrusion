@@ -1,8 +1,10 @@
 varying vec3 p;
 
 uniform vec3 position;
-const mat3 orientation = mat3(1.0);
-const vec3 wtf = vec3(0.0, 0.0, 2.5); // WTF? The code breaks, when I remove this
+uniform mat3 orientation;
+
+const vec3 wtf = vec3(0.0, 0.0, 2.5); // WTF? The code breaks, when I remove these
+const mat3 wtf2 = mat3(1.0);
 
 const float eye_distance = 2.0;
 const float max_distance = 15.0;
