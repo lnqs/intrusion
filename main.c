@@ -1,12 +1,14 @@
 #include <stdbool.h>
 #include <GL/glew.h>
 #include <SDL.h>
+#include "vector_math.h"
 #include "shader_code.h"
 
 static const int resolution_x = 640;
 static const int resolution_y = 480;
 static bool fullscreen = false;
 static char* window_caption = "Planeshift";
+static const float movement_speed = 0.5;
 
 static const float window_ratio = (float)resolution_x / resolution_y;
 
@@ -90,14 +92,74 @@ static GLuint compile_program()
     return program;
 }
 
+static void uniform_vector3(GLuint program, const char* identifier, const vector3 value)
+{
+    GLint location = glGetUniformLocation(program, identifier);
+
+    if (location == -1)
+    {
+        fprintf(stderr, "Failed to get location of uniform '%s'\n", identifier);
+        exit(2);
+    }
+
+    glUniform3fv(location, 1, value);
+}
+
+static void move(const vector3 axis, float ticks_elapsed, vector3 position)
+{
+    vector3 movement;
+    vector3_copy(movement, axis);
+    vector3_multiply(movement, ticks_elapsed / 1000.0 * movement_speed);
+    vector3_add(position, movement);
+}
+
+static bool handle_input(Uint32 ticks_elapsed, vector3 position)
+{
+    SDL_PumpEvents();
+    Uint8* keystate = SDL_GetKeyState(NULL);
+
+    if (keystate[SDLK_ESCAPE])
+    {
+        return false;
+    }
+
+    if (keystate[SDLK_w])
+    {
+        move(VECTOR3_NEGATIVE_UNIT_Z, ticks_elapsed, position);
+    }
+
+    if (keystate[SDLK_a])
+    {
+        move(VECTOR3_NEGATIVE_UNIT_X, ticks_elapsed, position);
+    }
+
+    if (keystate[SDLK_s])
+    {
+        move(VECTOR3_UNIT_Z, ticks_elapsed, position);
+    }
+
+    if (keystate[SDLK_d])
+    {
+        move(VECTOR3_UNIT_X, ticks_elapsed, position);
+    }
+
+    return true;
+}
+
 static void mainloop(GLint program)
 {
+    vector3 position = { 0.0, 0.0, 2.5 };
+
     glUseProgram(program);
 
-    SDL_Event event;
-    do
+    Uint32 ticks = SDL_GetTicks();
+    Uint32 ticks_elapsed = 0;
+
+    while (handle_input(ticks_elapsed, position))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        uniform_vector3(program, "position", position);
 
         glBegin(GL_QUADS);
         glVertex3f(-window_ratio, -1.0, 0.0);
@@ -108,8 +170,9 @@ static void mainloop(GLint program)
 
         SDL_GL_SwapBuffers();
 
-        SDL_PollEvent(&event);
-    } while (event.type != SDL_KEYDOWN && event.key.keysym.sym != SDLK_ESCAPE);
+        ticks_elapsed = SDL_GetTicks() - ticks;
+        ticks = SDL_GetTicks();
+    }
 }
 
 int main(int argc, char** argv)

@@ -1,13 +1,14 @@
 varying vec3 p;
 
-const vec3 position = vec3(0.0, 0.0, 2.5);
+uniform vec3 position;
 const mat3 orientation = mat3(1.0);
+const vec3 wtf = vec3(0.0, 0.0, 2.5); // WTF? The code breaks, when I remove this
 
 const float eye_distance = 2.0;
 const float max_distance = 15.0;
 const float step_length = 0.1;
 
-const vec3 sphere_position = vec3(1.0, 0.0, 0.0);
+const vec3 sphere_position = vec3(0.0, 0.0, 0.0);
 const float sphere_radius = 0.25;
 
 bool intersects(in vec3 ray_origin, in vec3 ray_direction)
