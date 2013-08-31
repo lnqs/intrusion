@@ -49,6 +49,19 @@ GLuint compile_program(const char* vertex_source, const char* fragment_source)
     return program;
 }
 
+void uniform_float(GLuint program, const char* identifier, float value)
+{
+    GLint location = glGetUniformLocation(program, identifier);
+
+    if (location == -1)
+    {
+        fprintf(stderr, "Failed to get location of uniform '%s'\n", identifier);
+        exit(2);
+    }
+
+    glUniform1f(location, value);
+}
+
 void uniform_vector3(GLuint program, const char* identifier, const vector3 value)
 {
     GLint location = glGetUniformLocation(program, identifier);

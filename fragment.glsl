@@ -3,6 +3,10 @@ varying vec3 p;
 uniform mat3 orientation;
 uniform vec3 position;
 
+uniform float box_scale = -2.5;
+uniform float box_radius = 3.0;
+uniform float sphere_radius = 3.0;
+
 const float eye_distance = 2.0;
 const float max_distance = 5.0;
 const float accuracy = 0.0005;
@@ -18,9 +22,6 @@ const vec3 light_specular = vec3(0.5, 0.5, 0.5);
 const vec3 object_color = vec3(1.0, 1.0, 0.66);
 const float object_shininess = 10.0;
 
-const float box_scale = -2.5;
-const float box_radius = 1.0;
-const float sphere_radius = 1.5;
 const float box_de_factor = 1.0;
 const int max_iterations = 12;
 
