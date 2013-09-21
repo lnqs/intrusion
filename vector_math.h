@@ -6,16 +6,16 @@
 typedef float vector3[3];
 typedef float matrix3[3][3]; // [row][col]
 
-#define VECTOR3_NULL (vector3){ 0.0, 0.0, 0.0 }
-#define VECTOR3_UNIT_X (vector3){ 1.0, 0.0, 0.0 }
-#define VECTOR3_UNIT_Y (vector3){ 0.0, 1.0, 0.0 }
-#define VECTOR3_UNIT_Z (vector3){ 0.0, 0.0, 1.0 }
-#define VECTOR3_NEGATIVE_UNIT_X (vector3){ -1.0,  0.0,  0.0 }
-#define VECTOR3_NEGATIVE_UNIT_Y (vector3){  0.0, -1.0,  0.0 }
-#define VECTOR3_NEGATIVE_UNIT_Z (vector3){  0.0,  0.0, -1.0 }
+#define VECTOR3_NULL { 0.0, 0.0, 0.0 }
+#define VECTOR3_UNIT_X { 1.0, 0.0, 0.0 }
+#define VECTOR3_UNIT_Y { 0.0, 1.0, 0.0 }
+#define VECTOR3_UNIT_Z { 0.0, 0.0, 1.0 }
+#define VECTOR3_NEGATIVE_UNIT_X { -1.0,  0.0,  0.0 }
+#define VECTOR3_NEGATIVE_UNIT_Y {  0.0, -1.0,  0.0 }
+#define VECTOR3_NEGATIVE_UNIT_Z {  0.0,  0.0, -1.0 }
 
 #define MATRIX3_IDENTITY \
-    (matrix3){ \
+    { \
         { 1.0, 0.0, 0.0 }, \
         { 0.0, 1.0, 0.0 }, \
         { 0.0, 0.0, 1.0 }, \

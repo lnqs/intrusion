@@ -8,7 +8,7 @@ uniform float box_radius = 3.0;
 uniform float sphere_radius = 3.0;
 
 const float eye_distance = 2.0;
-const float max_distance = 5.0;
+const float max_distance = 15.0;
 const float accuracy = 0.0005;
 
 const float normal_eps = 0.0005;
