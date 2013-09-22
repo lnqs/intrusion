@@ -1,9 +1,11 @@
 CC = clang
 CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -O0 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
 LDFLAGS = -m32 -lm $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
+NASMFLAGS = -f elf
 
 SOURCES = $(wildcard *.c)
-OBJECTS = $(SOURCES:.c=.o)
+ASM_SOURCES = $(wildcard *.asm)
+OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o)
 SHADERS = $(wildcard *.glsl)
 SHADER_HEADER = shader_code.h
 EXECUTABLE = planeshift
@@ -15,6 +17,9 @@ $(EXECUTABLE): $(OBJECTS) $(MAKEFILE_LIST)
 
 $(SHADER_HEADER): $(SHADERS)
 	shader_minifier.exe --preserve-externals -o $@ $^
+
+%.o: %.asm $(MAKEFILE_LIST)
+	nasm $(NASMFLAGS) $< -o $@
 
 %.o: %.c %.d $(MAKEFILE_LIST) $(SHADER_HEADER)
 	$(CC) -c $(CFLAGS) $< -o $@

@@ -4,6 +4,7 @@
 #include "shader.h"
 #include "vector_math.h"
 #include "shader_code.h"
+#include "sound.h"
 
 static const int resolution_x = 640;
 static const int resolution_y = 480;
@@ -425,9 +426,12 @@ int main(int argc, char** argv)
 {
     initialize_sdl();
     initialize_glew();
+    initialize_sound();
+
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
     setup_viewport();
 
+    play_sound();
     mainloop(program);
 
     cleanup_sdl();
