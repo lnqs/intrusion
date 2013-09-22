@@ -200,6 +200,11 @@ static void initialize_sdl()
     SDL_ShowCursor(SDL_DISABLE);
 }
 
+static void cleanup_sdl()
+{
+    SDL_Quit();
+}
+
 static void initialize_glew()
 {
     glewExperimental = GL_TRUE;
@@ -424,6 +429,8 @@ int main(int argc, char** argv)
     setup_viewport();
 
     mainloop(program);
+
+    cleanup_sdl();
 
     return 0;
 }
