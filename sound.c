@@ -1,10 +1,13 @@
 #include "sound.h"
+#include <pthread.h>
+#include <signal.h>
 #include <SDL.h>
 #include "4klang.inh"
 
 static const int channels = 2;
 static const Uint16 play_buffer_size = 4096;
 
+static pthread_t render_thread;
 static SAMPLE_TYPE buffer[MAX_SAMPLES * channels];
 static int position = 0;
 
@@ -40,12 +43,18 @@ void initialize_sound()
     spec.userdata = buffer;
 
     SDL_OpenAudio(&spec, NULL);
-
-    __4klang_render(buffer);
 }
 
 void play_sound()
 {
+    pthread_create(&render_thread, NULL, __4klang_render, &buffer);
     SDL_PauseAudio(0);
+}
+
+void stop_sound()
+{
+    SDL_PauseAudio(1);
+    pthread_kill(render_thread, SIGKILL);
+    pthread_join(render_thread, NULL);
 }
 

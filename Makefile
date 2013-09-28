@@ -1,6 +1,6 @@
 CC = clang
 CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -O0 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
-LDFLAGS = -m32 -lm $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
+LDFLAGS = -m32 -lm -lpthread $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
 NASMFLAGS = -f elf
 
 SOURCES = $(wildcard *.c)
