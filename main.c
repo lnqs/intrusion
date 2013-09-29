@@ -16,11 +16,11 @@ static const float window_ratio = (float)resolution_x / resolution_y;
 
 static int current_key_point = 1;
 
-static vector3 position = { 0.0, 0.0, 2.5 };
-static matrix3 orientation = MATRIX3_IDENTITY;
-static float box_scale = -2.5;
-static float box_radius = 3.0;
-static float sphere_radius = 3.0;
+static vector3 position;
+static matrix3 orientation;
+static float box_scale;
+static float box_radius;
+static float sphere_radius;
 
 static void initialize_sdl()
 {
