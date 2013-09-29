@@ -40,11 +40,7 @@ static void cleanup_sdl()
 static void initialize_glew()
 {
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        exit(2);
-    }
+    glewInit();
 }
 
 static void setup_viewport()
