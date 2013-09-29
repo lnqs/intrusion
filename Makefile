@@ -2,7 +2,7 @@ CC = clang
 NASM = nasm
 STRIP = sstrip -z
 SHADER_MINIFIER = shader_minifier.exe
-CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -O0 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
+CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -Oz $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
 LDFLAGS = -m32 -lm -lpthread $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
 NASMFLAGS = -f elf
 
