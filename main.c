@@ -25,7 +25,6 @@ static float sphere_radius = 3.0;
 static void initialize_sdl()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_SetVideoMode(resolution_x, resolution_y, 0,
             SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
     SDL_WM_SetCaption(window_caption, NULL);
