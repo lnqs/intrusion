@@ -11,9 +11,15 @@ ASM_SOURCES = $(wildcard *.asm)
 OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o)
 SHADERS = $(wildcard *.glsl)
 SHADER_HEADER = shader_code.h
-EXECUTABLE = planeshift
+EXECUTABLE = planeshift.elf
+COMPRESSED = planeshift
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(SOURCES) $(COMPRESSED)
+
+$(COMPRESSED): $(EXECUTABLE)
+	echo '#!/bin/sh\nP=/tmp/p;dd if="$$0" bs=1 skip=71|unxz>$$P;chmod +x $$P;$$P;exit' > $@
+	xz -c9 --format=lzma $< >> $@
+	chmod +x $@
 
 $(EXECUTABLE): $(OBJECTS) $(MAKEFILE_LIST)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
@@ -34,7 +40,7 @@ $(SHADER_HEADER): $(SHADERS)
 		[ -s $@ ] || rm -f $@'
 
 clean:
-	rm -rf *.o *.d $(EXECUTABLE) $(SHADER_HEADER)
+	rm -rf *.o *.d $(EXECUTABLE) $(COMPRESSED) $(SHADER_HEADER)
 
 -include $(SOURCES:.c=.d)
 

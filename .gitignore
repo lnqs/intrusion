@@ -1,4 +1,5 @@
 *.d
 *.o
 shader_code.h
+planeshift.elf
 planeshift
