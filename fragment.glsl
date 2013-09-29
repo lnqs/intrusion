@@ -1,10 +1,8 @@
 varying vec3 p;
 
-uniform mat3 orientation;
-uniform vec3 position;
-
-// it's (box_scale, box_radius, sphere_radius)
-uniform vec3 fractal_params;
+uniform vec3 x; // position passed by CPU-code
+uniform mat3 o; // orientation passed by CPU-code
+uniform vec3 f; // fractal-parameters passed by CPU-code. It's (box_scale, box_radius, sphere_radius).
 
 const float eye_distance = 2.0;
 const float max_distance = 15.0;
@@ -20,9 +18,9 @@ float distance_estimate(in vec3 point)
 
     for (int i = 0; i < max_iterations; i++)
     {
-        n.xyz = clamp(n.xyz, -fractal_params.y, fractal_params.y) * 2.0 - n.xyz;
-        n *= max(fractal_params.z * fractal_params.z / dot(n.xyz, n.xyz), 1.0);
-        n = fractal_params.x * n + vec4(point, sign(fractal_params.x * n.w));
+        n.xyz = clamp(n.xyz, -f.y, f.y) * 2.0 - n.xyz;
+        n *= max(f.z * f.z / dot(n.xyz, n.xyz), 1.0);
+        n = f.x * n + vec4(point, sign(f.x * n.w));
     }
 
     return length(n.xyz) / n.w * box_de_factor;
@@ -54,8 +52,8 @@ void main()
 {
     if (int(mod(gl_FragCoord.y, 2.0)))
     {
-        vec3 ray = normalize(orientation * (p + vec3(0.0, 0.0, -eye_distance)));
-        int steps = find_intersection(position, ray);
+        vec3 ray = normalize(o * (p + vec3(0.0, 0.0, -eye_distance)));
+        int steps = find_intersection(x, ray);
         gl_FragColor = vec4(object_glow * steps / 85.0, 1.0);
     }
 }

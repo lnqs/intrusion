@@ -199,9 +199,9 @@ static void mainloop(GLint program)
 
     while (exit_requested() && update_scene())
     {
-        uniform_vector3(program, "position", position);
-        uniform_matrix3(program, "orientation", orientation);
-        uniform_vector3(program, "fractal_params", (vector3){box_scale, box_radius, sphere_radius});
+        uniform_vector3(program, "x", position);
+        uniform_matrix3(program, "o", orientation);
+        uniform_vector3(program, "f", (vector3){box_scale, box_radius, sphere_radius});
 
         glBegin(GL_QUADS);
         glVertex3f(-window_ratio, -1.0, 0.0);
