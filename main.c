@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include <GL/glew.h>
 #include <SDL.h>
-#include "shader.h"
 #include "vector_math.h"
 #include "shader_code.h"
 #include "sound.h"
@@ -63,6 +62,43 @@ static bool exit_requested()
     }
 
     return true;
+}
+
+static GLuint compile_shader(GLenum type, const GLchar* source)
+{
+    GLuint shader = glCreateShader(type);
+    glShaderSource(shader, 1, &source, NULL);
+    glCompileShader(shader);
+    return shader;
+}
+
+static GLuint compile_program(const char* vertex_source, const char* fragment_source)
+{
+    GLuint program = glCreateProgram();
+    GLuint vertex = compile_shader(GL_VERTEX_SHADER, vertex_source);
+    GLuint fragment = compile_shader(GL_FRAGMENT_SHADER, fragment_source);
+    glAttachShader(program, vertex);
+    glAttachShader(program, fragment);
+    glLinkProgram(program);
+    return program;
+}
+
+static void uniform_float(GLuint program, const char* identifier, float value)
+{
+    GLint location = glGetUniformLocation(program, identifier);
+    glUniform1f(location, value);
+}
+
+static void uniform_vector3(GLuint program, const char* identifier, const vector3 value)
+{
+    GLint location = glGetUniformLocation(program, identifier);
+    glUniform3fv(location, 1, value);
+}
+
+static void uniform_matrix3(GLuint program, const char* identifier, const matrix3 value)
+{
+    GLint location = glGetUniformLocation(program, identifier);
+    glUniformMatrix3fv(location, 1, GL_TRUE, (const GLfloat*)value);
 }
 
 static float linear_step(float start, float end, float position, float duration)
