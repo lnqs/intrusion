@@ -10,9 +10,6 @@ static const int resolution_x = 800;
 static const int resolution_y = 600;
 static bool fullscreen = false;
 static char* window_caption = "Planeshift";
-static const float movement_speed = 0.5;
-static const float mouse_speed = 0.5;
-static const float scale_speed = 0.001;
 
 static const float window_ratio = (float)resolution_x / resolution_y;
 
@@ -277,114 +274,22 @@ static void setup_viewport()
     glLoadIdentity();
 }
 
-static void move(const vector3 axis, float ticks_elapsed)
+static bool exit_requested()
 {
-    vector3 movement;
-    vector3_copy(movement, axis);
-    vector3_multiply(movement, ticks_elapsed / 1000.0 * movement_speed);
-    vector3_rotate(movement, orientation);
-    vector3_add(position, movement);
-}
+    SDL_Event event;
+    SDL_PollEvent(&event);
 
-static bool handle_keyboard(Uint32 ticks_elapsed)
-{
-    Uint8* keystate = SDL_GetKeyState(NULL);
-
-    if (keystate[SDLK_ESCAPE])
+    if (event.type == SDL_QUIT)
     {
         return false;
     }
 
-    if (keystate[SDLK_w])
+    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
     {
-        move((vector3)VECTOR3_NEGATIVE_UNIT_Z, ticks_elapsed);
-    }
-
-    if (keystate[SDLK_a])
-    {
-        move((vector3)VECTOR3_NEGATIVE_UNIT_X, ticks_elapsed);
-    }
-
-    if (keystate[SDLK_s])
-    {
-        move((vector3)VECTOR3_UNIT_Z, ticks_elapsed);
-    }
-
-    if (keystate[SDLK_d])
-    {
-        move((vector3)VECTOR3_UNIT_X, ticks_elapsed);
-    }
-
-    if (keystate[SDLK_r])
-    {
-        box_scale -= ticks_elapsed * scale_speed;
-    }
-
-    if (keystate[SDLK_t])
-    {
-        box_scale += ticks_elapsed * scale_speed;
-    }
-
-    if (keystate[SDLK_f])
-    {
-        box_radius -= ticks_elapsed * scale_speed;
-    }
-
-    if (keystate[SDLK_g])
-    {
-        box_radius += ticks_elapsed * scale_speed;
-    }
-
-    if (keystate[SDLK_c])
-    {
-        sphere_radius -= ticks_elapsed * scale_speed;
-    }
-
-    if (keystate[SDLK_v])
-    {
-        sphere_radius += ticks_elapsed * scale_speed;
-    }
-
-    if (keystate[SDLK_q])
-    {
-        printf("Position:      { %f, %f, %f }\n"
-               "Orientation:   { %f, %f, %f }\n"
-               "               { %f, %f, %f }\n"
-               "               { %f, %f, %f }\n"
-               "Box Scale:     %f\n"
-               "Box Radius:    %f\n"
-               "Sphere Radius: %f\n",
-               position[0], position[1], position[2],
-               orientation[0][0], orientation[0][1], orientation[0][2],
-               orientation[1][0], orientation[1][1], orientation[1][2],
-               orientation[2][0], orientation[2][1], orientation[2][2],
-               box_scale, box_radius, sphere_radius);
+        return false;
     }
 
     return true;
-}
-
-static void handle_mouse(Uint32 ticks_elapsed)
-{
-    int x, y;
-    SDL_GetMouseState(&x, &y);
-    x -= resolution_x / 2;
-    y -= resolution_y / 2;
-
-    matrix3 rotation = MATRIX3_IDENTITY;
-    matrix3_rotate(rotation, (vector3)VECTOR3_UNIT_X, -y * (ticks_elapsed / 1000.0) * mouse_speed);
-    matrix3_rotate(rotation, (vector3)VECTOR3_UNIT_Y, -x * (ticks_elapsed / 1000.0) * mouse_speed);
-    matrix3_multiply(orientation, rotation);
-
-    SDL_WarpMouse(resolution_x / 2, resolution_y / 2);
-}
-
-static bool handle_input(Uint32 ticks_elapsed)
-{
-    SDL_PumpEvents();
-
-    handle_mouse(ticks_elapsed);
-    return handle_keyboard(ticks_elapsed);
 }
 
 static float linear_step(float start, float end, float position, float duration)
@@ -443,10 +348,7 @@ static void mainloop(GLint program)
 {
     glUseProgram(program);
 
-    Uint32 ticks = SDL_GetTicks();
-    Uint32 ticks_elapsed = 0;
-
-    while (handle_input(ticks_elapsed) && update_scene())
+    while (exit_requested() && update_scene())
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -464,9 +366,6 @@ static void mainloop(GLint program)
         glEnd();
 
         SDL_GL_SwapBuffers();
-
-        ticks_elapsed = SDL_GetTicks() - ticks;
-        ticks = SDL_GetTicks();;
     }
 }
 
