@@ -60,7 +60,7 @@ void main()
     {
         vec3 ray = normalize(orientation * (p + vec3(0.0, 0.0, -eye_distance)));
         int steps = find_intersection(position, ray);
-        gl_FragColor = vec4(object_glow * steps / 100.0, 1.0);
+        gl_FragColor = vec4(object_glow * steps / 85.0, 1.0);
     }
 }
 
