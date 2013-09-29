@@ -64,21 +64,19 @@ static bool exit_requested()
     return true;
 }
 
-static GLuint compile_shader(GLenum type, const GLchar* source)
+static void add_shader(GLuint program, GLenum type, const GLchar* source)
 {
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &source, NULL);
     glCompileShader(shader);
-    return shader;
+    glAttachShader(program, shader);
 }
 
 static GLuint compile_program(const char* vertex_source, const char* fragment_source)
 {
     GLuint program = glCreateProgram();
-    GLuint vertex = compile_shader(GL_VERTEX_SHADER, vertex_source);
-    GLuint fragment = compile_shader(GL_FRAGMENT_SHADER, fragment_source);
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
+    add_shader(program, GL_VERTEX_SHADER, vertex_source);
+    add_shader(program, GL_FRAGMENT_SHADER, fragment_source);
     glLinkProgram(program);
     return program;
 }
