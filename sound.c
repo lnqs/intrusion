@@ -51,10 +51,3 @@ void play_sound()
     SDL_PauseAudio(0);
 }
 
-void stop_sound()
-{
-    SDL_PauseAudio(1);
-    pthread_kill(render_thread, SIGKILL);
-    pthread_join(render_thread, NULL);
-}
-

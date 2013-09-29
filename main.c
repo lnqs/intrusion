@@ -157,7 +157,6 @@ void _start()
 
     play_sound();
     mainloop(program);
-    stop_sound();
 
     cleanup_sdl();
 
