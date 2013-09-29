@@ -3,9 +3,8 @@ varying vec3 p;
 uniform mat3 orientation;
 uniform vec3 position;
 
-uniform float box_scale;
-uniform float box_radius;
-uniform float sphere_radius;
+// it's (box_scale, box_radius, sphere_radius)
+uniform vec3 fractal_params;
 
 const float eye_distance = 2.0;
 const float max_distance = 15.0;
@@ -24,9 +23,9 @@ float distance_estimate(in vec3 point)
 
     for (int i = 0; i < max_iterations; i++)
     {
-        n.xyz = clamp(n.xyz, -box_radius, box_radius) * 2.0 - n.xyz;
-        n *= max(sphere_radius * sphere_radius / dot(n.xyz, n.xyz), 1.0);
-        n = box_scale * n + vec4(point, sign(box_scale * n.w));
+        n.xyz = clamp(n.xyz, -fractal_params.y, fractal_params.y) * 2.0 - n.xyz;
+        n *= max(fractal_params.z * fractal_params.z / dot(n.xyz, n.xyz), 1.0);
+        n = fractal_params.x * n + vec4(point, sign(fractal_params.x * n.w));
     }
 
     return length(n.xyz) / n.w * box_de_factor;

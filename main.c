@@ -83,12 +83,6 @@ static GLuint compile_program(const char* vertex_source, const char* fragment_so
     return program;
 }
 
-static void uniform_float(GLuint program, const char* identifier, float value)
-{
-    GLint location = glGetUniformLocation(program, identifier);
-    glUniform1f(location, value);
-}
-
 static void uniform_vector3(GLuint program, const char* identifier, const vector3 value)
 {
     GLint location = glGetUniformLocation(program, identifier);
@@ -161,9 +155,7 @@ static void mainloop(GLint program)
     {
         uniform_vector3(program, "position", position);
         uniform_matrix3(program, "orientation", orientation);
-        uniform_float(program, "box_scale", box_scale);
-        uniform_float(program, "box_radius", box_radius);
-        uniform_float(program, "sphere_radius", sphere_radius);
+        uniform_vector3(program, "fractal_params", (vector3){box_scale, box_radius, sphere_radius});
 
         glBegin(GL_QUADS);
         glVertex3f(-window_ratio, -1.0, 0.0);
