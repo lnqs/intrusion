@@ -11,9 +11,6 @@ const float max_distance = 15.0;
 const float accuracy = 0.0005;
 const vec3 object_glow = vec3(0.23, 0.21, 0.14);
 
-// I have no idea why, but when I remove this declaration the shader doesn't compile o.O
-const float ignore;
-
 const float box_de_factor = 1.0;
 const int max_iterations = 12;
 
