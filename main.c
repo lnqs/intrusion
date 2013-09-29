@@ -43,7 +43,6 @@ static void initialize_glew()
 
 static void setup_viewport()
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
     glViewport(0.0, 0.0, resolution_x, resolution_y);
 
     glMatrixMode(GL_PROJECTION);
@@ -130,8 +129,6 @@ static void mainloop(GLint program)
 
     while (exit_requested() && update_scene())
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         uniform_vector3(program, "position", position);
         uniform_matrix3(program, "orientation", orientation);
         uniform_float(program, "box_scale", box_scale);
