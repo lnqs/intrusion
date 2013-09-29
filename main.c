@@ -43,14 +43,8 @@ static void initialize_glew()
 
 static void setup_viewport()
 {
-    glViewport(0.0, 0.0, resolution_x, resolution_y);
-
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
     glOrtho(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 }
 
 static bool exit_requested()
