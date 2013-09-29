@@ -155,7 +155,7 @@ static void mainloop(GLint program)
     }
 }
 
-int main(int argc, char** argv)
+void _start()
 {
     initialize_sdl();
     initialize_glew();
@@ -170,6 +170,6 @@ int main(int argc, char** argv)
 
     cleanup_sdl();
 
-    return 0;
+    exit(0);
 }
 
