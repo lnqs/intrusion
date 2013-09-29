@@ -4,6 +4,10 @@
 #include "vector_math.h"
 #include "shader_code.h"
 #include "sound.h"
+
+typedef float vector3[3];
+typedef float matrix3[3][3]; // [row][col]
+
 #include "keypoint.h"
 
 static const int resolution_x = 800;

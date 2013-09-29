@@ -15,7 +15,11 @@ static const struct keypoint keypoints[] = {
     {
         .time = 0,
         .position = { 0.00, 0.00, 4.30 },
-        .orientation = MATRIX3_IDENTITY,
+        .orientation = {
+            {  1.00,  0.00,  0.00 },
+            {  0.00,  1.00,  0.00 },
+            {  0.00,  0.00,  1.00 }
+        },
         .box_scale = -5.0,
         .box_radius = 3.0,
         .sphere_radius = 3.0,
