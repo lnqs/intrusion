@@ -9,7 +9,7 @@ struct keypoint
     float box_scale;
     float box_radius;
     float sphere_radius;
-};
+} __attribute__((__packed__));
 
 static const struct keypoint keypoints[] = {
     {
@@ -23,7 +23,6 @@ static const struct keypoint keypoints[] = {
         .box_scale = -5.0,
         .box_radius = 3.0,
         .sphere_radius = 3.0,
-
     },
     {
         .time = 10 * 1000,
