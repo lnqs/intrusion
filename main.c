@@ -392,11 +392,11 @@ static float linear_step(float start, float end, float position, float duration)
     return start + (end - start) * (position / duration);
 }
 
-static void update_scene()
+static bool update_scene()
 {
     if (current_key_point >= sizeof(keypoints) / sizeof(struct keypoint))
     {
-        return;
+        return false;
     }
 
     Uint32 time = SDL_GetTicks();
@@ -409,7 +409,7 @@ static void update_scene()
     if (time > destination->time)
     {
         current_key_point++;
-        return;
+        return true;
     }
 
     for (size_t i = 0; i < 3; i++)
@@ -435,6 +435,8 @@ static void update_scene()
             destination->box_radius, transition_position, transition_time);
     sphere_radius = linear_step(origin->sphere_radius,
             destination->sphere_radius, transition_position, transition_time);
+
+    return true;
 }
 
 static void mainloop(GLint program)
@@ -444,10 +446,8 @@ static void mainloop(GLint program)
     Uint32 ticks = SDL_GetTicks();
     Uint32 ticks_elapsed = 0;
 
-    while (handle_input(ticks_elapsed))
+    while (handle_input(ticks_elapsed) && update_scene())
     {
-        update_scene();
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         uniform_vector3(program, "position", position);
