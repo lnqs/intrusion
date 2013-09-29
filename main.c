@@ -1,9 +1,9 @@
 #include <stdbool.h>
+#include <pthread.h>
 #include <GL/glew.h>
 #include <SDL.h>
-#include "vector_math.h"
 #include "shader_code.h"
-#include "sound.h"
+#include "4klang.inh"
 
 typedef float vector3[3];
 typedef float matrix3[3][3]; // [row][col]
@@ -12,8 +12,9 @@ typedef float matrix3[3][3]; // [row][col]
 
 static const int resolution_x = 800;
 static const int resolution_y = 600;
-static bool fullscreen = false;
-static char* window_caption = "Planeshift";
+static const bool fullscreen = false;
+static const char* window_caption = "Planeshift";
+static const int audio_channels = 2;
 
 static const float window_ratio = (float)resolution_x / resolution_y;
 
@@ -24,6 +25,9 @@ static matrix3 orientation;
 static float box_scale;
 static float box_radius;
 static float sphere_radius;
+
+static SAMPLE_TYPE sample_buffer[MAX_SAMPLES * audio_channels];
+static int sample_position = 0;
 
 static void initialize_sdl()
 {
@@ -42,6 +46,46 @@ static void initialize_glew()
 {
     glewExperimental = GL_TRUE;
     glewInit();
+}
+
+static void sound_callback(void* userdata, Uint8* stream, int length)
+{
+    if (sample_position >= MAX_SAMPLES)
+    {
+        return;
+    }
+
+    static float* sample = sample_buffer;
+    int16_t* p = (int16_t*)stream;
+
+    for (int i = length / (sizeof(short) * audio_channels); i > 0 ; i--)
+    {
+        *p++ = (int16_t)(INT16_MAX * *sample++);
+        *p++ = (int16_t)(INT16_MAX * *sample++);
+
+        sample_position += 1;
+    }
+}
+
+static void initialize_sound()
+{
+    SDL_AudioSpec spec;
+    spec.freq = SAMPLE_RATE;
+    spec.format = AUDIO_S16SYS;
+    spec.channels = audio_channels;
+    spec.silence = 0;
+    spec.samples = 4096;
+    spec.size = 0;
+    spec.callback = sound_callback;
+
+    SDL_OpenAudio(&spec, NULL);
+}
+
+static void play_sound()
+{
+    pthread_t render_thread;
+    pthread_create(&render_thread, NULL, __4klang_render, &sample_buffer);
+    SDL_PauseAudio(0);
 }
 
 static void setup_viewport()
