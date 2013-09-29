@@ -1,4 +1,7 @@
 CC = clang
+NASM = nasm
+STRIP = sstrip -z
+SHADER_MINIFIER = shader_minifier.exe
 CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -O0 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
 LDFLAGS = -m32 -lm -lpthread $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
 NASMFLAGS = -f elf
@@ -14,12 +17,13 @@ all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS) $(MAKEFILE_LIST)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
+	$(STRIP) $@
 
 $(SHADER_HEADER): $(SHADERS)
-	shader_minifier.exe --preserve-externals -o $@ $^
+	$(SHADER_MINIFIER) --preserve-externals -o $@ $^
 
 %.o: %.asm $(MAKEFILE_LIST)
-	nasm $(NASMFLAGS) $< -o $@
+	$(NASM) $(NASMFLAGS) $< -o $@
 
 %.o: %.c %.d $(MAKEFILE_LIST) $(SHADER_HEADER)
 	$(CC) -c $(CFLAGS) $< -o $@
