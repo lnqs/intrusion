@@ -12,7 +12,7 @@ typedef float matrix3[3][3]; // [row][col]
 
 static const int resolution_x = 800;
 static const int resolution_y = 600;
-static const bool fullscreen = true;
+static const bool fullscreen = false;
 static const char* window_caption = "Planeshift";
 static const int audio_channels = 2;
 static const size_t sound_thread_stack_size = 1024 * 1024;
