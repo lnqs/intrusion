@@ -1,5 +1,5 @@
 #include <stdbool.h>
-#include <pthread.h>
+#include <sched.h>
 #include <GL/glew.h>
 #include <SDL.h>
 #include "shader_code.h"
@@ -12,9 +12,10 @@ typedef float matrix3[3][3]; // [row][col]
 
 static const int resolution_x = 800;
 static const int resolution_y = 600;
-static const bool fullscreen = false;
+static const bool fullscreen = true;
 static const char* window_caption = "Planeshift";
 static const int audio_channels = 2;
+static const size_t sound_thread_stack_size = 1024 * 1024;
 
 static const float window_ratio = (float)resolution_x / resolution_y;
 
@@ -28,6 +29,7 @@ static float sphere_radius;
 
 static SAMPLE_TYPE sample_buffer[MAX_SAMPLES * audio_channels];
 static int sample_position = 0;
+unsigned char sound_thread_stack[sound_thread_stack_size];
 
 static void initialize_sdl()
 {
@@ -39,7 +41,7 @@ static void initialize_sdl()
 
 static void cleanup_sdl()
 {
-    SDL_Quit();
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 static void initialize_glew()
@@ -83,8 +85,11 @@ static void initialize_sound()
 
 static void play_sound()
 {
-    pthread_t render_thread;
-    pthread_create(&render_thread, NULL, __4klang_render, &sample_buffer);
+    clone((void*)__4klang_render,
+            sound_thread_stack + sizeof(sound_thread_stack),
+            CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_SYSVSEM,
+            sample_buffer);
+
     SDL_PauseAudio(0);
 }
 
