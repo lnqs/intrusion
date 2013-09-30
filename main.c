@@ -27,7 +27,7 @@ static float box_scale;
 static float box_radius;
 static float sphere_radius;
 
-static SAMPLE_TYPE sample_buffer[MAX_SAMPLES * audio_channels];
+static unsigned char sample_buffer[MAX_SAMPLES * sizeof(SAMPLE_TYPE) * audio_channels];
 static int sample_position = 0;
 unsigned char sound_thread_stack[sound_thread_stack_size];
 
@@ -52,21 +52,8 @@ static void initialize_glew()
 
 static void sound_callback(void* userdata, Uint8* stream, int length)
 {
-    if (sample_position >= MAX_SAMPLES)
-    {
-        return;
-    }
-
-    static float* sample = sample_buffer;
-    int16_t* p = (int16_t*)stream;
-
-    for (int i = length / (sizeof(short) * audio_channels); i > 0 ; i--)
-    {
-        *p++ = (int16_t)(INT16_MAX * *sample++);
-        *p++ = (int16_t)(INT16_MAX * *sample++);
-
-        sample_position += 1;
-    }
+    memcpy(stream, sample_buffer + sample_position, length);
+    sample_position += length;
 }
 
 static void initialize_sound()
