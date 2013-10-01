@@ -3,8 +3,8 @@ LD = ld
 NASM = nasm
 STRIP = sstrip -z
 SHADER_MINIFIER = shader_minifier.exe
-CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -Os -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
-LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
+CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -Oz -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) $(shell pkg-config --cflags glew)
+LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 $(shell pkg-config --libs sdl) $(shell pkg-config --libs gl) $(shell pkg-config --libs glew)
 NASMFLAGS = -f elf
 
 SOURCES = $(wildcard *.c)

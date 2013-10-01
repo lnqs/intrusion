@@ -1,5 +1,6 @@
 #include <stdbool.h>
-#include <sched.h>
+#include <sys/syscall.h>
+#include <linux/sched.h>
 #include <GL/glew.h>
 #include <SDL.h>
 #include "shader_code.h"
@@ -29,7 +30,7 @@ static float sphere_radius;
 
 static unsigned char sample_buffer[MAX_SAMPLES * sizeof(SAMPLE_TYPE) * audio_channels];
 static int sample_position = 0;
-unsigned char sound_thread_stack[sound_thread_stack_size];
+static unsigned char sound_thread_stack[sound_thread_stack_size];
 
 static void initialize_sdl()
 {
@@ -50,9 +51,25 @@ static void initialize_glew()
     glewInit();
 }
 
+static void memcpy_(void* dest, const void* src, size_t n)
+{
+    __asm__ volatile ("cld\n"
+                      "rep\n"
+                      "movsl\n"
+                      "movl %3,%2\n"
+                      "rep\n"
+                      "movsb\n"
+                      :
+                      : "S" (src),
+                        "D" (dest),
+                        "c" (n / 4),
+                        "r" (n % 4));
+}
+
 static void sound_callback(void* userdata, Uint8* stream, int length)
 {
-    memcpy(stream, sample_buffer + sample_position, length);
+    memcpy_(stream, sample_buffer + sample_position, length);
+
     sample_position += length;
 }
 
@@ -70,9 +87,37 @@ static void initialize_sound()
     SDL_OpenAudio(&spec, NULL);
 }
 
+static void exit_(int code)
+{
+    __asm__ volatile ("int $0x80"
+                      :
+                      : "a" (SYS_exit_group),
+                        "b" (code));
+}
+
+static void clone_(int (*fn)(void*), void* stack, int flags, void* data)
+{
+    __asm__ volatile ("subl $4,%2\n"
+                      "movl %4,(%2)\n"
+                      "int $0x80\n"
+                      "testl %0,%0\n"
+                      "jne 1f\n"
+                      "call *%3\n"
+                      "movl %5,%0\n"
+                      "int $0x80\n"
+                      "1:\n"
+                      :
+                      : "a" (SYS_clone),
+                        "b" (flags),
+                        "c" (stack),
+                        "r" (fn),
+                        "r" (data),
+                        "r" (SYS_exit));
+}
+
 static void play_sound()
 {
-    clone((void*)__4klang_render,
+    clone_((void*)__4klang_render,
             sound_thread_stack + sizeof(sound_thread_stack),
             CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_SYSVSEM,
             sample_buffer);
@@ -220,6 +265,6 @@ void _start()
 
     cleanup_sdl();
 
-    exit(0);
+    exit_(0);
 }
 
