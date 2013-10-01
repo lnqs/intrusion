@@ -230,8 +230,9 @@ static bool update_scene()
     return true;
 }
 
-static void mainloop(GLint program)
+static void mainloop()
 {
+    GLuint program = compile_program(vertex_glsl, fragment_glsl);
     glUseProgram(program);
 
     while (exit_requested() && update_scene())
@@ -257,11 +258,10 @@ void _start()
     initialize_glew();
     initialize_sound();
 
-    GLuint program = compile_program(vertex_glsl, fragment_glsl);
     setup_viewport();
 
     play_sound();
-    mainloop(program);
+    mainloop();
 
     cleanup_sdl();
 
