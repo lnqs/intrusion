@@ -61,24 +61,22 @@ static void initialize_glew()
     glewInit();
 }
 
-static void memcpy_(void* dest, const void* src, size_t n)
+static void inaccurate_memcpy(void* dest, const void* src, size_t n)
 {
+    // To save some instructions, only full words are copied, rest is ignored.
+    // Therefore inaccurate! :o)
     __asm__ volatile ("cld\n"
                       "rep\n"
                       "movsl\n"
-                      "movl %3,%2\n"
-                      "rep\n"
-                      "movsb\n"
                       :
                       : "S" (src),
                         "D" (dest),
-                        "c" (n / 4),
-                        "r" (n % 4));
+                        "c" (n / 4));
 }
 
 static void sound_callback(void* userdata, Uint8* stream, int length)
 {
-    memcpy_(stream, sound_buffer + sound_buffer_position, length);
+    inaccurate_memcpy(stream, sound_buffer + sound_buffer_position, length);
     sound_buffer_position += length;
 }
 
