@@ -1,16 +1,3 @@
-#ifndef KEYPOINT_H
-#define KEYPOINT_H
-
-struct keypoint
-{
-    Uint32 time;
-    vector3 position;
-    matrix3 orientation;
-    float box_scale;
-    float box_radius;
-    float sphere_radius;
-} __attribute__((__packed__));
-
 static const struct keypoint keypoints[] = {
     {
         .time = 0,
@@ -218,6 +205,4 @@ static const struct keypoint keypoints[] = {
         .sphere_radius = -2.0
     }
 };
-
-#endif
 

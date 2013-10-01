@@ -6,21 +6,31 @@
 #include "shader_code.h"
 #include "4klang.inh"
 
-typedef float vector3[3];
-typedef float matrix3[3][3]; // [row][col]
-
-#include "keypoint.h"
-
 static const int resolution_x = 800;
 static const int resolution_y = 600;
 static const bool fullscreen = false;
 static const char* window_caption = "Planeshift";
-static const int audio_channels = 2;
-static const size_t sound_thread_stack_size = 1024 * 1024;
-
 static const float window_ratio = (float)resolution_x / resolution_y;
 
-static int current_key_point = 1;
+static const int sound_channels = 2;
+static const size_t sound_thread_stack_size = 1024 * 1024;
+
+typedef float vector3[3];
+typedef float matrix3[3][3]; // [row][col]
+
+struct keypoint
+{
+    Uint32 time;
+    vector3 position;
+    matrix3 orientation;
+    float box_scale;
+    float box_radius;
+    float sphere_radius;
+} __attribute__((__packed__));
+
+#include "keypoint.h"
+
+static int keypoint = 1;
 
 static vector3 position;
 static matrix3 orientation;
@@ -28,8 +38,8 @@ static float box_scale;
 static float box_radius;
 static float sphere_radius;
 
-static unsigned char sample_buffer[MAX_SAMPLES * sizeof(SAMPLE_TYPE) * audio_channels];
-static int sample_position = 0;
+static unsigned char sound_buffer[MAX_SAMPLES * sizeof(SAMPLE_TYPE) * sound_channels];
+static int sound_buffer_position = 0;
 static unsigned char sound_thread_stack[sound_thread_stack_size];
 
 static void initialize_sdl()
@@ -68,9 +78,8 @@ static void memcpy_(void* dest, const void* src, size_t n)
 
 static void sound_callback(void* userdata, Uint8* stream, int length)
 {
-    memcpy_(stream, sample_buffer + sample_position, length);
-
-    sample_position += length;
+    memcpy_(stream, sound_buffer + sound_buffer_position, length);
+    sound_buffer_position += length;
 }
 
 static void initialize_sound()
@@ -78,7 +87,7 @@ static void initialize_sound()
     SDL_AudioSpec spec;
     spec.freq = SAMPLE_RATE;
     spec.format = AUDIO_S16SYS;
-    spec.channels = audio_channels;
+    spec.channels = sound_channels;
     spec.silence = 0;
     spec.samples = 4096;
     spec.size = 0;
@@ -120,8 +129,7 @@ static void play_sound()
     clone_((void*)__4klang_render,
             sound_thread_stack + sizeof(sound_thread_stack),
             CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_SYSVSEM,
-            sample_buffer);
-
+            sound_buffer);
     SDL_PauseAudio(0);
 }
 
@@ -185,21 +193,21 @@ static float linear_step(float start, float end, float position, float duration)
 
 static bool update_scene()
 {
-    if (current_key_point >= sizeof(keypoints) / sizeof(struct keypoint))
+    if (keypoint >= sizeof(keypoints) / sizeof(struct keypoint))
     {
         return false;
     }
 
     Uint32 time = SDL_GetTicks();
 
-    const struct keypoint* origin = &keypoints[current_key_point - 1];
-    const struct keypoint* destination = &keypoints[current_key_point];
+    const struct keypoint* origin = &keypoints[keypoint - 1];
+    const struct keypoint* destination = &keypoints[keypoint];
     const Uint32 transition_position = time - origin->time;
     const Uint32 transition_time = destination->time - origin->time;
 
     if (time > destination->time)
     {
-        current_key_point++;
+        keypoint++;
         return true;
     }
 
