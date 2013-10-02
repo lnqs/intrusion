@@ -6,15 +6,14 @@
 #include "4klang.inh"
 
 static const int sound_channels = 2;
-static const size_t sound_thread_stack_size = 1024 * 1024;
 
 static unsigned char sound_buffer[MAX_SAMPLES * sizeof(SAMPLE_TYPE) * sound_channels];
-static int sound_buffer_position = 0;
-static unsigned char sound_thread_stack[sound_thread_stack_size];
+static unsigned char* sound_buffer_position = sound_buffer;
+static unsigned char sound_thread_stack[1024 * 1024];
 
 static void sound_callback(void* userdata, Uint8* stream, int length)
 {
-    inaccurate_memcpy(stream, sound_buffer + sound_buffer_position, length);
+    inaccurate_memcpy(stream, sound_buffer_position, length);
     sound_buffer_position += length;
 }
 
