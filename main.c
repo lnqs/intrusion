@@ -13,7 +13,7 @@ static const bool fullscreen = false;
 static const char* window_caption = "Planeshift";
 static const float window_ratio = (float)resolution_x / resolution_y;
 
-static int keypoint = 1;
+static const struct keypoint* keypoint = keypoints;
 
 static vector3 position;
 static matrix3 orientation;
@@ -71,15 +71,15 @@ static float linear_step(float start, float end, float position, float duration)
 
 static bool update_scene()
 {
-    if (keypoint >= sizeof(keypoints) / sizeof(struct keypoint))
+    Uint32 time = SDL_GetTicks();
+
+    if (time > keypoints[sizeof(keypoints) / sizeof(struct keypoint) - 1].time)
     {
         return false;
     }
 
-    Uint32 time = SDL_GetTicks();
-
-    const struct keypoint* origin = &keypoints[keypoint - 1];
-    const struct keypoint* destination = &keypoints[keypoint];
+    const struct keypoint* origin = keypoint;
+    const struct keypoint* destination = keypoint + 1;
     const Uint32 transition_position = time - origin->time;
     const Uint32 transition_time = destination->time - origin->time;
 
