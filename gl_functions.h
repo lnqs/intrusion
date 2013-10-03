@@ -23,7 +23,7 @@ static GLAPI GLint GLAPIENTRY (*glGetUniformLocation_)(GLuint, const GLchar*);
 static GLAPI void GLAPIENTRY (*glUniform3fv_)(GLint, GLsizei, const GLfloat*);
 static GLAPI void GLAPIENTRY (*glUniformMatrix3fv_)(GLint, GLsizei, GLboolean, const GLfloat*);
 
-static void initialize_gl_functions()
+static stdcall void initialize_gl_functions()
 {
     glMatrixMode_ = SDL_GL_GetProcAddress("glMatrixMode");
     glOrtho_ = SDL_GL_GetProcAddress("glOrtho");

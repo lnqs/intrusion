@@ -5,7 +5,9 @@
 #include <sys/syscall.h>
 #include <linux/sched.h>
 
-static void exit_(int code)
+#define stdcall __attribute__((stdcall))
+
+static stdcall void exit_(int code)
 {
     __asm__ volatile ("int $0x80"
                       :
@@ -13,7 +15,7 @@ static void exit_(int code)
                         "b" (code));
 }
 
-static void clone_(int (*fn)(void*), void* stack, int flags, void* data)
+static stdcall void clone_(int (*fn)(void*), void* stack, int flags, void* data)
 {
     __asm__ volatile ("subl $4,%2\n"
                       "movl %4,(%2)\n"
@@ -33,7 +35,7 @@ static void clone_(int (*fn)(void*), void* stack, int flags, void* data)
                         "r" (SYS_exit));
 }
 
-static void inaccurate_memcpy(void* dest, const void* src, size_t n)
+static stdcall void inaccurate_memcpy(void* dest, const void* src, size_t n)
 {
     // To save some instructions, only full words are copied, rest is ignored.
     // Therefore inaccurate -- while this is perfectly fine for us. This

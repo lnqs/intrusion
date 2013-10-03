@@ -22,7 +22,7 @@ static float box_scale;
 static float box_radius;
 static float sphere_radius;
 
-static void initialize_sdl()
+static stdcall void initialize_sdl()
 {
     SDL_SetVideoMode(resolution_x, resolution_y, 0,
             SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
@@ -30,20 +30,20 @@ static void initialize_sdl()
     SDL_ShowCursor(SDL_DISABLE);
 }
 
-static void cleanup_sdl()
+static stdcall void cleanup_sdl()
 {
     // SDL_Quit crashes since main() is removed, but we need this call to reset
     // the screen resolution when running fullscreen
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-static void setup_viewport()
+static stdcall void setup_viewport()
 {
     glMatrixMode_(GL_PROJECTION);
     glOrtho_(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
 }
 
-static bool exit_requested()
+static stdcall bool exit_requested()
 {
     SDL_Event event;
     SDL_PollEvent(&event);
@@ -61,12 +61,12 @@ static bool exit_requested()
     return true;
 }
 
-static float linear_step(float start, float end, float position, float duration)
+static stdcall float linear_step(float start, float end, float position, float duration)
 {
     return start + (end - start) * (position / duration);
 }
 
-static bool update_scene()
+static stdcall bool update_scene()
 {
     Uint32 time = SDL_GetTicks();
 
@@ -113,7 +113,7 @@ static bool update_scene()
     return true;
 }
 
-static void mainloop()
+static stdcall void mainloop()
 {
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
     glUseProgram_(program);

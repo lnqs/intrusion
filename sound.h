@@ -27,12 +27,12 @@ static SDL_AudioSpec sound_spec = {
     .callback = sound_callback
 };
 
-static void initialize_sound()
+static stdcall void initialize_sound()
 {
     SDL_OpenAudio(&sound_spec, NULL);
 }
 
-static void play_sound()
+static stdcall void play_sound()
 {
     clone_((void*)__4klang_render,
             sound_thread_stack + sizeof(sound_thread_stack),
