@@ -6,6 +6,7 @@
 #include <linux/sched.h>
 
 #define stdcall __attribute__((stdcall))
+#define packed __attribute__((__packed__));
 
 static stdcall void exit_(int code)
 {

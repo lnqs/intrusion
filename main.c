@@ -15,13 +15,8 @@ static const bool fullscreen = false;
 static const char* window_caption = "Planeshift";
 static const float window_ratio = (float)resolution_x / resolution_y;
 
+static struct scene_state scene_state;
 static const struct keypoint* keypoint = keypoints;
-
-static vector3 position;
-static matrix3 orientation;
-static float box_scale;
-static float box_radius;
-static float sphere_radius;
 
 static stdcall void initialize_sdl()
 {
@@ -62,54 +57,33 @@ static stdcall bool exit_requested()
     return true;
 }
 
-static stdcall float linear_step(float start, float end, float position, float duration)
-{
-    return start + (end - start) * (position / duration);
-}
-
 static stdcall bool update_scene()
 {
     Uint32 time = SDL_GetTicks_fn();
+    const struct keypoint* next = keypoint + 1;
 
     if (time > keypoints[sizeof(keypoints) / sizeof(struct keypoint) - 1].time)
     {
         return false;
     }
 
-    const struct keypoint* origin = keypoint;
-    const struct keypoint* destination = keypoint + 1;
-    const Uint32 transition_position = time - origin->time;
-    const Uint32 transition_time = destination->time - origin->time;
-
-    if (time > destination->time)
+    if (time > next->time)
     {
-        keypoint++;
-        return true;
+        keypoint += 1;
+        next += 1;
     }
 
-    for (size_t i = 0; i < 3; i++)
-    {
-        position[i] = linear_step(origin->position[i],
-                destination->position[i], transition_position, transition_time);
-    }
+    const float time_factor =
+        (float)(time - keypoint->time) / (next->time - keypoint->time);
 
-    for (size_t row = 0; row < 3; row++)
-    {
-        for (size_t col = 0; col < 3; col++)
-        {
-            orientation[row][col] = linear_step(
-                    origin->orientation[row][col],
-                    destination->orientation[row][col],
-                    transition_position, transition_time);
-        }
-    }
+    float* state = (float*)&scene_state;
+    float* origin = (float*)&keypoint->state;
+    float* destination = (float*)&next->state;
 
-    box_scale = linear_step(origin->box_scale,
-            destination->box_scale, transition_position, transition_time);
-    box_radius = linear_step(origin->box_radius,
-            destination->box_radius, transition_position, transition_time);
-    sphere_radius = linear_step(origin->sphere_radius,
-            destination->sphere_radius, transition_position, transition_time);
+    for (int i = 0; i < sizeof(struct scene_state) / sizeof(float); i++)
+    {
+        state[i] = origin[i] + (destination[i] - origin[i]) * time_factor;
+    }
 
     return true;
 }
@@ -121,9 +95,11 @@ static stdcall void mainloop()
 
     while (exit_requested() && update_scene())
     {
-        uniform_vector3(program, "x", position);
-        uniform_matrix3(program, "o", orientation);
-        uniform_vector3(program, "f", (vector3){box_scale, box_radius, sphere_radius});
+        uniform_vector3(program, "x", scene_state.position);
+        uniform_matrix3(program, "o", scene_state.orientation);
+        // Since the three parameters follow each other in the struct,
+        // we just thread them as vector. It looks the same in memory anyway.
+        uniform_vector3(program, "f", (float*)&scene_state.box_scale);
 
         glBegin_fn(GL_QUADS);
         glVertex3f_fn(-window_ratio, -1.0, 0.0);
