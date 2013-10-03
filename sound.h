@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "clib.h"
+#include "sdl_functions.h"
 #include "4klang.inh"
 
 static const int sound_channels = 2;
@@ -29,7 +30,7 @@ static SDL_AudioSpec sound_spec = {
 
 static stdcall void initialize_sound()
 {
-    SDL_OpenAudio(&sound_spec, NULL);
+    SDL_OpenAudio_fn(&sound_spec, NULL);
 }
 
 static stdcall void play_sound()
@@ -38,7 +39,7 @@ static stdcall void play_sound()
             sound_thread_stack + sizeof(sound_thread_stack),
             CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_SYSVSEM,
             sound_buffer);
-    SDL_PauseAudio(0);
+    SDL_PauseAudio_fn(0);
 }
 
 #endif
