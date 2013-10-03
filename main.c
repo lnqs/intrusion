@@ -32,6 +32,8 @@ static void initialize_sdl()
 
 static void cleanup_sdl()
 {
+    // SDL_Quit crashes since main() is removed, but we need this call to reset
+    // the screen resolution when running fullscreen
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
