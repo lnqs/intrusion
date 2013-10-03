@@ -1,7 +1,8 @@
 #include <stdbool.h>
-#include <GL/glew.h>
 #include <SDL.h>
+#include <GL/gl.h>
 #include "clib.h"
+#include "gl_functions.h"
 #include "vector.h"
 #include "shader.h"
 #include "sound.h"
@@ -34,16 +35,10 @@ static void cleanup_sdl()
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-static void initialize_glew()
-{
-    glewExperimental = GL_TRUE;
-    glewInit();
-}
-
 static void setup_viewport()
 {
-    glMatrixMode(GL_PROJECTION);
-    glOrtho(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
+    glMatrixMode_(GL_PROJECTION);
+    glOrtho_(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
 }
 
 static bool exit_requested()
@@ -119,7 +114,7 @@ static bool update_scene()
 static void mainloop()
 {
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
-    glUseProgram(program);
+    glUseProgram_(program);
 
     while (exit_requested() && update_scene())
     {
@@ -127,12 +122,12 @@ static void mainloop()
         uniform_matrix3(program, "o", orientation);
         uniform_vector3(program, "f", (vector3){box_scale, box_radius, sphere_radius});
 
-        glBegin(GL_QUADS);
-        glVertex3f(-window_ratio, -1.0, 0.0);
-        glVertex3f( window_ratio, -1.0, 0.0);
-        glVertex3f( window_ratio,  1.0, 0.0);
-        glVertex3f(-window_ratio,  1.0, 0.0);
-        glEnd();
+        glBegin_(GL_QUADS);
+        glVertex3f_(-window_ratio, -1.0, 0.0);
+        glVertex3f_( window_ratio, -1.0, 0.0);
+        glVertex3f_( window_ratio,  1.0, 0.0);
+        glVertex3f_(-window_ratio,  1.0, 0.0);
+        glEnd_();
 
         SDL_GL_SwapBuffers();
     }
@@ -141,7 +136,7 @@ static void mainloop()
 void _start()
 {
     initialize_sdl();
-    initialize_glew();
+    initialize_gl_functions();
     initialize_sound();
 
     setup_viewport();
