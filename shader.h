@@ -5,7 +5,6 @@
 #include "clib.h"
 #include "vector.h"
 #include "gl_functions.h"
-#include "shader_code.h"
 
 static stdcall void add_shader(GLuint program, GLenum type, const GLchar* source)
 {

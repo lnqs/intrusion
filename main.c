@@ -8,6 +8,7 @@
 #include "shader.h"
 #include "sound.h"
 #include "keypoint.h"
+#include "shader_code.h"
 
 static const int resolution_x = 800;
 static const int resolution_y = 600;
