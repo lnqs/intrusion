@@ -47,15 +47,15 @@ static stdcall bool exit_requested()
 
     if (event.type == SDL_QUIT)
     {
-        return false;
+        return true;
     }
 
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
     {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 static stdcall bool update_scene()
@@ -94,7 +94,7 @@ static stdcall void mainloop()
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
     glUseProgram_fn(program);
 
-    while (exit_requested() && update_scene())
+    while (!exit_requested() && update_scene())
     {
         uniform_vector3(program, "x", scene_state.position);
         uniform_matrix3(program, "o", scene_state.orientation);
