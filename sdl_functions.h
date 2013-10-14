@@ -36,6 +36,9 @@
 #define SDL_PauseAudio_fn \
     sdl_call(SDL_PauseAudio, void SDLCALL (*)(int))
 
+
+static const char* sdl_library = "libSDL-1.2.so";
+
 enum {
     SDL_GL_GetProcAddress_i,
     SDL_SetVideoMode_i,
@@ -49,28 +52,28 @@ enum {
     SDL_PauseAudio_i
 };
 
-static const char* sdl_symbols[] = {
-    "SDL_GL_GetProcAddress",
-    "SDL_SetVideoMode",
-    "SDL_WM_SetCaption",
-    "SDL_ShowCursor",
-    "SDL_QuitSubSystem",
-    "SDL_PollEvent",
-    "SDL_GetTicks",
-    "SDL_GL_SwapBuffers",
-    "SDL_OpenAudio",
-    "SDL_PauseAudio"
+static const uint32_t sdl_hashes[] = {
+    0x70a9a253, // SDL_GL_GetProcAddress
+    0x7cc5e50f, // SDL_SetVideoMode
+    0x5a36c844, // SDL_WM_SetCaption
+    0xdcc5fcc6, // SDL_ShowCursor
+    0xccc87339, // SDL_QuitSubSystem
+    0x92f25140, // SDL_PollEvent
+    0x0b38f265, // SDL_GetTicks
+    0x811eb401, // SDL_GL_SwapBuffers
+    0xf44169cb, // SDL_OpenAudio
+    0x42850c57  // SDL_PauseAudio
 };
 
-static const void* sdl_functions[sizeof(sdl_symbols) / sizeof(const char*)];
+static void* sdl_functions[sizeof(sdl_hashes) / sizeof(uint32_t)];
 
 static stdcall void initialize_sdl_functions()
 {
-    load_library("libSDL-1.2.so");
+    load_library(sdl_library);
 
-    for (int i = 0; i < sizeof(sdl_symbols) / sizeof(const char*); i++)
+    for (int i = 0; i < sizeof(sdl_hashes) / sizeof(uint32_t); i++)
     {
-        sdl_functions[i] = resolve_symbol("libSDL-1.2.so", sdl_symbols[i]);
+        sdl_functions[i] = resolve_symbol(sdl_library, sdl_hashes[i]);
     }
 }
 

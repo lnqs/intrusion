@@ -8,6 +8,7 @@
 #define stdcall __attribute__((stdcall))
 #define packed __attribute__((__packed__));
 
+// implementing these functions here is smaller than jumping to the libc-ones
 static stdcall void exit_(int code)
 {
     __asm__ volatile ("int $0x80"

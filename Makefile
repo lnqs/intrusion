@@ -9,6 +9,7 @@ NASMFLAGS = -f elf
 
 SOURCES = $(wildcard *.c)
 ASM_SOURCES = $(wildcard *.asm)
+LINKER_SCRIPTS = $(wildcard *.ld)
 OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o)
 SHADERS = $(wildcard *.glsl)
 SHADER_HEADER = shader_code.h
@@ -22,8 +23,8 @@ $(COMPRESSED): $(EXECUTABLE)
 	xz -c9 --format=lzma $< >> $@
 	chmod +x $@
 
-$(EXECUTABLE): $(OBJECTS) $(MAKEFILE_LIST)
-	$(LD) $(LDFLAGS) -o $@ $(OBJECTS)
+$(EXECUTABLE): $(LINKER_SCRIPTS) $(OBJECTS) $(MAKEFILE_LIST)
+	$(LD) $(LDFLAGS) -o $@ $(LINKER_SCRIPTS) $(OBJECTS)
 	$(STRIP) $@
 
 $(SHADER_HEADER): $(SHADERS)

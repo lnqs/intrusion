@@ -92,6 +92,8 @@ static const void* gl_functions[sizeof(gl_symbols) / sizeof(const char*)];
 
 static stdcall void initialize_gl_functions()
 {
+    // we have to import by name instead of hash, since the nvidia-GL-library
+    // is using the old sysv-style hash-tables
     for (int i = 0; i < sizeof(gl_symbols) / sizeof(const char*); i++)
     {
         gl_functions[i] = SDL_GL_GetProcAddress_fn(gl_symbols[i]);
