@@ -1,7 +1,7 @@
 #ifndef SDL_FUNCTIONS_H
 #define SDL_FUNCTIONS_H
 
-#include <dlfcn.h>
+#include "linker.h"
 #include <SDL.h>
 
 #define sdl_call(name, type) ((type)sdl_functions[name ## _i])
@@ -66,11 +66,11 @@ static const void* sdl_functions[sizeof(sdl_symbols) / sizeof(const char*)];
 
 static stdcall void initialize_sdl_functions()
 {
-    void* libsdl = dlopen("libSDL-1.2.so", RTLD_NOW);
+    load_library("libSDL-1.2.so");
 
     for (int i = 0; i < sizeof(sdl_symbols) / sizeof(const char*); i++)
     {
-        sdl_functions[i] = dlsym(libsdl, sdl_symbols[i]);
+        sdl_functions[i] = resolve_symbol("libSDL-1.2.so", sdl_symbols[i]);
     }
 }
 

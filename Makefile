@@ -4,7 +4,7 @@ NASM = nasm
 STRIP = sstrip -z
 SHADER_MINIFIER = shader_minifier.exe
 CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -Oz -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl)
-LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -ldl
+LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc
 NASMFLAGS = -f elf
 
 SOURCES = $(wildcard *.c)
