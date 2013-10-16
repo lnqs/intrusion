@@ -70,33 +70,32 @@ enum {
     glUniformMatrix3fv_i
 };
 
-static const char* gl_symbols[] = {
-    "glMatrixMode",
-    "glOrtho",
-    "glBegin",
-    "glEnd",
-    "glVertex3f",
-    "glCreateShader",
-    "glShaderSource",
-    "glCompileShader",
-    "glAttachShader",
-    "glCreateProgram",
-    "glLinkProgram",
-    "glUseProgram",
-    "glGetUniformLocation",
-    "glUniform3fv",
-    "glUniformMatrix3fv"
+static uint32_t gl_hashes[] = {
+    0xfad70f52, // glMatrixMode
+    0xfe314144, // glOrtho
+    0xfd3eaa9d, // glBegin
+    0x0f83490f, // glEnd
+    0xc99e058f, // glVertex3f
+    0x835cdd03, // glCreateShader
+    0xbba22800, // glShaderSource
+    0x712f7898, // glCompileShader
+    0x9f5da104, // glAttachShader
+    0x205c8f24, // glCreateProgram
+    0x2fed8c1e, // glLinkProgram
+    0x4f3ddefd, // glUseProgram
+    0x4c1fa891, // glGetUniformLocation
+    0x509144a7, // glUniform3fv
+    0x17b296bc  // glUniformMatrix3fv
 };
 
-static const void* gl_functions[sizeof(gl_symbols) / sizeof(const char*)];
+static const void* gl_functions[sizeof(gl_hashes) / sizeof(uint32_t)];
 
 static stdcall void initialize_gl_functions()
 {
-    // we have to import by name instead of hash, since the nvidia-GL-library
-    // is using the old sysv-style hash-tables
-    for (int i = 0; i < sizeof(gl_symbols) / sizeof(const char*); i++)
+    for (int i = 0; i < sizeof(gl_hashes) / sizeof(uint32_t); i++)
     {
-        gl_functions[i] = SDL_GL_GetProcAddress_fn(gl_symbols[i]);
+        // TODO: Constant. And something to strip the version-number.
+        gl_functions[i] = resolve_symbol("libGL.so.1", gl_hashes[i]);
     }
 }
 
