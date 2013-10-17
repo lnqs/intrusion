@@ -2,6 +2,7 @@ CC = clang
 LD = ld
 NASM = nasm
 STRIP = sstrip -z
+SCREW_ELF_HEADER = ./screw_elf_header.py
 SHADER_MINIFIER = shader_minifier.exe
 CFLAGS = -m32 -std=c99 -Wall -Werror -ggdb -Oz -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl)
 LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc
@@ -26,6 +27,7 @@ $(COMPRESSED): $(EXECUTABLE)
 $(EXECUTABLE): $(LINKER_SCRIPTS) $(OBJECTS) $(MAKEFILE_LIST)
 	$(LD) $(LDFLAGS) -o $@ $(LINKER_SCRIPTS) $(OBJECTS)
 	$(STRIP) $@
+	$(SCREW_ELF_HEADER) $@
 
 $(SHADER_HEADER): $(SHADERS)
 	$(SHADER_MINIFIER) --preserve-externals -o $@ $^
