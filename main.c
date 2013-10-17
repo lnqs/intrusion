@@ -13,9 +13,7 @@
 static const int resolution_x = 800;
 static const int resolution_y = 600;
 static const bool fullscreen = false;
-static const char* window_caption = "Planeshift";
 static const float window_ratio = (float)resolution_x / resolution_y;
-
 static struct scene_state scene_state;
 static const struct keypoint* keypoint = keypoints;
 
@@ -23,7 +21,6 @@ static stdcall void initialize_sdl()
 {
     SDL_SetVideoMode_fn(resolution_x, resolution_y, 0,
             SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
-    SDL_WM_SetCaption_fn(window_caption, NULL);
     SDL_ShowCursor_fn(SDL_DISABLE);
 }
 

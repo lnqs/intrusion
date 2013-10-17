@@ -12,9 +12,6 @@
 #define SDL_SetVideoMode_fn \
     sdl_call(SDL_SetVideoMode, SDL_Surface* SDLCALL (*)(int, int, int, Uint32))
 
-#define SDL_WM_SetCaption_fn \
-    sdl_call(SDL_WM_SetCaption, void SDLCALL (*)(const char*, const char*))
-
 #define SDL_ShowCursor_fn \
     sdl_call(SDL_ShowCursor, int SDLCALL (*)(int))
 
@@ -41,7 +38,6 @@ static const char* sdl_library = "libSDL-1.2.so";
 enum {
     SDL_GL_GetProcAddress_i,
     SDL_SetVideoMode_i,
-    SDL_WM_SetCaption_i,
     SDL_ShowCursor_i,
     SDL_QuitSubSystem_i,
     SDL_PollEvent_i,
@@ -54,7 +50,6 @@ enum {
 static const uint32_t sdl_hashes[] = {
     0x70a9a253, // SDL_GL_GetProcAddress
     0x7cc5e50f, // SDL_SetVideoMode
-    0x5a36c844, // SDL_WM_SetCaption
     0xdcc5fcc6, // SDL_ShowCursor
     0xccc87339, // SDL_QuitSubSystem
     0x92f25140, // SDL_PollEvent
