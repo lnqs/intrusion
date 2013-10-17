@@ -6,9 +6,9 @@
 #include <link.h>
 #include <string.h>
 
-extern const struct link_map* _link_map; // provided by link_map.ld linker-script
+extern const struct link_map* _link_map; // provided by linker.ld linker-script
+extern const char _libc_filename; // provided by linker.ld linker-script
 
-static const char* libc_filename = "libc.so.6";
 static const uint32_t libc_dlopen_mode_hash = 0xf2cb98a2;
 
 // This is the hash-function used for gnu-style hash-tables in elf.
@@ -78,7 +78,7 @@ static stdcall void* resolve_symbol(const char* library, uint32_t hash)
 static stdcall void load_library(const char* filename)
 {
     // Yay! Using internals of libc! Let's just cross fingers this won't change too fast :/
-    void* (*__libc_dlopen_mode_fn)(const char*, int) = resolve_symbol(libc_filename, libc_dlopen_mode_hash);
+    void* (*__libc_dlopen_mode_fn)(const char*, int) = resolve_symbol(&_libc_filename, libc_dlopen_mode_hash);
     __libc_dlopen_mode_fn(filename, RTLD_NOW | RTLD_GLOBAL);
 }
 
