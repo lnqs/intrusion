@@ -21,7 +21,7 @@ all: $(SOURCES) $(COMPRESSED)
 
 $(COMPRESSED): $(EXECUTABLE)
 	echo '#!/bin/sh\nP=/tmp/p;dd if="$$0" bs=1 skip=71|unxz>$$P;chmod +x $$P;$$P;exit' > $@
-	xz -c9 --format=lzma $< >> $@
+	xz -c5 --format=lzma $< >> $@
 	chmod +x $@
 
 $(EXECUTABLE): $(LINKER_SCRIPTS) $(OBJECTS) $(MAKEFILE_LIST)
