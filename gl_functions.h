@@ -90,7 +90,7 @@ static uint32_t gl_hashes[] = {
     0x17b296bc  // glUniformMatrix3fv
 };
 
-static const void* gl_functions[sizeof(gl_hashes) / sizeof(uint32_t)];
+static void* gl_functions[sizeof(gl_hashes) / sizeof(uint32_t)];
 
 static stdcall void initialize_gl_functions()
 {
