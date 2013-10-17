@@ -18,6 +18,10 @@ CLEAR_BYTES = [
     {'offset': 50, 'length': 2},  # e_shstrndx
 ]
 
+STRINGS = [
+    {'offset': 46, 'string': 'GL.so'}
+]
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'usage: {} FILENAME'.format(sys.argv[0])
@@ -27,3 +31,7 @@ if __name__ == '__main__':
         for byte in CLEAR_BYTES:
             f.seek(byte['offset'])
             f.write(byte['length'] * chr(0))
+
+        for string in STRINGS:
+            f.seek(string['offset'])
+            f.write(string['string'] + chr(0))
