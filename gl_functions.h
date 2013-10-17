@@ -52,6 +52,8 @@
 #define glUniformMatrix3fv_fn \
     gl_call(glUniformMatrix3fv, void GLAPIENTRY (*)(GLint, GLsizei, GLboolean, const GLfloat*))
 
+static const char* gl_library = "libGL.so.1";
+
 enum {
     glMatrixMode_i,
     glOrtho_i,
@@ -95,7 +97,7 @@ static stdcall void initialize_gl_functions()
     for (int i = 0; i < sizeof(gl_hashes) / sizeof(uint32_t); i++)
     {
         // TODO: Constant. And something to strip the version-number.
-        gl_functions[i] = resolve_symbol("libGL.so.1", gl_hashes[i]);
+        gl_functions[i] = resolve_symbol(gl_library, gl_hashes[i]);
     }
 }
 

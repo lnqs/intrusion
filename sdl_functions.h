@@ -36,8 +36,6 @@
 #define SDL_PauseAudio_fn \
     sdl_call(SDL_PauseAudio, void SDLCALL (*)(int))
 
-
-// TODO: the versioning sucks.
 static const char* sdl_library = "libSDL-1.2.so";
 
 enum {
