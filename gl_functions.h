@@ -11,8 +11,6 @@ extern const char _gl_library;
 // the members of this struct have to have the same order as in the hashes-array!
 static struct
 {
-    void GLAPIENTRY (*glMatrixMode)(GLenum);
-    void GLAPIENTRY (*glOrtho)(GLdouble, GLdouble, GLdouble, GLdouble, GLdouble, GLdouble);
     void GLAPIENTRY (*glBegin)(GLenum);
     void GLAPIENTRY (*glEnd)();
     void GLAPIENTRY (*glVertex3f)(GLfloat, GLfloat, GLfloat);
@@ -29,8 +27,6 @@ static struct
 } gl;
 
 static const uint32_t gl_hashes[] = {
-    0xfad70f52, // glMatrixMode
-    0xfe314144, // glOrtho
     0xfd3eaa9d, // glBegin
     0x0f83490f, // glEnd
     0xc99e058f, // glVertex3f

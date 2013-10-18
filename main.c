@@ -28,12 +28,6 @@ static stdcall void cleanup_sdl()
     sdl.SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-static stdcall void setup_viewport()
-{
-    gl.glMatrixMode(GL_PROJECTION);
-    gl.glOrtho(-WINDOW_RATIO, WINDOW_RATIO, -1.0, 1.0, -1.0, 1.0);
-}
-
 static stdcall bool exit_requested()
 {
     SDL_Event event;
@@ -116,8 +110,6 @@ void _start()
     initialize_sdl();
     initialize_gl_functions();
     initialize_sound();
-
-    setup_viewport();
 
     mainloop();
 

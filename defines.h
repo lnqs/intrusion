@@ -6,8 +6,9 @@
 #define FULLSCREEN false
 #define WINDOW_RATIO ((float)RESOLUTION_X / RESOLUTION_Y)
 
-#define UNIFORM_ID_POSITION x
-#define UNIFORM_ID_ORIENTATION o
+// Escape from beeing processed by preprocessor.
+// Needed for the version-directives in the shaders
+#define ESCAPED(x) x
 
 #endif
 

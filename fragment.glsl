@@ -1,4 +1,9 @@
-varying vec3 p;
+#include "defines.h"
+
+ESCAPED(#version 330)
+
+in vec3 p;
+out vec4 color;
 
 uniform vec3 x; // position passed by CPU-code
 uniform mat3 o; // orientation passed by CPU-code
@@ -50,11 +55,14 @@ int find_intersection(in vec3 ray_origin, in vec3 ray_direction)
 
 void main()
 {
-    if (int(mod(gl_FragCoord.y, 2.0)))
+    if (int(mod(gl_FragCoord.y, 2.0)) == 0)
     {
         vec3 ray = normalize(o * (p + vec3(0.0, 0.0, -eye_distance)));
         int steps = find_intersection(x, ray);
-        gl_FragColor = vec4(object_glow * steps / 85.0, 1.0);
+        color.r = object_glow.r * steps / 85.0;
+        color.g = object_glow.g * steps / 85.0;
+        color.b = object_glow.b * steps / 85.0;
+        color.a = 1.0;
     }
 }
 
