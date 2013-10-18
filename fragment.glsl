@@ -37,8 +37,7 @@ int find_intersection(in vec3 ray_origin, in vec3 ray_direction)
 
     while (distance < MAX_DISTANCE)
     {
-        vec3 point_to_check = ray_origin + ray_direction * distance;
-        float next_step = distance_estimate(point_to_check);
+        float next_step = distance_estimate(ray_origin + ray_direction * distance);
 
         if (next_step < ACCURACY)
         {
@@ -56,11 +55,12 @@ void main()
 {
     if (int(mod(gl_FragCoord.y, 2.0)) == 0)
     {
-        vec3 ray = normalize(o * (p + vec3(0.0, 0.0, -EYE_DISTANCE)));
-        int steps = find_intersection(x, ray);
-        c.r = OBJECT_GLOW.r * steps / 85.0;
-        c.g = OBJECT_GLOW.g * steps / 85.0;
-        c.b = OBJECT_GLOW.b * steps / 85.0;
+        // Since the following line of code isn't really readable -- it's the same as this:
+        //     vec3 ray = normalize(o * (p + vec3(0.0, 0.0, -EYE_DISTANCE)));
+        //     int steps = find_intersection(x, ray);
+        //     c = OBJECT_GLOW * steps / 85.0;
+
+        c = OBJECT_GLOW * find_intersection(x, normalize(o * (p + vec3(0.0, 0.0, -EYE_DISTANCE)))) / 85.0;
     }
 }
 
