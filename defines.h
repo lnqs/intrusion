@@ -1,5 +1,5 @@
 #ifndef DEFINES_H
-#define DEFINED_H
+#define DEFINES_H
 
 #define RESOLUTION_X 800
 #define RESOLUTION_Y 600
