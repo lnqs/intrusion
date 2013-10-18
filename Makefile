@@ -20,7 +20,7 @@ COMPRESSED = planeshift
 all: $(SOURCES) $(COMPRESSED)
 
 $(COMPRESSED): $(EXECUTABLE)
-	echo '#!/bin/sh\nP=/tmp/p;dd if="$$0" bs=1 skip=71|unxz>$$P;chmod +x $$P;$$P;exit' > $@
+	echo '#!/bin/sh\ndd if="$$0" bs=1 skip=69|unxz>p;chmod +x p;./p;rm -f p;exit' > $@
 	xz -c5 --format=lzma $< >> $@
 	chmod +x $@
 
