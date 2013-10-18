@@ -1,21 +1,22 @@
 #include "defines.h"
+#include "shader_defines.h"
 
-ESCAPED(#version 330)
+escaped(#version 330)
 
-in vec3 v; // vertex position
-in vec2 c; // tex coord from CPU
+in vec3 in_vertex_position;
+in vec2 in_texcoord;
 
-out vec3 p; // pass vertex position to fragment shader
-out vec2 r; // tex coord for fragment shader
+out vec3 vertex_position;
+out vec2 texcoord;
 
 void main()
 {
     // Save all orthogonal projection matrix stuff. At the end, it would only
     // lead to this:
-    gl_Position.x = v.x * RESOLUTION_Y / RESOLUTION_X;
-    gl_Position.yz = v.yz;
+    gl_Position.x = in_vertex_position.x * RESOLUTION_Y / RESOLUTION_X;
+    gl_Position.yz = in_vertex_position.yz;
 
-    p = v;
-    r = c;
+    vertex_position = in_vertex_position;
+    texcoord = in_texcoord;
 }
 

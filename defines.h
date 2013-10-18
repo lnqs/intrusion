@@ -1,9 +1,8 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-// Escape from beeing processed by preprocessor.
-// Needed for the version-directives in the shaders
-#define ESCAPED(x) x
+// Some global compile-time options.
+// As preprocessor-defines, since some of them are used in shader-code
 
 #define RESOLUTION_X 800
 #define RESOLUTION_Y 600

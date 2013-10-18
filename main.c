@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <GL/gl.h>
 #include "defines.h"
+#include "shader_defines.h"
 #include "clib.h"
 #include "sdl_functions.h"
 #include "gl_functions.h"
@@ -101,17 +102,17 @@ static stdcall bool update_scene()
 
 static stdcall void mainloop(GLuint program)
 {
-    GLuint texcoord_location = gl.glGetAttribLocation(program, "c");
+    GLuint texcoord_location = gl.glGetAttribLocation(program, uniform(in_texcoord));
 
     while (!exit_requested() && update_scene())
     {
-        uniform_vector3(program, "x", scene_state.position);
-        uniform_matrix3(program, "o", scene_state.orientation);
+        uniform_vector3(program, uniform(uf_cam_position), scene_state.position);
+        uniform_matrix3(program, uniform(uf_cam_orientation), scene_state.orientation);
         // Since the three parameters follow each other in the struct,
         // we just treat them as vector to save some bytes.
         // It looks the same in memory anyway.
-        uniform_vector3(program, "f", (float*)&scene_state.box_scale);
-        uniform_vector3(program, "e", (float*)&effect_parameters);
+        uniform_vector3(program, uniform(uf_fractal_params), (float*)&scene_state.box_scale);
+        uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
 
         gl.glBegin(GL_QUADS);
         gl.glVertex3f(-WINDOW_RATIO, -1.0, 0.0);
