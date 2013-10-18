@@ -9,8 +9,8 @@ ESCAPED(#version 330)
 
 #define MAX_ITERATIONS 12
 
-in vec3 p; // position
-out vec4 c; // color
+in vec3 p; // vertex position
+out vec3 c; // fragment color
 
 uniform vec3 x; // position passed by CPU-code
 uniform mat3 o; // orientation passed by CPU-code
@@ -61,7 +61,6 @@ void main()
         c.r = OBJECT_GLOW.r * steps / 85.0;
         c.g = OBJECT_GLOW.g * steps / 85.0;
         c.b = OBJECT_GLOW.b * steps / 85.0;
-        c.a = 1.0;
     }
 }
 

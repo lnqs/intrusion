@@ -2,8 +2,8 @@
 
 ESCAPED(#version 330)
 
-in vec4 v; // vertex
-out vec3 p; // pass vertex to fragment shader
+in vec3 v; // vertex position
+out vec3 p; // pass vertex position to fragment shader
 
 void main()
 {
