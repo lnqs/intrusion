@@ -21,9 +21,17 @@ static struct
     GLuint GLAPIENTRY (*glCreateProgram)();
     void GLAPIENTRY (*glLinkProgram)(GLuint);
     void GLAPIENTRY (*glUseProgram)(GLuint);
+    void GLAPIENTRY (*glActiveTexture)(GLenum);
+    void GLAPIENTRY (*glBindTexture)(GLenum, GLuint);
+    void GLAPIENTRY (*glGenTextures)(GLsizei, GLuint*);
+    void GLAPIENTRY (*glTexImage2D)(GLenum, GLint, GLint, GLsizei, GLsizei, GLint, GLenum, GLenum, const GLvoid*);
+    void GLAPIENTRY (*glTexParameteri)(GLenum, GLenum, GLint);
     GLint GLAPIENTRY (*glGetUniformLocation)(GLuint, const GLchar*);
+    void GLAPIENTRY (*glUniform1i)(GLint, GLint);
     void GLAPIENTRY (*glUniform3fv)(GLint, GLsizei, const GLfloat*);
     void GLAPIENTRY (*glUniformMatrix3fv)(GLint, GLsizei, GLboolean, const GLfloat*);
+    GLint GLAPIENTRY (*glGetAttribLocation)(GLuint, const GLchar*);
+    void GLAPIENTRY (*glVertexAttrib2f)(GLuint, GLfloat, GLfloat);
 } gl;
 
 static const uint32_t gl_hashes[] = {
@@ -37,9 +45,17 @@ static const uint32_t gl_hashes[] = {
     0x205c8f24, // glCreateProgram
     0x2fed8c1e, // glLinkProgram
     0x4f3ddefd, // glUseProgram
+    0x9357fc85, // glActiveTexture
+    0x9ac194a6, // glBindTexture
+    0xa9f1b516, // glGenTextures
+    0x4dc8e382, // glTexImage2D
+    0xf4dfe433, // glTexParameteri
     0x4c1fa891, // glGetUniformLocation
+    0x027101d2, // glUniform1i
     0x509144a7, // glUniform3fv
-    0x17b296bc  // glUniformMatrix3fv
+    0x17b296bc, // glUniformMatrix3fv
+    0x9a887597, // glGetAttribLocation
+    0x233f3994  // glVertexAttrib2f
 };
 
 static stdcall void initialize_gl_functions()

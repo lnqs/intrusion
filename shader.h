@@ -23,6 +23,12 @@ static stdcall GLuint compile_program(const char* vertex_source, const char* fra
     return program;
 }
 
+static stdcall void uniform_int(GLuint program, const char* identifier, int value)
+{
+    GLint location = gl.glGetUniformLocation(program, identifier);
+    gl.glUniform1i(location, value);
+}
+
 static stdcall void uniform_vector3(GLuint program, const char* identifier, const vector3 value)
 {
     GLint location = gl.glGetUniformLocation(program, identifier);

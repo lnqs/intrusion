@@ -7,6 +7,7 @@
 #include "gl_functions.h"
 #include "vector.h"
 #include "shader.h"
+#include "textrender.h"
 #include "sound.h"
 #include "keypoint.h"
 #include "shader_code.h"
@@ -98,12 +99,10 @@ static stdcall bool update_scene()
     return true;
 }
 
-static stdcall void mainloop()
+static stdcall void mainloop(GLuint program)
 {
-    GLuint program = compile_program(vertex_glsl, fragment_glsl);
-    gl.glUseProgram(program);
+    GLuint texcoord_location = gl.glGetAttribLocation(program, "c");
 
-    play_sound(); // immedialty before entering mainloop to avoid displacements
     while (!exit_requested() && update_scene())
     {
         uniform_vector3(program, "x", scene_state.position);
@@ -116,10 +115,16 @@ static stdcall void mainloop()
 
         gl.glBegin(GL_QUADS);
         gl.glVertex3f(-WINDOW_RATIO, -1.0, 0.0);
+        gl.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
         gl.glVertex3f( WINDOW_RATIO, -1.0, 0.0);
+        gl.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
         gl.glVertex3f( WINDOW_RATIO,  1.0, 0.0);
+        gl.glVertexAttrib2f(texcoord_location, 1.0, 1.0);
         gl.glVertex3f(-WINDOW_RATIO,  1.0, 0.0);
+        gl.glVertexAttrib2f(texcoord_location, 1.0, 0.0);
         gl.glEnd();
+
+        gl.glUseProgram(program);
 
         sdl.SDL_GL_SwapBuffers();
     }
@@ -133,7 +138,12 @@ void _start()
     initialize_gl_functions();
     initialize_sound();
 
-    mainloop();
+    GLuint program = compile_program(vertex_glsl, fragment_glsl);
+
+    initialize_textrender(program);
+
+    play_sound();
+    mainloop(program);
 
     cleanup_sdl();
 
