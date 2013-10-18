@@ -6,8 +6,10 @@
 #include <link.h>
 #include <string.h>
 
-extern const struct link_map* _link_map; // provided by linker.ld linker-script
-extern const char _libc_filename; // provided by linker.ld linker-script
+extern const struct link_map* _link_map; // Provided by linker.ld linker-script
+
+// We're using the string from dynsym. Symbol is provided by linker-script
+extern const char _libc_filename;
 
 static const uint32_t libc_dlopen_mode_hash = 0xf2cb98a2;
 

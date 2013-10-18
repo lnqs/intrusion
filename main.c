@@ -91,12 +91,14 @@ static stdcall void mainloop()
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
     glUseProgram_fn(program);
 
+    play_sound(); // immedialty before entering mainloop to avoid displacements
     while (!exit_requested() && update_scene())
     {
         uniform_vector3(program, "x", scene_state.position);
         uniform_matrix3(program, "o", scene_state.orientation);
         // Since the three parameters follow each other in the struct,
-        // we just thread them as vector. It looks the same in memory anyway.
+        // we just treat them as vector to save some bytes.
+        // It looks the same in memory anyway.
         uniform_vector3(program, "f", (float*)&scene_state.box_scale);
 
         glBegin_fn(GL_QUADS);
@@ -110,6 +112,7 @@ static stdcall void mainloop()
     }
 }
 
+// Save overhead from crt1.o, get control from entry point on
 void _start()
 {
     initialize_sdl_functions();
@@ -119,7 +122,6 @@ void _start()
 
     setup_viewport();
 
-    play_sound();
     mainloop();
 
     cleanup_sdl();
