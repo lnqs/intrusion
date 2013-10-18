@@ -15,15 +15,17 @@ SECTIONS
 
     . = SEGMENT_START("text-segment", 0x08048000) + SIZEOF_HEADERS;
 
+/* SECTIONS_BEGIN */
     .interp         : { *(.interp) }
-    .hash           : { *(.hash) }
+    .dynamic        : { *(.dynamic) }
     .dynsym         : { *(.dynsym) }
     .dynstr         : { *(.dynstr) }
-    .text           : { *(.text .text.*) }
-    .dynamic        : { *(.dynamic) }
-    .got.plt        : { *(.got.plt) }
     .data           : { *(.data .data.*) }
+    .text           : { *(.text .text.*) }
+    .got.plt        : { *(.got.plt) }
+    .hash           : { *(.hash) }
     .bss            : { *(.bss .bss.*) }
+/* SECTIONS_END */
 
     /DISCARD/       :
     {
