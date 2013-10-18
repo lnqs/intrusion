@@ -17,7 +17,7 @@ SHADER_HEADER = shader_code.h
 EXECUTABLE = planeshift.elf
 COMPRESSED = planeshift
 
-all: $(SOURCES) $(COMPRESSED)
+all: $(COMPRESSED)
 
 $(COMPRESSED): $(EXECUTABLE)
 	echo '#!/bin/sh\ndd if="$$0" bs=1 skip=69|unxz>p;chmod +x p;./p;rm -f p;exit' > $@
@@ -32,10 +32,10 @@ $(EXECUTABLE): $(LINKER_SCRIPT) $(OBJECTS) $(MAKEFILE_LIST)
 $(SHADER_HEADER): $(SHADERS)
 	$(SHADER_MINIFIER) --preserve-externals -o $@ $^
 
-%.o: %.asm $(MAKEFILE_LIST)
+%.o: %.asm
 	$(NASM) $(NASMFLAGS) $< -o $@
 
-%.o: %.c %.d $(MAKEFILE_LIST) $(SHADER_HEADER)
+%.o: %.c %.d $(SHADER_HEADER)
 	$(CC) -c $(CFLAGS) $< -o $@
 
 %.d: %.c $(SHADER_HEADER)
