@@ -19,28 +19,28 @@ static const struct keypoint* keypoint = keypoints;
 
 static stdcall void initialize_sdl()
 {
-    SDL_SetVideoMode_fn(resolution_x, resolution_y, 0,
+    sdl.SDL_SetVideoMode(resolution_x, resolution_y, 0,
             SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
-    SDL_ShowCursor_fn(SDL_DISABLE);
+    sdl.SDL_ShowCursor(SDL_DISABLE);
 }
 
 static stdcall void cleanup_sdl()
 {
     // SDL_Quit crashes since main() is removed, but we need this call to reset
     // the screen resolution when running fullscreen
-    SDL_QuitSubSystem_fn(SDL_INIT_VIDEO);
+    sdl.SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 static stdcall void setup_viewport()
 {
-    glMatrixMode_fn(GL_PROJECTION);
-    glOrtho_fn(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
+    gl.glMatrixMode(GL_PROJECTION);
+    gl.glOrtho(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
 }
 
 static stdcall bool exit_requested()
 {
     SDL_Event event;
-    SDL_PollEvent_fn(&event);
+    sdl.SDL_PollEvent(&event);
 
     if (event.type == SDL_QUIT)
     {
@@ -57,7 +57,7 @@ static stdcall bool exit_requested()
 
 static stdcall bool update_scene()
 {
-    Uint32 time = SDL_GetTicks_fn();
+    Uint32 time = sdl.SDL_GetTicks();
     const struct keypoint* next = keypoint + 1;
 
     if (time > keypoints[sizeof(keypoints) / sizeof(struct keypoint) - 1].time)
@@ -89,7 +89,7 @@ static stdcall bool update_scene()
 static stdcall void mainloop()
 {
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
-    glUseProgram_fn(program);
+    gl.glUseProgram(program);
 
     play_sound(); // immedialty before entering mainloop to avoid displacements
     while (!exit_requested() && update_scene())
@@ -101,14 +101,14 @@ static stdcall void mainloop()
         // It looks the same in memory anyway.
         uniform_vector3(program, "f", (float*)&scene_state.box_scale);
 
-        glBegin_fn(GL_QUADS);
-        glVertex3f_fn(-window_ratio, -1.0, 0.0);
-        glVertex3f_fn( window_ratio, -1.0, 0.0);
-        glVertex3f_fn( window_ratio,  1.0, 0.0);
-        glVertex3f_fn(-window_ratio,  1.0, 0.0);
-        glEnd_fn();
+        gl.glBegin(GL_QUADS);
+        gl.glVertex3f(-window_ratio, -1.0, 0.0);
+        gl.glVertex3f( window_ratio, -1.0, 0.0);
+        gl.glVertex3f( window_ratio,  1.0, 0.0);
+        gl.glVertex3f(-window_ratio,  1.0, 0.0);
+        gl.glEnd();
 
-        SDL_GL_SwapBuffers_fn();
+        sdl.SDL_GL_SwapBuffers();
     }
 }
 

@@ -30,16 +30,16 @@ static SDL_AudioSpec sound_spec = {
 
 static stdcall void initialize_sound()
 {
-    SDL_OpenAudio_fn(&sound_spec, NULL);
+    sdl.SDL_OpenAudio(&sound_spec, NULL);
 }
 
 static stdcall void play_sound()
 {
-    clone_((void*)__4klang_render,
+    clone_((int (*)(void*))__4klang_render,
             sound_thread_stack + sizeof(sound_thread_stack),
             CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_SYSVSEM,
             sound_buffer);
-    SDL_PauseAudio_fn(0);
+    sdl.SDL_PauseAudio(0);
 }
 
 #endif

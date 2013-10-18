@@ -1,7 +1,7 @@
 #ifndef CLIB_H
 #define CLIB_H
 
-#include <stdint.h>
+#include <stdlib.h>
 #include <sys/syscall.h>
 #include <linux/sched.h>
 

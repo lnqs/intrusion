@@ -1,10 +1,10 @@
 #ifndef LINKER_H
 #define LINKER_H
 
-#include "clib.h"
 #include <elf.h>
 #include <link.h>
 #include <string.h>
+#include "clib.h"
 
 extern const struct link_map* _link_map; // Provided by linker.ld linker-script
 
@@ -65,9 +65,9 @@ static stdcall void* resolve_symbol(const char* library, uint32_t hash)
     // the symbol.
     // If this isn't the case, it'll behave undefined and segfault eventually.
 
-    const struct link_map* map = link_map_entry_for_library(library);
-    const Elf32_Sym* symtab = get_table(map, DT_SYMTAB);
-    const char* strtab = get_table(map, DT_STRTAB);
+    const struct link_map* map = (const struct link_map*)link_map_entry_for_library(library);
+    const Elf32_Sym* symtab = (const Elf32_Sym*)get_table(map, DT_SYMTAB);
+    const char* strtab = (const char*)get_table(map, DT_STRTAB);
 
     while (hash != gnu_hash(strtab + symtab->st_name))
     {
@@ -80,7 +80,8 @@ static stdcall void* resolve_symbol(const char* library, uint32_t hash)
 static stdcall void load_library(const char* filename)
 {
     // Yay! Using internals of libc! Let's just cross fingers this won't change too fast :/
-    void* (*__libc_dlopen_mode_fn)(const char*, int) = resolve_symbol(&_libc_filename, libc_dlopen_mode_hash);
+    void* (*__libc_dlopen_mode_fn)(const char*, int)
+            = (void* (*)(const char*, int))resolve_symbol(&_libc_filename, libc_dlopen_mode_hash);
     __libc_dlopen_mode_fn(filename, RTLD_NOW | RTLD_GLOBAL);
 }
 

@@ -1,8 +1,8 @@
 #ifndef KEYPOINT_H
 #define KEYPOINT_H
 
-#include "vector.h"
 #include "clib.h"
+#include "vector.h"
 
 struct scene_state
 {
