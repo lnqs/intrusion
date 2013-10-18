@@ -11,8 +11,18 @@
 #include "keypoint.h"
 #include "shader_code.h"
 
+// While we only one float here, we make it three continous one to be able to
+// pass it as vec3 to the shader.
+// This way, we don't need to import another glUniform*-call.
+struct effect_parameters
+{
+    float skew_multiplier;
+    float ignore[2];
+} packed;
+
 static struct scene_state scene_state;
 static const struct keypoint* keypoint = keypoints;
+static struct effect_parameters effect_parameters;
 
 static stdcall void initialize_sdl()
 {
@@ -48,6 +58,13 @@ static stdcall bool exit_requested()
 
 static stdcall bool update_scene()
 {
+    // Transition to next keypoint is handled here.
+    // This function also adds a short 'skew' every time a keypoint is reached.
+    // Handling it this 'magic' way sucks, it would be nicer to have it as part
+    // of the keypoint-definition, but since it's only a short effect, we would
+    // a new mechanism to read them from the keypoints, or a lot of additionals
+    // points, both leading to way too much code.
+
     Uint32 time = sdl.SDL_GetTicks();
     const struct keypoint* next = keypoint + 1;
 
@@ -58,6 +75,8 @@ static stdcall bool update_scene()
 
     if (time > next->time)
     {
+        effect_parameters.skew_multiplier = MAX_SKEW;
+
         keypoint += 1;
         next += 1;
     }
@@ -73,6 +92,8 @@ static stdcall bool update_scene()
     {
         state[i] = origin[i] + (destination[i] - origin[i]) * time_factor;
     }
+
+    effect_parameters.skew_multiplier /= (time - keypoint->time) * SKEW_DECREASING_MULTIPLIER;
 
     return true;
 }
@@ -91,6 +112,7 @@ static stdcall void mainloop()
         // we just treat them as vector to save some bytes.
         // It looks the same in memory anyway.
         uniform_vector3(program, "f", (float*)&scene_state.box_scale);
+        uniform_vector3(program, "e", (float*)&effect_parameters);
 
         gl.glBegin(GL_QUADS);
         gl.glVertex3f(-WINDOW_RATIO, -1.0, 0.0);

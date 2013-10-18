@@ -8,6 +8,13 @@ out vec3 c; // fragment color
 uniform vec3 x; // position passed by CPU-code
 uniform mat3 o; // orientation passed by CPU-code
 uniform vec3 f; // fractal-parameters passed by CPU-code. It's (box_scale, box_radius, sphere_radius).
+uniform vec3 e; // effect-parameters. Currently only .x is used, for the 'skew-multiplier'
+
+// mutilated version of Marsaglia's MWC random number generator
+float rand(in vec2 seed)
+{
+    return float((36969u * uint(seed.x) << 16u) + (18000u * uint(seed.y))) * 2.328306435454494e-10;
+}
 
 float distance_estimate(in vec3 point)
 {
@@ -49,11 +56,15 @@ void main()
     if (int(mod(gl_FragCoord.y, 2.0)) == 0)
     {
         // Since the following line of code isn't really readable -- it's the same as this:
-        //     vec3 ray = normalize(o * (p + vec3(0.0, 0.0, -EYE_DISTANCE)));
+        //     float skew = rand(gl_FragCoord.xy) * e.x + 1.0 - e.x;
+        //     vec3 ray = normalize(o * (p * skew + vec3(0.0, 0.0, -EYE_DISTANCE)));
         //     int steps = find_intersection(x, ray);
         //     c = OBJECT_GLOW * steps / 85.0;
 
-        c = OBJECT_GLOW * find_intersection(x, normalize(o * (p + vec3(0.0, 0.0, -EYE_DISTANCE)))) / 85.0;
+        c = OBJECT_GLOW * find_intersection(x,
+            normalize(o *
+                (p * (rand(gl_FragCoord.xy) * e.x + 1.0 - e.x)
+                    + vec3(0.0, 0.0, -EYE_DISTANCE)))) / 85.0;
     }
 }
 
