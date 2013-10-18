@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <SDL.h>
 #include <GL/gl.h>
+#include "defines.h"
 #include "clib.h"
 #include "sdl_functions.h"
 #include "gl_functions.h"
@@ -10,17 +11,13 @@
 #include "keypoint.h"
 #include "shader_code.h"
 
-static const int resolution_x = 800;
-static const int resolution_y = 600;
-static const bool fullscreen = false;
-static const float window_ratio = (float)resolution_x / resolution_y;
 static struct scene_state scene_state;
 static const struct keypoint* keypoint = keypoints;
 
 static stdcall void initialize_sdl()
 {
-    sdl.SDL_SetVideoMode(resolution_x, resolution_y, 0,
-            SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
+    sdl.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
+            SDL_OPENGL | (FULLSCREEN ? SDL_FULLSCREEN : 0));
     sdl.SDL_ShowCursor(SDL_DISABLE);
 }
 
@@ -34,7 +31,7 @@ static stdcall void cleanup_sdl()
 static stdcall void setup_viewport()
 {
     gl.glMatrixMode(GL_PROJECTION);
-    gl.glOrtho(-window_ratio, window_ratio, -1.0, 1.0, -1.0, 1.0);
+    gl.glOrtho(-WINDOW_RATIO, WINDOW_RATIO, -1.0, 1.0, -1.0, 1.0);
 }
 
 static stdcall bool exit_requested()
@@ -102,10 +99,10 @@ static stdcall void mainloop()
         uniform_vector3(program, "f", (float*)&scene_state.box_scale);
 
         gl.glBegin(GL_QUADS);
-        gl.glVertex3f(-window_ratio, -1.0, 0.0);
-        gl.glVertex3f( window_ratio, -1.0, 0.0);
-        gl.glVertex3f( window_ratio,  1.0, 0.0);
-        gl.glVertex3f(-window_ratio,  1.0, 0.0);
+        gl.glVertex3f(-WINDOW_RATIO, -1.0, 0.0);
+        gl.glVertex3f( WINDOW_RATIO, -1.0, 0.0);
+        gl.glVertex3f( WINDOW_RATIO,  1.0, 0.0);
+        gl.glVertex3f(-WINDOW_RATIO,  1.0, 0.0);
         gl.glEnd();
 
         sdl.SDL_GL_SwapBuffers();

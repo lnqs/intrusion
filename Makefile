@@ -1,4 +1,5 @@
 CC = clang
+CPP = cpp
 LD = ld
 NASM = nasm
 STRIP = sstrip -z
@@ -13,6 +14,7 @@ ASM_SOURCES = $(wildcard *.asm)
 LINKER_SCRIPT = linker.ld
 OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o)
 SHADERS = $(wildcard *.glsl)
+SHADERS_PREPROCESSED = $(SHADERS:.glsl=.glsl.i)
 SHADER_HEADER = shader_code.h
 EXECUTABLE = planeshift.elf
 COMPRESSED = planeshift
@@ -29,8 +31,12 @@ $(EXECUTABLE): $(LINKER_SCRIPT) $(OBJECTS) $(MAKEFILE_LIST)
 	$(STRIP) $@
 	$(SCREW_ELF_HEADER) $@
 
-$(SHADER_HEADER): $(SHADERS)
+$(SHADER_HEADER): $(SHADERS_PREPROCESSED)
 	$(SHADER_MINIFIER) --preserve-externals -o $@ $^
+	sed -i 's/glsl_i/glsl/g' $@
+
+%.glsl.i: %.glsl
+	$(CPP) -C -P $< > $@
 
 %.o: %.asm
 	$(NASM) $(NASMFLAGS) $< -o $@
