@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include "linker.h"
 
+// Not as preprocessor define for consistency with the hacky strings
+// for libc- and libgl-names
 static const char* sdl_library = "libSDL-1.2.so";
 
 // the members of this struct have to have the same order as in the hashes-array!

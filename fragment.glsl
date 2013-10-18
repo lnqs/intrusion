@@ -2,13 +2,6 @@
 
 ESCAPED(#version 330)
 
-#define EYE_DISTANCE 2.0
-#define MAX_DISTANCE 15.0
-#define ACCURACY 0.0005
-#define OBJECT_GLOW vec3(0.23, 0.21, 0.14)
-
-#define MAX_ITERATIONS 12
-
 in vec3 p; // vertex position
 out vec3 c; // fragment color
 
