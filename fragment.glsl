@@ -9,8 +9,8 @@ ESCAPED(#version 330)
 
 #define MAX_ITERATIONS 12
 
-in vec3 p;
-out vec4 color;
+in vec3 p; // position
+out vec4 c; // color
 
 uniform vec3 x; // position passed by CPU-code
 uniform mat3 o; // orientation passed by CPU-code
@@ -58,10 +58,10 @@ void main()
     {
         vec3 ray = normalize(o * (p + vec3(0.0, 0.0, -EYE_DISTANCE)));
         int steps = find_intersection(x, ray);
-        color.r = OBJECT_GLOW.r * steps / 85.0;
-        color.g = OBJECT_GLOW.g * steps / 85.0;
-        color.b = OBJECT_GLOW.b * steps / 85.0;
-        color.a = 1.0;
+        c.r = OBJECT_GLOW.r * steps / 85.0;
+        c.g = OBJECT_GLOW.g * steps / 85.0;
+        c.b = OBJECT_GLOW.b * steps / 85.0;
+        c.a = 1.0;
     }
 }
 
