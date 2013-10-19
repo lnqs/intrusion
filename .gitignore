@@ -2,5 +2,6 @@
 *.o
 *.glsl.i
 shader_code.h
+textrender_glyphs.h
 planeshift.elf
 planeshift

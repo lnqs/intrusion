@@ -5,17 +5,21 @@ NASM = nasm
 STRIP = sstrip -z
 SCREW_ELF_HEADER = ./screw_elf_header.py
 SHADER_MINIFIER = shader_minifier.exe
+BUILD_GLYPHS = ./build_glyphs.py
 CFLAGS = -m32 -std=c99 -Wall -Werror -Os -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl)
 LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc
 NASMFLAGS = -f elf
 
-SOURCES = $(wildcard *.c)
-ASM_SOURCES = $(wildcard *.asm)
+SOURCES = main.c
+HEADERS = clib.h gl_functions.h linker.h shader.h vector.h defines.h keypoint.h sdl_functions.h shader_defines.h sound.h textrender.h
+ASM_SOURCES = 4klang.asm
 LINKER_SCRIPT = linker.ld
 OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o)
 SHADERS = $(wildcard *.glsl)
 SHADERS_PREPROCESSED = $(SHADERS:.glsl=.glsl.i)
 SHADER_HEADER = shader_code.h
+GLYPHS_IMAGE = glyphs.png
+GLYPHS_HEADER = textrender_glyphs.h
 EXECUTABLE = planeshift.elf
 COMPRESSED = planeshift
 
@@ -35,6 +39,9 @@ $(SHADER_HEADER): $(SHADERS_PREPROCESSED)
 	$(SHADER_MINIFIER) --preserve-externals -o $@ $^
 	sed -i 's/glsl_i/glsl/g' $@
 
+$(GLYPHS_HEADER): $(GLYPHS_IMAGE) $(SOURCES) $(HEADERS)
+	$(BUILD_GLYPHS) $^ > $@
+
 %.glsl.i: %.glsl
 	$(CPP) -C -P $< > $@
 
@@ -44,13 +51,13 @@ $(SHADER_HEADER): $(SHADERS_PREPROCESSED)
 %.o: %.c %.d $(SHADER_HEADER)
 	$(CC) -c $(CFLAGS) $< -o $@
 
-%.d: %.c $(SHADER_HEADER)
+%.d: %.c $(SHADER_HEADER) $(GLYPHS_HEADER)
 	@$(SHELL) -ec '$(CC) -M $(CFLAGS) $< \
 		| sed '\''s/\($*\)\.o[ :]*/\1.o $@ : /g'\'' > $@; \
 		[ -s $@ ] || rm -f $@'
 
 clean:
-	rm -rf *.o *.d $(EXECUTABLE) $(COMPRESSED) $(SHADER_HEADER)
+	rm -rf *.o *.d $(EXECUTABLE) $(COMPRESSED) $(SHADER_HEADER) $(GLYPHS_HEADER)
 
 -include $(SOURCES:.c=.d)
 

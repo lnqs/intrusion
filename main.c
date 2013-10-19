@@ -26,6 +26,8 @@ static struct scene_state scene_state;
 static const struct keypoint* keypoint = keypoints;
 static struct effect_parameters effect_parameters;
 
+static GLuint overlay_texture;
+
 static stdcall void initialize_sdl()
 {
     sdl.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
@@ -38,6 +40,20 @@ static stdcall void cleanup_sdl()
     // SDL_Quit crashes since main() is removed, but we need this call to reset
     // the screen resolution when running fullscreen
     sdl.SDL_QuitSubSystem(SDL_INIT_VIDEO);
+}
+
+static stdcall void create_overlay_texture(GLuint program)
+{
+    gl.glActiveTexture(GL_TEXTURE0);
+    gl.glBindTexture(GL_TEXTURE_2D, overlay_texture);
+    gl.glGenTextures(1, &overlay_texture);
+
+    uniform_int(program, uniform(uf_text_texture), 0);
+
+    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 static stdcall bool exit_requested()
@@ -116,19 +132,14 @@ static stdcall void mainloop(GLuint program)
         uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
 
         gl.glBegin(GL_QUADS);
-
         gl.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0);
-        gl.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
-
-        gl.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0);
-        gl.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
-
-        gl.glVertexAttrib2f(position_location, WINDOW_RATIO,  1.0);
         gl.glVertexAttrib2f(texcoord_location, 1.0, 1.0);
-
-        gl.glVertexAttrib2f(position_location, -WINDOW_RATIO,  1.0);
+        gl.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0);
         gl.glVertexAttrib2f(texcoord_location, 1.0, 0.0);
-
+        gl.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0);
+        gl.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
+        gl.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0);
+        gl.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
         gl.glEnd();
 
         gl.glUseProgram(program);
@@ -146,8 +157,17 @@ void _start()
     initialize_sound();
 
     GLuint program = compile_program(vertex_glsl, fragment_glsl);
+    create_overlay_texture(program);
 
-    initialize_textrender(program);
+    /////// TODO: Testcode, remove
+    set_text(_("int main(int argc, char** argv)\n"
+               "{\n"
+               "    printf(\"Hello World!\");\n"
+               "}"));
+    gl.glActiveTexture(GL_TEXTURE0);
+    gl.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, RESOLUTION_X, RESOLUTION_Y,
+            0, GL_RED, GL_UNSIGNED_BYTE, textrender_buffer);
+    ////////////
 
     play_sound();
     mainloop(program);
