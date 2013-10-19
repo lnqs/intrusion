@@ -3,7 +3,7 @@
 
 escaped(#version 330)
 
-in vec3 vertex_position;
+in vec3 position;
 in vec2 texcoord;
 
 out vec3 out_color;
@@ -66,13 +66,13 @@ void main()
     {
         // Since the following line of code isn't really readable -- it's the same as this
         //     float skew = rand(gl_FragCoord.xy) * uf_effect_params.x + 1.0 - uf_effect_params.x;
-        //     vec3 ray = normalize(uf_cam_orientation * (vertex_position * skew + vec3(0.0, 0.0, -EYE_DISTANCE)));
+        //     vec3 ray = normalize(uf_cam_orientation * (position * skew + vec3(0.0, 0.0, -EYE_DISTANCE)));
         //     int steps = find_intersection(uf_cam_position, ray);
         //     c = OBJECT_GLOW * steps / 85.0;
         // but smaller.
         out_color = OBJECT_GLOW * find_intersection(uf_cam_position,
             normalize(uf_cam_orientation *
-            (vertex_position *
+            (position *
             (rand(gl_FragCoord.xy) * uf_effect_params.x + 1.0 - uf_effect_params.x) +
             vec3(0.0, 0.0, -EYE_DISTANCE)))) / 85.0;
     }

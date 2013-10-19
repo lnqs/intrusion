@@ -18,7 +18,7 @@
 #define in_position v
 #define in_texcoord j
 
-#define vertex_position p
+#define position p
 #define texcoord r
 
 #define out_color c
