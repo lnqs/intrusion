@@ -15,7 +15,7 @@
 #define uf_effect_params e
 #define uf_text_texture t
 
-#define in_vertex_position v
+#define in_position v
 #define in_texcoord j
 
 #define vertex_position p

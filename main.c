@@ -102,6 +102,7 @@ static stdcall bool update_scene()
 
 static stdcall void mainloop(GLuint program)
 {
+    GLuint position_location = gl.glGetAttribLocation(program, uniform(in_position));
     GLuint texcoord_location = gl.glGetAttribLocation(program, uniform(in_texcoord));
 
     while (!exit_requested() && update_scene())
@@ -115,14 +116,19 @@ static stdcall void mainloop(GLuint program)
         uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
 
         gl.glBegin(GL_QUADS);
-        gl.glVertex3f(-WINDOW_RATIO, -1.0, 0.0);
+
+        gl.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0);
         gl.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
-        gl.glVertex3f( WINDOW_RATIO, -1.0, 0.0);
+
+        gl.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0);
         gl.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
-        gl.glVertex3f( WINDOW_RATIO,  1.0, 0.0);
+
+        gl.glVertexAttrib2f(position_location, WINDOW_RATIO,  1.0);
         gl.glVertexAttrib2f(texcoord_location, 1.0, 1.0);
-        gl.glVertex3f(-WINDOW_RATIO,  1.0, 0.0);
+
+        gl.glVertexAttrib2f(position_location, -WINDOW_RATIO,  1.0);
         gl.glVertexAttrib2f(texcoord_location, 1.0, 0.0);
+
         gl.glEnd();
 
         gl.glUseProgram(program);

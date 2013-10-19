@@ -13,7 +13,6 @@ static struct
 {
     void GLAPIENTRY (*glBegin)(GLenum);
     void GLAPIENTRY (*glEnd)();
-    void GLAPIENTRY (*glVertex3f)(GLfloat, GLfloat, GLfloat);
     GLuint GLAPIENTRY (*glCreateShader)(GLenum);
     void GLAPIENTRY (*glShaderSource)(GLuint, GLsizei count, const GLchar**, const GLint*);
     void GLAPIENTRY (*glCompileShader)(GLuint);
@@ -37,7 +36,6 @@ static struct
 static const uint32_t gl_hashes[] = {
     0xfd3eaa9d, // glBegin
     0x0f83490f, // glEnd
-    0xc99e058f, // glVertex3f
     0x835cdd03, // glCreateShader
     0xbba22800, // glShaderSource
     0x712f7898, // glCompileShader
