@@ -8,17 +8,17 @@ SHADER_MINIFIER = shader_minifier.exe
 BUILD_GLYPHS = tools/build_glyphs.py
 CFLAGS = -m32 -std=c99 -Wall -Werror -Os -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl)
 LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc
-NASMFLAGS = -f elf
+NASMFLAGS = -f elf -idata/
 
 SOURCES = main.c
-HEADERS = clib.h gl_functions.h linker.h shader.h vector.h defines.h keypoint.h sdl_functions.h shader_defines.h sound.h textrender.h
-ASM_SOURCES = 4klang.asm
+HEADERS = clib.h gl_functions.h linker.h shader.h vector.h defines.h keypoint.h sdl_functions.h shader_defines.h sound.h textrender.h scene_state.h
+ASM_SOURCES = data/4klang.asm
 LINKER_SCRIPT = linker.ld
-OBJECTS = $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o)
-SHADERS = $(wildcard *.glsl)
+OBJECTS = $(notdir $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o))
+SHADERS = vertex.glsl fragment.glsl
 SHADERS_PREPROCESSED = $(SHADERS:.glsl=.glsl.i)
 SHADER_HEADER = shader_code.h
-GLYPHS_IMAGE = glyphs.png
+GLYPHS_IMAGE = data/glyphs.png
 GLYPHS_HEADER = glyphs.h
 EXECUTABLE = planeshift.elf
 COMPRESSED = planeshift

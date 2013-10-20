@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include "clib.h"
 #include "sdl_functions.h"
-#include "4klang.inh"
+#include "data/4klang.inh"
 
 static const int sound_channels = 2;
 
