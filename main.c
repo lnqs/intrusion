@@ -4,6 +4,7 @@
 #include "defines.h"
 #include "shader_defines.h"
 #include "clib.h"
+#include "scene_state.h"
 #include "sdl_functions.h"
 #include "gl_functions.h"
 #include "vector.h"

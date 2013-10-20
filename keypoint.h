@@ -2,16 +2,8 @@
 #define KEYPOINT_H
 
 #include "clib.h"
+#include "scene_state.h"
 #include "vector.h"
-
-struct scene_state
-{
-    vector3 position;
-    matrix3 orientation;
-    float box_scale;
-    float box_radius;
-    float sphere_radius;
-} packed;
 
 struct keypoint
 {
