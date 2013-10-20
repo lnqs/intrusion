@@ -20,13 +20,13 @@ SHADERS_PREPROCESSED = $(SHADERS:.glsl=.glsl.i)
 SHADER_HEADER = shader_code.h
 GLYPHS_IMAGE = data/glyphs.png
 GLYPHS_HEADER = glyphs.h
-EXECUTABLE = planeshift.elf
-COMPRESSED = planeshift
+EXECUTABLE = intrusion.elf
+COMPRESSED = intrusion
 
 all: $(COMPRESSED)
 
 $(COMPRESSED): $(EXECUTABLE)
-	echo '#!/bin/sh\ndd if="$$0" bs=1 skip=69|unxz>p;chmod +x p;./p;rm -f p;exit' > $@
+	echo '#!/bin/sh\ndd if="$$0" bs=1 skip=69|unxz>i;chmod +x i;./i;rm -f i;exit' > $@
 	xz -c5 --format=lzma $< >> $@
 	chmod +x $@
 

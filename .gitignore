@@ -3,5 +3,5 @@
 *.glsl.i
 shader_code.h
 glyphs.h
-planeshift.elf
-planeshift
+intrusion.elf
+intrusion

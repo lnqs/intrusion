@@ -79,8 +79,8 @@ static stdcall bool update_scene()
     // This function also adds a short 'skew' every time a keypoint is reached.
     // Handling it this 'magic' way sucks, it would be nicer to have it as part
     // of the keypoint-definition, but since it's only a short effect, we would
-    // a new mechanism to read them from the keypoints, or a lot of additionals
-    // points, both leading to way too much code.
+    // have to add a new mechanism to read them from the keypoints, or a lot of
+    // additional points, both leading to way too much code.
 
     uint32_t time = sdl_functions.SDL_GetTicks();
     const struct keypoint* next = keypoint + 1;
