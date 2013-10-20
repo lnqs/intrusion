@@ -6,7 +6,7 @@
 
 // Not as preprocessor define for consistency with the hacky strings
 // for libc- and libgl-names
-static const char* sdl_functions_library = "libSDL-1.2.so";
+static const char* sdl_functions_library = "libSDL-1.2.so.0";
 
 // the members of this struct have to have the same order as in the hashes-array!
 static struct {
