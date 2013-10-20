@@ -9,13 +9,35 @@
 
 import sys
 from sets import Set
+from mako.template import Template
 from PIL import Image
 
 SCALE_X = 4
 SCALE_Y = 8
-GLYPH_CTYPE = 'uint32_t'  # sizeof() has to match SCALE_X * SCALE_Y
+GLYPH_CTYPE = 'uint32_t'  # sizeof() has to match SCALE_X * SCALE_Y / 8
+GLYPH_CTYPE_LENGTH = 4  # sizeof(uint32_t)
 START_ASCII_CODE = 32
 END_ASCII_CODE = 126
+
+OUTPUT_TEMPLATE = '''
+#ifndef GLYPHS_H
+#define GLYPHS_H
+
+typedef ${glyph_ctype} glyph_t;
+
+static const size_t glyphs_ascii_begin = ${glyphs_ascii_begin};
+static const size_t glyphs_ascii_end = ${glyphs_ascii_end};
+static const size_t glyph_width = ${glyph_width};
+static const size_t glyph_height = ${glyph_height};
+
+static const glyph_t glyphs[] = {
+% for c, g in glyphs:
+    ${g}, // ${c.replace('\\\\', 'backslash')}
+% endfor
+};
+
+#endif
+'''
 
 
 def get_glyphs(filename):
@@ -78,24 +100,12 @@ if __name__ == '__main__':
               if c in used_letters else 0x0
               for (c, i) in get_glyphs(image_file)}
 
-    # Multiline comments, templates, etc., I know. I'm not in the mood :o)
-    print '#ifndef GLYPHS_H'
-    print '#define GLYPHS_H'
-    print
-    print 'typedef {} glyph_t;'.format(GLYPH_CTYPE)
-    print
-    print 'static const size_t glyphs_ascii_begin = {};' \
-        .format(START_ASCII_CODE)
-    print 'static const size_t glyphs_ascii_end = {};'.format(END_ASCII_CODE)
-    print 'static const size_t glyph_width = {};'.format(SCALE_X)
-    print 'static const size_t glyph_height = {};'.format(SCALE_Y)
-    print
-    print 'static const glyph_t glyphs[] = {'
-    print '\n'.join(
-        ['    0x{:08x}, // {}'.format(g,
-                                      l if l != '\\' else 'backslash')
-         for (l, g) in sorted(glyphs.iteritems())])
-    print '};'
-    print
-    print '#endif'
-    print
+    print Template(OUTPUT_TEMPLATE).render(
+        glyph_ctype=GLYPH_CTYPE,
+        glyphs_ascii_begin=START_ASCII_CODE,
+        glyphs_ascii_end=END_ASCII_CODE,
+        glyph_width=SCALE_X,
+        glyph_height=SCALE_Y,
+        glyphs=[(c, '0x{:0{}x}'.format(
+            g, 2 * GLYPH_CTYPE_LENGTH))
+            for (c, g) in sorted(glyphs.iteritems())])
