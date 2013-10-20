@@ -6,6 +6,8 @@
 #include "glyphs.h"
 
 static uint8_t textrender_buffer[OVERLAY_TEXTURE_WIDTH * OVERLAY_TEXTURE_HEIGHT];
+static size_t textrender_current_x;
+static size_t textrender_current_y;
 
 static stdcall bool textrender_is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
 {
@@ -33,23 +35,27 @@ static stdcall void textrender_render_character(char c, size_t x, size_t y)
     }
 }
 
-static stdcall void textrender_set_text(const char* text)
+static stdcall void textrender_clear_text()
 {
     clib_inaccurate_memset(textrender_buffer, 0, sizeof(textrender_buffer));
 
-    size_t x = TEXT_START_X;
-    size_t y = TEXT_START_Y;
+    textrender_current_x = TEXT_START_X;
+    textrender_current_y = TEXT_START_Y;
+}
+
+static stdcall void textrender_set_text(const char* text)
+{
     for (const char* c = text; *c != '\0'; c++)
     {
         if (*c == '\n')
         {
-            x = TEXT_START_X;
-            y += glyph_height + GLYPH_SPACING;
+            textrender_current_x = 0;
+            textrender_current_y += glyph_height + GLYPH_SPACING;
         }
         else
         {
-            textrender_render_character(*c, x, y);
-            x += glyph_width + GLYPH_SPACING;
+            textrender_render_character(*c, textrender_current_x, textrender_current_y);
+            textrender_current_x += glyph_width + GLYPH_SPACING;
         }
     }
 }

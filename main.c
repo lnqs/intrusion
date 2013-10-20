@@ -159,6 +159,7 @@ void _start()
     create_overlay_texture(program);
 
     /////// TODO: Testcode, remove
+    textrender_clear_text();
     textrender_set_text(_("int main(int argc, char** argv)\n"
                          "{\n"
                          "    printf(\"Hello World!\");\n"
