@@ -35,10 +35,7 @@ static stdcall void textrender_render_character(char c, size_t x, size_t y)
 
 static stdcall void textrender_set_text(const char* text)
 {
-    for (size_t i = 0; i < sizeof(textrender_buffer); i++)
-    {
-        textrender_buffer[i] = 0x0;
-    }
+    clib_inaccurate_memset(textrender_buffer, 0, sizeof(textrender_buffer));
 
     size_t x = TEXT_START_X;
     size_t y = TEXT_START_Y;

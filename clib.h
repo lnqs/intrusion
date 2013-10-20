@@ -60,5 +60,17 @@ static stdcall void clib_inaccurate_memcpy(void* dest, const void* src, size_t n
                         "c" (n / 4));
 }
 
+static stdcall void clib_inaccurate_memset(void* dest, int c, size_t n)
+{
+    // See clib_inaccurate_memcpy() for the 'inaccurate'
+    __asm__ volatile ("cld\n"
+                      "rep\n"
+                      "stosl\n"
+                      :
+                      : "a" (c),
+                        "D" (dest),
+                        "c" (n / 4));
+}
+
 #endif
 
