@@ -19,7 +19,7 @@ SHADERS = $(wildcard *.glsl)
 SHADERS_PREPROCESSED = $(SHADERS:.glsl=.glsl.i)
 SHADER_HEADER = shader_code.h
 GLYPHS_IMAGE = glyphs.png
-GLYPHS_HEADER = textrender_glyphs.h
+GLYPHS_HEADER = glyphs.h
 EXECUTABLE = planeshift.elf
 COMPRESSED = planeshift
 

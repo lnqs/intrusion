@@ -6,7 +6,7 @@
 
 // Not as preprocessor define for consistency with the hacky strings
 // for libc- and libgl-names
-static const char* sdl_library = "libSDL-1.2.so";
+static const char* sdl_functions_library = "libSDL-1.2.so";
 
 // the members of this struct have to have the same order as in the hashes-array!
 static struct {
@@ -19,9 +19,9 @@ static struct {
     void SDLCALL (*SDL_GL_SwapBuffers)();
     int SDLCALL (*SDL_OpenAudio)(SDL_AudioSpec*, SDL_AudioSpec*);
     void SDLCALL (*SDL_PauseAudio)(int);
-} sdl;
+} sdl_functions;
 
-static const gnu_hash_t sdl_hashes[] = {
+static const gnu_hash_t sdl_functions_hashes[] = {
     0x70a9a253, // SDL_GL_GetProcAddress
     0x7cc5e50f, // SDL_SetVideoMode
     0xdcc5fcc6, // SDL_ShowCursor
@@ -33,13 +33,14 @@ static const gnu_hash_t sdl_hashes[] = {
     0x42850c57  // SDL_PauseAudio
 };
 
-static stdcall void initialize_sdl_functions()
+static stdcall void sdl_functions_initialize()
 {
-    load_library(sdl_library);
+    linker_load_library(sdl_functions_library);
 
-    for (int i = 0; i < sizeof(sdl_hashes) / sizeof(gnu_hash_t); i++)
+    for (int i = 0; i < sizeof(sdl_functions_hashes) / sizeof(gnu_hash_t); i++)
     {
-        ((void**)&sdl)[i] = resolve_symbol(sdl_library, sdl_hashes[i]);
+        ((void**)&sdl_functions)[i] = linker_lookup_symbol(
+            sdl_functions_library, sdl_functions_hashes[i]);
     }
 }
 

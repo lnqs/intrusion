@@ -3,21 +3,21 @@
 
 #include "defines.h"
 #include "clib.h"
-#include "textrender_glyphs.h"
+#include "glyphs.h"
 
 static uint8_t textrender_buffer[RESOLUTION_X * RESOLUTION_Y];
 
-static stdcall bool is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
+static stdcall bool textrender_is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
 {
     return (0x1 << (y * glyph_width + x)) & glyph;
 }
 
-static stdcall void set_pixel(size_t x, size_t y, uint8_t intensity)
+static stdcall void textrender_set_pixel(size_t x, size_t y, uint8_t intensity)
 {
     textrender_buffer[y * RESOLUTION_X + x] = 0xff;
 }
 
-static stdcall void render_character(char c, size_t x, size_t y)
+static stdcall void textrender_render_character(char c, size_t x, size_t y)
 {
     const float scaling_factor_w = GLYPH_SCALE * (RESOLUTION_X / 800.0);
     const float scaling_factor_h = GLYPH_SCALE * (RESOLUTION_Y / 600.0);
@@ -28,15 +28,15 @@ static stdcall void render_character(char c, size_t x, size_t y)
     {
         for (size_t cx = 0; cx < glyph_width * scaling_factor_w; cx++)
         {
-            if (is_part_of_glyph(glyph, cx / scaling_factor_w, cy / scaling_factor_h))
+            if (textrender_is_part_of_glyph(glyph, cx / scaling_factor_w, cy / scaling_factor_h))
             {
-                set_pixel(cx + x, cy + y, 0xff);
+                textrender_set_pixel(cx + x, cy + y, 0xff);
             }
         }
     }
 }
 
-static stdcall void set_text(const char* text)
+static stdcall void textrender_set_text(const char* text)
 {
     for (size_t i = 0; i < RESOLUTION_X * RESOLUTION_Y; i++)
     {
@@ -54,7 +54,7 @@ static stdcall void set_text(const char* text)
         }
         else
         {
-            render_character(*c, x, y);
+            textrender_render_character(*c, x, y);
             x += glyph_width * GLYPH_SCALE + GLYPH_SPACING;
         }
     }

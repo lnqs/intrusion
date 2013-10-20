@@ -11,7 +11,7 @@ struct keypoint
     struct scene_state state;
 } packed;
 
-static const struct keypoint keypoints[] = {
+static const struct keypoint keypoint_points[] = {
     {
         .time = 0,
         .state = {

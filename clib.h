@@ -16,7 +16,7 @@
 // optimal than jumping to these functions implemented in pure asm in another
 // object.
 
-static stdcall void exit_(int code)
+static stdcall void clib_exit(int code)
 {
     __asm__ volatile ("int $0x80"
                       :
@@ -24,7 +24,7 @@ static stdcall void exit_(int code)
                         "b" (code));
 }
 
-static stdcall void clone_(int (*fn)(void*), void* stack, int flags, void* data)
+static stdcall void clib_clone(int (*fn)(void*), void* stack, int flags, void* data)
 {
     __asm__ volatile ("subl $4,%2\n"
                       "movl %4,(%2)\n"
@@ -44,7 +44,7 @@ static stdcall void clone_(int (*fn)(void*), void* stack, int flags, void* data)
                         "r" (SYS_exit));
 }
 
-static stdcall void inaccurate_memcpy(void* dest, const void* src, size_t n)
+static stdcall void clib_inaccurate_memcpy(void* dest, const void* src, size_t n)
 {
     // To save some instructions, only full words are copied, rest is ignored.
     // Therefore inaccurate -- while this is perfectly fine for us. This

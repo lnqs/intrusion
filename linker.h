@@ -13,12 +13,12 @@ extern const struct link_map* _link_map; // Provided by linker.ld linker-script
 // We're using the string from dynsym. Symbol is provided by linker-script
 extern const char _libc_filename;
 
-static const gnu_hash_t libc_dlopen_mode_hash = 0xf2cb98a2;
+static const gnu_hash_t linker_dlopen_mode_hash = 0xf2cb98a2;
 
 // This is the hash-function used for gnu-style hash-tables in elf.
 // While it doesn't really matter what function we use -- we don't use the
 // hash-tables at all -- it should be fine
-static stdcall gnu_hash_t gnu_hash(const char* s)
+static stdcall gnu_hash_t linker_gnu_hash(const char* s)
 {
     gnu_hash_t h = 5381;
 
@@ -30,7 +30,7 @@ static stdcall gnu_hash_t gnu_hash(const char* s)
     return h & 0xffffffff;
 }
 
-static stdcall const struct link_map* link_map_entry_for_library(const char* library)
+static stdcall const struct link_map* linker_map_for_library(const char* library)
 {
     // assume the entry exists to save some bytes
     const struct link_map* map = _link_map;
@@ -45,7 +45,7 @@ static stdcall const struct link_map* link_map_entry_for_library(const char* lib
     return map;
 }
 
-static stdcall const void* get_table(const struct link_map* map, int type)
+static stdcall const void* linker_get_table(const struct link_map* map, int type)
 {
     const ElfW(Dyn)* dyn = (const ElfW(Dyn)*)map->l_ld;
     while (dyn->d_tag != type)
@@ -61,17 +61,17 @@ static stdcall const void* get_table(const struct link_map* map, int type)
 // NVidias GL implementation is the one that made problems on my system.
 // Therefore, to avoid the size-overhead of implementing both, we keep it way
 // simpler here and just walk the symbol table to find symbols.
-static stdcall void* resolve_symbol(const char* library, gnu_hash_t hash)
+static stdcall void* linker_lookup_symbol(const char* library, gnu_hash_t hash)
 {
     // To keep the code short, we trust in the library to be loaded and finding
     // the symbol.
     // If this isn't the case, it'll behave undefined and segfault eventually.
 
-    const struct link_map* map = (const struct link_map*)link_map_entry_for_library(library);
-    const ElfW(Sym)* symtab = (const ElfW(Sym)*)get_table(map, DT_SYMTAB);
-    const char* strtab = (const char*)get_table(map, DT_STRTAB);
+    const struct link_map* map = (const struct link_map*)linker_map_for_library(library);
+    const ElfW(Sym)* symtab = (const ElfW(Sym)*)linker_get_table(map, DT_SYMTAB);
+    const char* strtab = (const char*)linker_get_table(map, DT_STRTAB);
 
-    while (hash != gnu_hash(strtab + symtab->st_name))
+    while (hash != linker_gnu_hash(strtab + symtab->st_name))
     {
         symtab += 1;
     }
@@ -79,11 +79,11 @@ static stdcall void* resolve_symbol(const char* library, gnu_hash_t hash)
     return (void*)(map->l_addr + symtab->st_value);
 }
 
-static stdcall void load_library(const char* filename)
+static stdcall void linker_load_library(const char* filename)
 {
     // Yay! Using internals of libc! Let's just cross fingers this won't change too fast :/
     void* (*__libc_dlopen_mode_fn)(const char*, int)
-            = (void* (*)(const char*, int))resolve_symbol(&_libc_filename, libc_dlopen_mode_hash);
+            = (void* (*)(const char*, int))linker_lookup_symbol(&_libc_filename, linker_dlopen_mode_hash);
     __libc_dlopen_mode_fn(filename, RTLD_NOW | RTLD_GLOBAL);
 }
 

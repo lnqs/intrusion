@@ -24,43 +24,43 @@ struct effect_parameters
 } packed;
 
 static struct scene_state scene_state;
-static const struct keypoint* keypoint = keypoints;
+static const struct keypoint* keypoint = keypoint_points;
 static struct effect_parameters effect_parameters;
 
 static GLuint overlay_texture;
 
-static stdcall void initialize_sdl()
+static stdcall void setup_window()
 {
-    sdl.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
+    sdl_functions.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
             SDL_OPENGL | (FULLSCREEN ? SDL_FULLSCREEN : 0));
-    sdl.SDL_ShowCursor(SDL_DISABLE);
+    sdl_functions.SDL_ShowCursor(SDL_DISABLE);
 }
 
-static stdcall void cleanup_sdl()
+static stdcall void cleanup()
 {
     // SDL_Quit crashes since main() is removed, but we need this call to reset
     // the screen resolution when running fullscreen
-    sdl.SDL_QuitSubSystem(SDL_INIT_VIDEO);
+    sdl_functions.SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 static stdcall void create_overlay_texture(GLuint program)
 {
-    gl.glActiveTexture(GL_TEXTURE0);
-    gl.glBindTexture(GL_TEXTURE_2D, overlay_texture);
-    gl.glGenTextures(1, &overlay_texture);
+    gl_functions.glActiveTexture(GL_TEXTURE0);
+    gl_functions.glBindTexture(GL_TEXTURE_2D, overlay_texture);
+    gl_functions.glGenTextures(1, &overlay_texture);
 
-    uniform_int(program, uniform(uf_text_texture), 0);
+    shader_uniform_int(program, uniform(uf_text_texture), 0);
 
-    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 static stdcall bool exit_requested()
 {
     SDL_Event event;
-    sdl.SDL_PollEvent(&event);
+    sdl_functions.SDL_PollEvent(&event);
 
     if (event.type == SDL_QUIT)
     {
@@ -84,10 +84,10 @@ static stdcall bool update_scene()
     // a new mechanism to read them from the keypoints, or a lot of additionals
     // points, both leading to way too much code.
 
-    uint32_t time = sdl.SDL_GetTicks();
+    uint32_t time = sdl_functions.SDL_GetTicks();
     const struct keypoint* next = keypoint + 1;
 
-    if (time > keypoints[sizeof(keypoints) / sizeof(struct keypoint) - 1].time)
+    if (time > keypoint_points[sizeof(keypoint_points) / sizeof(struct keypoint) - 1].time)
     {
         return false;
     }
@@ -119,62 +119,62 @@ static stdcall bool update_scene()
 
 static stdcall void mainloop(GLuint program)
 {
-    GLuint position_location = gl.glGetAttribLocation(program, uniform(in_position));
-    GLuint texcoord_location = gl.glGetAttribLocation(program, uniform(in_texcoord));
+    GLuint position_location = gl_functions.glGetAttribLocation(program, uniform(in_position));
+    GLuint texcoord_location = gl_functions.glGetAttribLocation(program, uniform(in_texcoord));
 
     while (!exit_requested() && update_scene())
     {
-        uniform_vector3(program, uniform(uf_cam_position), scene_state.position);
-        uniform_matrix3(program, uniform(uf_cam_orientation), scene_state.orientation);
+        shader_uniform_vector3(program, uniform(uf_cam_position), scene_state.position);
+        shader_uniform_matrix3(program, uniform(uf_cam_orientation), scene_state.orientation);
         // Since the three parameters follow each other in the struct,
         // we just treat them as vector to save some bytes.
         // It looks the same in memory anyway.
-        uniform_vector3(program, uniform(uf_fractal_params), (float*)&scene_state.box_scale);
-        uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
+        shader_uniform_vector3(program, uniform(uf_fractal_params), (float*)&scene_state.box_scale);
+        shader_uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
 
-        gl.glBegin(GL_QUADS);
-        gl.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0);
-        gl.glVertexAttrib2f(texcoord_location, 1.0, 1.0);
-        gl.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0);
-        gl.glVertexAttrib2f(texcoord_location, 1.0, 0.0);
-        gl.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0);
-        gl.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
-        gl.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0);
-        gl.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
-        gl.glEnd();
+        gl_functions.glBegin(GL_QUADS);
+        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0);
+        gl_functions.glVertexAttrib2f(texcoord_location, 1.0, 1.0);
+        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0);
+        gl_functions.glVertexAttrib2f(texcoord_location, 1.0, 0.0);
+        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0);
+        gl_functions.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
+        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0);
+        gl_functions.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
+        gl_functions.glEnd();
 
-        gl.glUseProgram(program);
+        gl_functions.glUseProgram(program);
 
-        sdl.SDL_GL_SwapBuffers();
+        sdl_functions.SDL_GL_SwapBuffers();
     }
 }
 
 // Save overhead from crt1.o, get control from entry point on
 void _start()
 {
-    initialize_sdl_functions();
-    initialize_sdl();
-    initialize_gl_functions();
-    initialize_sound();
+    sdl_functions_initialize();
+    setup_window();
+    gl_functions_initialize();
+    sound_initialize();
 
-    GLuint program = compile_program(vertex_glsl, fragment_glsl);
+    GLuint program = shader_compile_program(vertex_glsl, fragment_glsl);
     create_overlay_texture(program);
 
     /////// TODO: Testcode, remove
-    set_text(_("int main(int argc, char** argv)\n"
-               "{\n"
-               "    printf(\"Hello World!\");\n"
-               "}"));
-    gl.glActiveTexture(GL_TEXTURE0);
-    gl.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, RESOLUTION_X, RESOLUTION_Y,
+    textrender_set_text(_("int main(int argc, char** argv)\n"
+                         "{\n"
+                         "    printf(\"Hello World!\");\n"
+                         "}"));
+    gl_functions.glActiveTexture(GL_TEXTURE0);
+    gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, RESOLUTION_X, RESOLUTION_Y,
             0, GL_RED, GL_UNSIGNED_BYTE, textrender_buffer);
     ////////////
 
-    play_sound();
+    sound_play();
     mainloop(program);
 
-    cleanup_sdl();
+    cleanup();
 
-    exit_(0);
+    clib_exit(0);
 }
 

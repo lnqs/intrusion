@@ -6,7 +6,7 @@
 
 // It get's funny here! This string is written to the elf-header by screw_elf_header.py,
 // while the symbol for it is defined in linker.ld
-extern const char _gl_library;
+extern const char gl_functions_library;
 
 // the members of this struct have to have the same order as in the hashes-array!
 static struct
@@ -31,9 +31,9 @@ static struct
     void GLAPIENTRY (*glUniformMatrix3fv)(GLint, GLsizei, GLboolean, const GLfloat*);
     GLint GLAPIENTRY (*glGetAttribLocation)(GLuint, const GLchar*);
     void GLAPIENTRY (*glVertexAttrib2f)(GLuint, GLfloat, GLfloat);
-} gl;
+} gl_functions;
 
-static const gnu_hash_t gl_hashes[] = {
+static const gnu_hash_t gl_functions_hashes[] = {
     0xfd3eaa9d, // glBegin
     0x0f83490f, // glEnd
     0x835cdd03, // glCreateShader
@@ -56,11 +56,12 @@ static const gnu_hash_t gl_hashes[] = {
     0x233f3994  // glVertexAttrib2f
 };
 
-static stdcall void initialize_gl_functions()
+static stdcall void gl_functions_initialize()
 {
-    for (int i = 0; i < sizeof(gl_hashes) / sizeof(gnu_hash_t); i++)
+    for (int i = 0; i < sizeof(gl_functions_hashes) / sizeof(gnu_hash_t); i++)
     {
-        ((void**)&gl)[i] = resolve_symbol(&_gl_library, gl_hashes[i]);
+        ((void**)&gl_functions)[i] =
+            linker_lookup_symbol(&gl_functions_library, gl_functions_hashes[i]);
     }
 }
 
