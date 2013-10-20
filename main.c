@@ -29,6 +29,8 @@ static struct effect_parameters effect_parameters;
 
 static GLuint overlay_texture;
 
+static uint32_t initialization_time; // to substract the initialization time
+
 static stdcall void setup_window()
 {
     sdl_functions.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
@@ -82,7 +84,9 @@ static stdcall bool update_scene()
     // have to add a new mechanism to read them from the keypoints, or a lot of
     // additional points, both leading to way too much code.
 
-    uint32_t time = sdl_functions.SDL_GetTicks();
+    // +1 to prevent divisions by zero
+    uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
+
     const struct keypoint* next = keypoint + 1;
 
     if (time > keypoint_points[sizeof(keypoint_points) / sizeof(struct keypoint) - 1].time)
@@ -170,6 +174,7 @@ void _start()
             0, GL_RED, GL_UNSIGNED_BYTE, textrender_buffer);
     ////////////
 
+    initialization_time = sdl_functions.SDL_GetTicks();
     sound_play();
     mainloop(program);
 
