@@ -6,19 +6,21 @@
 #include <string.h>
 #include "clib.h"
 
+typedef uint32_t gnu_hash_t; // as defined by standard
+
 extern const struct link_map* _link_map; // Provided by linker.ld linker-script
 
 // We're using the string from dynsym. Symbol is provided by linker-script
 extern const char _libc_filename;
 
-static const uint32_t libc_dlopen_mode_hash = 0xf2cb98a2;
+static const gnu_hash_t libc_dlopen_mode_hash = 0xf2cb98a2;
 
 // This is the hash-function used for gnu-style hash-tables in elf.
 // While it doesn't really matter what function we use -- we don't use the
 // hash-tables at all -- it should be fine
-static stdcall uint32_t gnu_hash(const char* s)
+static stdcall gnu_hash_t gnu_hash(const char* s)
 {
-    uint32_t h = 5381;
+    gnu_hash_t h = 5381;
 
     for (; *s != '\0'; s++)
     {
@@ -45,7 +47,7 @@ static stdcall const struct link_map* link_map_entry_for_library(const char* lib
 
 static stdcall const void* get_table(const struct link_map* map, int type)
 {
-    const Elf32_Dyn* dyn = (const Elf32_Dyn*)map->l_ld;
+    const ElfW(Dyn)* dyn = (const ElfW(Dyn)*)map->l_ld;
     while (dyn->d_tag != type)
     {
         dyn += 1;
@@ -59,14 +61,14 @@ static stdcall const void* get_table(const struct link_map* map, int type)
 // NVidias GL implementation is the one that made problems on my system.
 // Therefore, to avoid the size-overhead of implementing both, we keep it way
 // simpler here and just walk the symbol table to find symbols.
-static stdcall void* resolve_symbol(const char* library, uint32_t hash)
+static stdcall void* resolve_symbol(const char* library, gnu_hash_t hash)
 {
     // To keep the code short, we trust in the library to be loaded and finding
     // the symbol.
     // If this isn't the case, it'll behave undefined and segfault eventually.
 
     const struct link_map* map = (const struct link_map*)link_map_entry_for_library(library);
-    const Elf32_Sym* symtab = (const Elf32_Sym*)get_table(map, DT_SYMTAB);
+    const ElfW(Sym)* symtab = (const ElfW(Sym)*)get_table(map, DT_SYMTAB);
     const char* strtab = (const char*)get_table(map, DT_STRTAB);
 
     while (hash != gnu_hash(strtab + symtab->st_name))

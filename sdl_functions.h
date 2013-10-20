@@ -21,7 +21,7 @@ static struct {
     void SDLCALL (*SDL_PauseAudio)(int);
 } sdl;
 
-static const uint32_t sdl_hashes[] = {
+static const gnu_hash_t sdl_hashes[] = {
     0x70a9a253, // SDL_GL_GetProcAddress
     0x7cc5e50f, // SDL_SetVideoMode
     0xdcc5fcc6, // SDL_ShowCursor
@@ -37,7 +37,7 @@ static stdcall void initialize_sdl_functions()
 {
     load_library(sdl_library);
 
-    for (int i = 0; i < sizeof(sdl_hashes) / sizeof(uint32_t); i++)
+    for (int i = 0; i < sizeof(sdl_hashes) / sizeof(gnu_hash_t); i++)
     {
         ((void**)&sdl)[i] = resolve_symbol(sdl_library, sdl_hashes[i]);
     }

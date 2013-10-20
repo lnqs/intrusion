@@ -15,7 +15,7 @@ struct scene_state
 
 struct keypoint
 {
-    Uint32 time;
+    uint32_t time;
     struct scene_state state;
 } packed;
 

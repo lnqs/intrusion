@@ -33,7 +33,7 @@ static struct
     void GLAPIENTRY (*glVertexAttrib2f)(GLuint, GLfloat, GLfloat);
 } gl;
 
-static const uint32_t gl_hashes[] = {
+static const gnu_hash_t gl_hashes[] = {
     0xfd3eaa9d, // glBegin
     0x0f83490f, // glEnd
     0x835cdd03, // glCreateShader
@@ -58,7 +58,7 @@ static const uint32_t gl_hashes[] = {
 
 static stdcall void initialize_gl_functions()
 {
-    for (int i = 0; i < sizeof(gl_hashes) / sizeof(uint32_t); i++)
+    for (int i = 0; i < sizeof(gl_hashes) / sizeof(gnu_hash_t); i++)
     {
         ((void**)&gl)[i] = resolve_symbol(&_gl_library, gl_hashes[i]);
     }

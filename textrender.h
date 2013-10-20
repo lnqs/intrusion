@@ -5,14 +5,14 @@
 #include "clib.h"
 #include "textrender_glyphs.h"
 
-static unsigned char textrender_buffer[RESOLUTION_X * RESOLUTION_Y];
+static uint8_t textrender_buffer[RESOLUTION_X * RESOLUTION_Y];
 
 static stdcall bool is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
 {
     return (0x1 << (y * glyph_width + x)) & glyph;
 }
 
-static stdcall void set_pixel(size_t x, size_t y, unsigned char intensity)
+static stdcall void set_pixel(size_t x, size_t y, uint8_t intensity)
 {
     textrender_buffer[y * RESOLUTION_X + x] = 0xff;
 }

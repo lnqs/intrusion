@@ -83,7 +83,7 @@ static stdcall bool update_scene()
     // a new mechanism to read them from the keypoints, or a lot of additionals
     // points, both leading to way too much code.
 
-    Uint32 time = sdl.SDL_GetTicks();
+    uint32_t time = sdl.SDL_GetTicks();
     const struct keypoint* next = keypoint + 1;
 
     if (time > keypoints[sizeof(keypoints) / sizeof(struct keypoint) - 1].time)

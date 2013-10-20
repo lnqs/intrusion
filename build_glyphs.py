@@ -13,6 +13,7 @@ from PIL import Image
 
 SCALE_X = 4
 SCALE_Y = 8
+GLYPH_CTYPE = 'uint32_t'  # sizeof() has to match SCALE_X * SCALE_Y
 START_ASCII_CODE = 32
 END_ASCII_CODE = 126
 
@@ -81,13 +82,15 @@ if __name__ == '__main__':
     print '#ifndef GLYPHS_H'
     print '#define GLYPHS_H'
     print
+    print 'typedef {} glyph_t;'.format(GLYPH_CTYPE)
+    print
     print 'static const size_t glyphs_ascii_begin = {};' \
         .format(START_ASCII_CODE)
     print 'static const size_t glyphs_ascii_end = {};'.format(END_ASCII_CODE)
     print 'static const size_t glyph_width = {};'.format(SCALE_X)
     print 'static const size_t glyph_height = {};'.format(SCALE_Y)
     print
-    print 'static const uint32_t glyphs[] = {'
+    print 'static const glyph_t glyphs[] = {'
     print '\n'.join(
         ['    0x{:08x}, // {}'.format(g,
                                       l if l != '\\' else 'backslash')
