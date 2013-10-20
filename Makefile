@@ -57,7 +57,7 @@ $(GLYPHS_HEADER): $(GLYPHS_IMAGE) $(SOURCES) $(HEADERS)
 		[ -s $@ ] || rm -f $@'
 
 clean:
-	rm -rf *.o *.d $(EXECUTABLE) $(COMPRESSED) $(SHADER_HEADER) $(GLYPHS_HEADER)
+	rm -rf *.o *.d $(EXECUTABLE) $(COMPRESSED) *.glsl.i $(SHADER_HEADER) $(GLYPHS_HEADER)
 
 -include $(SOURCES:.c=.d)
 
