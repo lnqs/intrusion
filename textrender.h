@@ -5,7 +5,7 @@
 #include "clib.h"
 #include "glyphs.h"
 
-static uint8_t textrender_buffer[RESOLUTION_X * RESOLUTION_Y];
+static uint8_t textrender_buffer[OVERLAY_TEXTURE_WIDTH * OVERLAY_TEXTURE_HEIGHT];
 
 static stdcall bool textrender_is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
 {
@@ -14,21 +14,18 @@ static stdcall bool textrender_is_part_of_glyph(uint32_t glyph, size_t x, size_t
 
 static stdcall void textrender_set_pixel(size_t x, size_t y, uint8_t intensity)
 {
-    textrender_buffer[y * RESOLUTION_X + x] = 0xff;
+    textrender_buffer[y * OVERLAY_TEXTURE_WIDTH + x] = 0xff;
 }
 
 static stdcall void textrender_render_character(char c, size_t x, size_t y)
 {
-    const float scaling_factor_w = GLYPH_SCALE * (RESOLUTION_X / 800.0);
-    const float scaling_factor_h = GLYPH_SCALE * (RESOLUTION_Y / 600.0);
-
     const uint32_t glyph = glyphs[c - glyphs_ascii_begin];
 
-    for (size_t cy = 0; cy < glyph_height * scaling_factor_h; cy++)
+    for (size_t cy = 0; cy < glyph_height; cy++)
     {
-        for (size_t cx = 0; cx < glyph_width * scaling_factor_w; cx++)
+        for (size_t cx = 0; cx < glyph_width; cx++)
         {
-            if (textrender_is_part_of_glyph(glyph, cx / scaling_factor_w, cy / scaling_factor_h))
+            if (textrender_is_part_of_glyph(glyph, cx, cy))
             {
                 textrender_set_pixel(cx + x, cy + y, 0xff);
             }
@@ -38,7 +35,7 @@ static stdcall void textrender_render_character(char c, size_t x, size_t y)
 
 static stdcall void textrender_set_text(const char* text)
 {
-    for (size_t i = 0; i < RESOLUTION_X * RESOLUTION_Y; i++)
+    for (size_t i = 0; i < sizeof(textrender_buffer); i++)
     {
         textrender_buffer[i] = 0x0;
     }
@@ -50,12 +47,12 @@ static stdcall void textrender_set_text(const char* text)
         if (*c == '\n')
         {
             x = TEXT_START_X;
-            y += glyph_height * GLYPH_SCALE + GLYPH_SPACING;
+            y += glyph_height + GLYPH_SPACING;
         }
         else
         {
             textrender_render_character(*c, x, y);
-            x += glyph_width * GLYPH_SCALE + GLYPH_SPACING;
+            x += glyph_width + GLYPH_SPACING;
         }
     }
 }

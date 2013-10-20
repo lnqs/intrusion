@@ -9,11 +9,16 @@
 #define FULLSCREEN false
 #define WINDOW_RATIO ((float)RESOLUTION_X / RESOLUTION_Y)
 
+// We use OpenGL to implicitly resize the text, therefore this defines the
+// text-scale. This is NOT relative to the window-size, since the size of the
+// letters isn't, but should have the same ratio
+#define OVERLAY_TEXTURE_WIDTH 512
+#define OVERLAY_TEXTURE_HEIGHT ((int)(OVERLAY_TEXTURE_WIDTH / WINDOW_RATIO))
+
 #define MAX_SKEW 0.75
 #define SKEW_DECREASING_MULTIPLIER 0.01
 
 #define GLYPH_SPACING 4
-#define GLYPH_SCALE 2.0
 #define TEXT_START_X 10
 #define TEXT_START_Y 10
 

@@ -51,10 +51,8 @@ static stdcall void create_overlay_texture(GLuint program)
 
     shader_uniform_int(program, uniform(uf_text_texture), 0);
 
-    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 static stdcall bool exit_requested()
@@ -166,7 +164,8 @@ void _start()
                          "    printf(\"Hello World!\");\n"
                          "}"));
     gl_functions.glActiveTexture(GL_TEXTURE0);
-    gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, RESOLUTION_X, RESOLUTION_Y,
+    gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8,
+            OVERLAY_TEXTURE_WIDTH, OVERLAY_TEXTURE_HEIGHT,
             0, GL_RED, GL_UNSIGNED_BYTE, textrender_buffer);
     ////////////
 
