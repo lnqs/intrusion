@@ -9,7 +9,7 @@
 #include "gl_functions.h"
 #include "vector.h"
 #include "shader.h"
-#include "textrender.h"
+#include "console.h"
 #include "sound.h"
 #include "keypoint.h"
 #include "shader_code.h"
@@ -28,8 +28,6 @@ static const struct keypoint* keypoint = keypoint_points;
 static struct effect_parameters effect_parameters;
 
 static GLuint overlay_texture;
-
-static uint32_t initialization_time; // to substract the initialization time
 
 static stdcall void setup_window()
 {
@@ -57,6 +55,14 @@ static stdcall void create_overlay_texture(GLuint program)
     gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
+static stdcall void update_overlay_texture()
+{
+    gl_functions.glActiveTexture(GL_TEXTURE0);
+    gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8,
+            OVERLAY_TEXTURE_WIDTH, OVERLAY_TEXTURE_HEIGHT,
+            0, GL_RED, GL_UNSIGNED_BYTE, console_buffer);
+}
+
 static stdcall bool exit_requested()
 {
     SDL_Event event;
@@ -75,7 +81,7 @@ static stdcall bool exit_requested()
     return false;
 }
 
-static stdcall bool update_scene()
+static stdcall bool update_keypoints(uint32_t time)
 {
     // Transition to next keypoint is handled here.
     // This function also adds a short 'skew' every time a keypoint is reached.
@@ -83,9 +89,6 @@ static stdcall bool update_scene()
     // of the keypoint-definition, but since it's only a short effect, we would
     // have to add a new mechanism to read them from the keypoints, or a lot of
     // additional points, both leading to way too much code.
-
-    // +1 to prevent divisions by zero
-    uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
 
     const struct keypoint* next = keypoint + 1;
 
@@ -117,6 +120,26 @@ static stdcall bool update_scene()
     effect_parameters.skew_multiplier /= (time - keypoint->time) * SKEW_DECREASING_MULTIPLIER;
 
     return true;
+}
+
+static stdcall bool update_scene()
+{
+    static uint32_t initialization_time = 0;
+
+    if (initialization_time == 0)
+    {
+        initialization_time = sdl_functions.SDL_GetTicks();
+    }
+
+    // +1 to prevent divisions by zero
+    uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
+
+    if (console_update(time))
+    {
+        update_overlay_texture();
+    }
+
+    return update_keypoints(time);
 }
 
 static stdcall void mainloop(GLuint program)
@@ -163,18 +186,13 @@ void _start()
     create_overlay_texture(program);
 
     /////// TODO: Testcode, remove
-    textrender_clear_text();
-    textrender_set_text(_("int main(int argc, char** argv)\n"
-                         "{\n"
-                         "    printf(\"Hello World!\");\n"
-                         "}"));
-    gl_functions.glActiveTexture(GL_TEXTURE0);
-    gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8,
-            OVERLAY_TEXTURE_WIDTH, OVERLAY_TEXTURE_HEIGHT,
-            0, GL_RED, GL_UNSIGNED_BYTE, textrender_buffer);
+    console_print_output(_("int main(int argc, char** argv)\n"
+                           "{\n"
+                           "    printf(\"Hello World!\");\n"
+                           "}\n"));
+    console_print_input(_("> doller input!"));
     ////////////
 
-    initialization_time = sdl_functions.SDL_GetTicks();
     sound_play();
     mainloop(program);
 

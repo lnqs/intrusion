@@ -11,7 +11,7 @@ LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc
 NASMFLAGS = -f elf -idata/ -w-orphan-labels
 
 SOURCES = main.c
-HEADERS = clib.h gl_functions.h linker.h shader.h vector.h defines.h keypoint.h sdl_functions.h shader_defines.h sound.h textrender.h scene_state.h
+HEADERS = clib.h gl_functions.h linker.h shader.h vector.h defines.h keypoint.h sdl_functions.h shader_defines.h sound.h console.h scene_state.h
 ASM_SOURCES = data/4klang.asm
 LINKER_SCRIPT = linker.ld
 OBJECTS = $(notdir $(SOURCES:.c=.o) $(ASM_SOURCES:.asm=.o))
