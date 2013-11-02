@@ -81,6 +81,29 @@ static stdcall bool exit_requested()
     return false;
 }
 
+static stdcall void update_text(uint32_t time)
+{
+    // Start one element ::before:: the first one, to have the first entry set.
+    // This is fine, since we only access next, until it is incremented.
+    static const struct keypoint_text* current = keypoint_texts - 1;
+    const struct keypoint_text* next = current + 1;
+
+    if (time > next->time)
+    {
+        current += 1;
+        next += 1;
+
+        if (current->type == INPUT)
+        {
+            console_print_input(current->text);
+        }
+        else
+        {
+            console_print_output(current->text);
+        }
+    }
+}
+
 static stdcall bool update_keypoints(uint32_t time)
 {
     // Transition to next keypoint is handled here.
@@ -133,6 +156,8 @@ static stdcall bool update_scene()
 
     // +1 to prevent divisions by zero
     uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
+
+    update_text(time);
 
     if (console_update(time))
     {
@@ -209,14 +234,6 @@ void _start()
 
     GLuint program = shader_compile_program(vertex_glsl, fragment_glsl);
     create_overlay_texture(program);
-
-    /////// TODO: Testcode, remove
-    console_print_output(_("int main(int argc, char** argv)\n"
-                           "{\n"
-                           "    printf(\"Hello World!\");\n"
-                           "}\n"));
-    console_print_input(_("> doller input!"));
-    ////////////
 
     sound_play();
     mainloop(program);

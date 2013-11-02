@@ -11,23 +11,46 @@ struct keypoint
     struct scene_state state;
 } packed;
 
+struct keypoint_text
+{
+    enum type { INPUT, OUTPUT };
+
+    uint32_t time;
+    const char* text;
+    enum type type;
+} packed;
+
 static const struct keypoint keypoint_points[] = {
     {
-        .time = 0,
+        .time = 0 * 1000,
         .state = {
             .position = { 0.00, 0.00, 4.30 },
             .orientation = {
-                {  1.00,  0.00,  0.00 },
-                {  0.00,  1.00,  0.00 },
-                {  0.00,  0.00,  1.00 }
+                {  0.00,  0.00,  0.00 },
+                {  0.00,  0.00,  0.00 },
+                {  0.00,  0.00,  0.00 }
             },
-            .box_scale = -5.0,
-            .box_radius = 3.0,
-            .sphere_radius = 3.0,
+            .box_scale = 0.0,
+            .box_radius = 0.0,
+            .sphere_radius = 0.0,
         }
     },
     {
-        .time = 10 * 1000,
+        .time = 3 * 1000,
+        .state = {
+            .position = { 0.00, 0.00, 4.30 },
+            .orientation = {
+                {  0.00,  0.00,  0.00 },
+                {  0.00,  0.00,  0.00 },
+                {  0.00,  0.00,  0.00 }
+            },
+            .box_scale = 0.0,
+            .box_radius = 0.0,
+            .sphere_radius = 0.0,
+        }
+    },
+    {
+        .time = 13 * 1000,
         .state = {
             .position = { 0.23, -5.74, 7.96 },
             .orientation = {
@@ -240,16 +263,145 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 160 * 1000,
         .state = {
-            .position = { -3.67, -0.15, -0.74 },
+            .position = { -2.48, -0.08, -1.67 },
             .orientation = {
-                { -0.01,  0.14,  0.92 },
-                {  0.93, -0.00,  0.01 },
-                { -0.01,  0.92, -0.15 }
+                {  0.00,  0.00,  0.00 },
+                {  0.00,  0.00,  0.00 },
+                {  0.00,  0.00,  0.00 }
             },
-            .box_scale = -2.5,
-            .box_radius = 2.0,
-            .sphere_radius = -2.0
+            .box_scale = 0.0,
+            .box_radius = 0.0,
+            .sphere_radius = 0.0
         }
+    }
+};
+
+static const struct keypoint_text keypoint_texts[] =
+{
+    {
+        .time = 0 * 1000,
+        .text = _("intrusion 0.13.1 loaded\n> "),
+        .type = OUTPUT
+    },
+    {
+        .time = 2 * 1000,
+        .text = _("connect\n"),
+        .type = INPUT
+    },
+    {
+        .time = 3 * 1000,
+        .text = _("connecting...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 13 * 1000,
+        .text = _("done\n> "),
+        .type = OUTPUT
+    },
+    {
+        .time = 18 * 1000,
+        .text = _("sysenter\n"),
+        .type = INPUT
+    },
+    {
+        .time = 20 * 1000,
+        .text = _("searching entrypoint...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 58 * 1000,
+        .text = _("entering...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 81 * 1000,
+        .text = _("done\n> "),
+        .type = OUTPUT
+    },
+    {
+        .time = 88 * 1000,
+        .text = _("locate sg-245\n"),
+        .type = INPUT
+    },
+    {
+        .time = 89 * 1000,
+        .text = _("searching data...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 100 * 1000,
+        .text = _("trace detected!\nsearching data...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 105 * 1000,
+        .text = _("trace distance 25%\nsearching data...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 120 * 1000,
+        .text = _("trace distance 50%\nsearching data...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 124 * 1000,
+        .text = _("^C\n> "),
+        .type = OUTPUT
+    },
+    {
+        .time = 126 * 1000,
+        .text = _("evade\n"),
+        .type = INPUT
+    },
+    {
+        .time = 128 * 1000,
+        .text = _("evading tracer...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 132 * 1000,
+        .text = _("trace distance 25%\nevading tracer...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 138 * 1000,
+        .text = _("trace distance 50%\nevading tracer...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 140 * 1000,
+        .text = _("trace distance 75%\nevading tracer...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 145 * 1000,
+        .text = _("trace distance 90%\nevading tracer...\n"),
+        .type = OUTPUT
+    },
+    {
+        .time = 148 * 1000,
+        .text = _("^C\n> "),
+        .type = OUTPUT
+    },
+    {
+        .time = 150 * 1000,
+        .text = _("disconnect\n"),
+        .type = INPUT
+    },
+    {
+        .time = 156 * 1000,
+        .text = _("done\n> "),
+        .type = OUTPUT
+    },
+    {
+        .time = 158 * 1000,
+        .text = _("fuck it\n"),
+        .type = INPUT
+    },
+    {
+        .time = 159 * 1000,
+        .text = _("command not found"),
+        .type = OUTPUT
     }
 };
 
