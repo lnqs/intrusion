@@ -142,6 +142,29 @@ static stdcall bool update_scene()
     return update_keypoints(time);
 }
 
+static stdcall void output_info()
+{
+#ifdef OUTPUT_INFO
+    static uint32_t time = 0;
+    static uint32_t last_frame_time = 0;
+    static uint32_t last_print_time = 0;
+
+    time = sdl_functions.SDL_GetTicks();
+
+    // Just print once per second, to avoid slowing down the execution too much
+    if (time - last_print_time >= 1000)
+    {
+        uint32_t fps = 1000 / (time - last_frame_time);
+
+        fprintf(stderr, "\033[0GFPS: %i, Time: %f\033[0K", fps, time / 1000.0);
+
+        last_print_time = time;
+    }
+
+    last_frame_time = time;
+#endif
+}
+
 static stdcall void mainloop(GLuint program)
 {
     GLuint position_location = gl_functions.glGetAttribLocation(program, uniform(in_position));
@@ -149,6 +172,8 @@ static stdcall void mainloop(GLuint program)
 
     while (!exit_requested() && update_scene())
     {
+        output_info();
+
         shader_uniform_vector3(program, uniform(uf_cam_position), scene_state.position);
         shader_uniform_matrix3(program, uniform(uf_cam_orientation), scene_state.orientation);
         // Since the three parameters follow each other in the struct,

@@ -6,7 +6,7 @@ STRIP = sstrip -z
 SCREW_ELF_HEADER = tools/screw_elf_header.py
 SHADER_MINIFIER = shader_minifier.exe
 BUILD_GLYPHS = tools/build_glyphs.py
-CFLAGS = -m32 -std=c99 -Wall -Werror -Os -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl)
+CFLAGS = -m32 -std=c99 -Wall -Werror -Os -ffast-math -fomit-frame-pointer -march=i686 $(shell pkg-config --cflags sdl) $(shell pkg-config --cflags gl) -DOUTPUT_INFO
 LDFLAGS = -melf_i386 -dynamic-linker /lib/ld-linux.so.2 -lc
 NASMFLAGS = -f elf -idata/ -w-orphan-labels
 
