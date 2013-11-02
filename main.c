@@ -24,7 +24,6 @@ struct effect_parameters
 } packed;
 
 static struct scene_state scene_state;
-static const struct keypoint* keypoint = keypoint_points;
 static struct effect_parameters effect_parameters;
 
 static GLuint overlay_texture;
@@ -113,7 +112,8 @@ static stdcall bool update_keypoints(uint32_t time)
     // have to add a new mechanism to read them from the keypoints, or a lot of
     // additional points, both leading to way too much code.
 
-    const struct keypoint* next = keypoint + 1;
+    static const struct keypoint* current = keypoint_points;
+    const struct keypoint* next = current + 1;
 
     if (time > keypoint_points[sizeof(keypoint_points) / sizeof(struct keypoint) - 1].time)
     {
@@ -124,15 +124,15 @@ static stdcall bool update_keypoints(uint32_t time)
     {
         effect_parameters.skew_multiplier = MAX_SKEW;
 
-        keypoint += 1;
+        current += 1;
         next += 1;
     }
 
     const float time_factor =
-        (float)(time - keypoint->time) / (next->time - keypoint->time);
+        (float)(time - current->time) / (next->time - current->time);
 
     float* state = (float*)&scene_state;
-    float* origin = (float*)&keypoint->state;
+    float* origin = (float*)&current->state;
     float* destination = (float*)&next->state;
 
     for (int i = 0; i < sizeof(struct scene_state) / sizeof(float); i++)
@@ -140,7 +140,7 @@ static stdcall bool update_keypoints(uint32_t time)
         state[i] = origin[i] + (destination[i] - origin[i]) * time_factor;
     }
 
-    effect_parameters.skew_multiplier /= (time - keypoint->time) * SKEW_DECREASING_MULTIPLIER;
+    effect_parameters.skew_multiplier /= (time - current->time) * SKEW_DECREASING_MULTIPLIER;
 
     return true;
 }
