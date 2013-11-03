@@ -18,7 +18,7 @@ static const gnu_hash_t linker_dlopen_mode_hash = 0xf2cb98a2;
 // This is the hash-function used for gnu-style hash-tables in elf.
 // While it doesn't really matter what function we use -- we don't use the
 // hash-tables at all -- it should be fine
-static stdcall gnu_hash_t linker_gnu_hash(const char* s)
+static regparm gnu_hash_t linker_gnu_hash(const char* s)
 {
     gnu_hash_t h = 5381;
 
@@ -30,7 +30,7 @@ static stdcall gnu_hash_t linker_gnu_hash(const char* s)
     return h & 0xffffffff;
 }
 
-static stdcall const struct link_map* linker_map_for_library(const char* library)
+static regparm const struct link_map* linker_map_for_library(const char* library)
 {
     // assume the entry exists to save some bytes
     const struct link_map* map = _link_map;
@@ -45,7 +45,7 @@ static stdcall const struct link_map* linker_map_for_library(const char* library
     return map;
 }
 
-static stdcall const void* linker_get_table(const struct link_map* map, int type)
+static regparm const void* linker_get_table(const struct link_map* map, int type)
 {
     const ElfW(Dyn)* dyn = (const ElfW(Dyn)*)map->l_ld;
     while (dyn->d_tag != type)
@@ -61,7 +61,7 @@ static stdcall const void* linker_get_table(const struct link_map* map, int type
 // NVidias GL implementation is the one that made problems on my system.
 // Therefore, to avoid the size-overhead of implementing both, we keep it way
 // simpler here and just walk the symbol table to find symbols.
-static stdcall void* linker_lookup_symbol(const char* library, gnu_hash_t hash)
+static regparm void* linker_lookup_symbol(const char* library, gnu_hash_t hash)
 {
     // To keep the code short, we trust in the library to be loaded and finding
     // the symbol.
@@ -79,7 +79,7 @@ static stdcall void* linker_lookup_symbol(const char* library, gnu_hash_t hash)
     return (void*)(map->l_addr + symtab->st_value);
 }
 
-static stdcall void linker_load_library(const char* filename)
+static regparm void linker_load_library(const char* filename)
 {
     // Yay! Using internals of libc! Let's just cross fingers this won't change too fast :/
     void* (*__libc_dlopen_mode_fn)(const char*, int)

@@ -28,12 +28,12 @@ static SDL_AudioSpec sound_spec = {
     .callback = sound_callback
 };
 
-static stdcall void sound_initialize()
+static regparm void sound_initialize()
 {
     sdl_functions.SDL_OpenAudio(&sound_spec, NULL);
 }
 
-static stdcall void sound_play()
+static regparm void sound_play()
 {
     clib_clone((int (*)(void*))__4klang_render,
             sound_thread_stack + sizeof(sound_thread_stack),
@@ -42,7 +42,7 @@ static stdcall void sound_play()
     sdl_functions.SDL_PauseAudio(0);
 }
 
-static stdcall void sound_stop()
+static regparm void sound_stop()
 {
     sdl_functions.SDL_PauseAudio(1);
 }

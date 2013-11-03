@@ -28,21 +28,21 @@ static struct effect_parameters effect_parameters;
 
 static GLuint overlay_texture;
 
-static stdcall void setup_window()
+static regparm void setup_window()
 {
     sdl_functions.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
             SDL_OPENGL | (FULLSCREEN ? SDL_FULLSCREEN : 0));
     sdl_functions.SDL_ShowCursor(SDL_DISABLE);
 }
 
-static stdcall void cleanup()
+static regparm void cleanup()
 {
     // SDL_Quit crashes since main() is removed, but we need this call to reset
     // the screen resolution when running fullscreen
     sdl_functions.SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-static stdcall void create_overlay_texture(GLuint program)
+static regparm void create_overlay_texture(GLuint program)
 {
     gl_functions.glActiveTexture(GL_TEXTURE0);
     gl_functions.glBindTexture(GL_TEXTURE_2D, overlay_texture);
@@ -54,7 +54,7 @@ static stdcall void create_overlay_texture(GLuint program)
     gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-static stdcall void update_overlay_texture()
+static regparm void update_overlay_texture()
 {
     gl_functions.glActiveTexture(GL_TEXTURE0);
     gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8,
@@ -62,7 +62,7 @@ static stdcall void update_overlay_texture()
             0, GL_RED, GL_UNSIGNED_BYTE, console_buffer);
 }
 
-static stdcall bool exit_requested()
+static regparm bool exit_requested()
 {
     SDL_Event event;
     sdl_functions.SDL_PollEvent(&event);
@@ -80,7 +80,7 @@ static stdcall bool exit_requested()
     return false;
 }
 
-static stdcall void update_text(uint32_t time)
+static regparm void update_text(uint32_t time)
 {
     // Start one element ::before:: the first one, to have the first entry set.
     // This is fine, since we only access next, until it is incremented.
@@ -103,7 +103,7 @@ static stdcall void update_text(uint32_t time)
     }
 }
 
-static stdcall bool update_keypoints(uint32_t time)
+static regparm bool update_keypoints(uint32_t time)
 {
     // Transition to next keypoint is handled here.
     // This function also adds a short 'skew' every time a keypoint is reached.
@@ -145,7 +145,7 @@ static stdcall bool update_keypoints(uint32_t time)
     return true;
 }
 
-static stdcall void update_scene()
+static regparm void update_scene()
 {
     static bool done = false;
     static uint32_t initialization_time = 0;
@@ -176,7 +176,7 @@ static stdcall void update_scene()
     }
 }
 
-static stdcall void output_info()
+static regparm void output_info()
 {
 #ifdef OUTPUT_INFO
     static uint32_t time = 0;
@@ -199,7 +199,7 @@ static stdcall void output_info()
 #endif
 }
 
-static stdcall void mainloop(GLuint program)
+static regparm void mainloop(GLuint program)
 {
     GLuint position_location = gl_functions.glGetAttribLocation(program, uniform(in_position));
     GLuint texcoord_location = gl_functions.glGetAttribLocation(program, uniform(in_texcoord));

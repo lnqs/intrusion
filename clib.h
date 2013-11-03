@@ -5,8 +5,8 @@
 #include <sys/syscall.h>
 #include <linux/sched.h>
 
-// stdcall saves some bytes at some calls, just use it everywhere for simplicity
-#define stdcall __attribute__((stdcall))
+// regparm calls save some bytes at some calls, just use it everywhere for simplicity
+#define regparm __attribute__((regparm(3)))
 
 #define packed __attribute__((__packed__));
 
@@ -16,7 +16,7 @@
 // optimal than jumping to these functions implemented in pure asm in another
 // object.
 
-static stdcall void clib_exit(int code)
+static regparm void clib_exit(int code)
 {
     __asm__ volatile ("int $0x80"
                       :
@@ -24,7 +24,7 @@ static stdcall void clib_exit(int code)
                         "b" (code));
 }
 
-static stdcall void clib_clone(int (*fn)(void*), void* stack, int flags, void* data)
+static regparm void clib_clone(int (*fn)(void*), void* stack, int flags, void* data)
 {
     __asm__ volatile ("subl $4,%2\n"
                       "movl %4,(%2)\n"
@@ -44,7 +44,7 @@ static stdcall void clib_clone(int (*fn)(void*), void* stack, int flags, void* d
                         "r" (SYS_exit));
 }
 
-static stdcall void clib_inaccurate_memcpy(void* dest, const void* src, size_t n)
+static regparm void clib_inaccurate_memcpy(void* dest, const void* src, size_t n)
 {
     // To save some instructions, only full words are copied, rest is ignored.
     // Therefore inaccurate -- while this is perfectly fine for us. This
@@ -60,7 +60,7 @@ static stdcall void clib_inaccurate_memcpy(void* dest, const void* src, size_t n
                         "c" (n / 4));
 }
 
-static stdcall void clib_inaccurate_memset(void* dest, int c, size_t n)
+static regparm void clib_inaccurate_memset(void* dest, int c, size_t n)
 {
     // See clib_inaccurate_memcpy() for the 'inaccurate'
     __asm__ volatile ("cld\n"

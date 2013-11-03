@@ -33,7 +33,7 @@ static const gnu_hash_t sdl_functions_hashes[] = {
     0x42850c57  // SDL_PauseAudio
 };
 
-static stdcall void sdl_functions_initialize()
+static regparm void sdl_functions_initialize()
 {
     linker_load_library(sdl_functions_library);
 

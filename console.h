@@ -20,17 +20,17 @@ static bool console_texture_needs_upload = false;
 static const char* console_input_position = "";
 static uint32_t console_next_input_char_time = 0;
 
-static stdcall bool console_is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
+static regparm bool console_is_part_of_glyph(uint32_t glyph, size_t x, size_t y)
 {
     return (0x1 << (y * glyph_width + x)) & glyph;
 }
 
-static stdcall void console_set_pixel(size_t x, size_t y, uint8_t intensity)
+static regparm void console_set_pixel(size_t x, size_t y, uint8_t intensity)
 {
     console_buffer[y * OVERLAY_TEXTURE_WIDTH + x] = 0xff;
 }
 
-static stdcall void console_render_character(char c, size_t x, size_t y)
+static regparm void console_render_character(char c, size_t x, size_t y)
 {
     const uint32_t glyph = glyphs[c - glyphs_ascii_begin];
 
@@ -46,7 +46,7 @@ static stdcall void console_render_character(char c, size_t x, size_t y)
     }
 }
 
-static stdcall void console_add_character(char c)
+static regparm void console_add_character(char c)
 {
     if (c == '\n')
     {
@@ -72,7 +72,7 @@ static stdcall void console_add_character(char c)
 
 // Returns true, if the texture was changed (and has to be resend to GPU), false
 // if not.
-static stdcall bool console_update(uint32_t time)
+static regparm bool console_update(uint32_t time)
 {
     if (time == 0)
     {
@@ -92,13 +92,13 @@ static stdcall bool console_update(uint32_t time)
     return ret;
 }
 
-static stdcall void console_print_input(const char* text)
+static regparm void console_print_input(const char* text)
 {
     console_input_position = text;
     console_next_input_char_time = 0;
 }
 
-static stdcall void console_print_output(const char* text)
+static regparm void console_print_output(const char* text)
 {
     for (const char* c = text; *c != '\0'; c++)
     {

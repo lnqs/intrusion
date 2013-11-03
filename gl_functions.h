@@ -56,7 +56,7 @@ static const gnu_hash_t gl_functions_hashes[] = {
     0x233f3994  // glVertexAttrib2f
 };
 
-static stdcall void gl_functions_initialize()
+static regparm void gl_functions_initialize()
 {
     for (int i = 0; i < sizeof(gl_functions_hashes) / sizeof(gnu_hash_t); i++)
     {

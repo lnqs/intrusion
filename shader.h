@@ -6,7 +6,7 @@
 #include "vector.h"
 #include "gl_functions.h"
 
-static stdcall void shader_add_to_program(GLuint program, GLenum type, const GLchar* source)
+static regparm void shader_add_to_program(GLuint program, GLenum type, const GLchar* source)
 {
     GLuint shader = gl_functions.glCreateShader(type);
     gl_functions.glShaderSource(shader, 1, &source, NULL);
@@ -14,7 +14,7 @@ static stdcall void shader_add_to_program(GLuint program, GLenum type, const GLc
     gl_functions.glAttachShader(program, shader);
 }
 
-static stdcall GLuint shader_compile_program(
+static regparm GLuint shader_compile_program(
         const char* vertex_source, const char* fragment_source)
 {
     GLuint program = gl_functions.glCreateProgram();
@@ -24,21 +24,21 @@ static stdcall GLuint shader_compile_program(
     return program;
 }
 
-static stdcall void shader_uniform_int(
+static regparm void shader_uniform_int(
         GLuint program, const char* identifier, int value)
 {
     GLint location = gl_functions.glGetUniformLocation(program, identifier);
     gl_functions.glUniform1i(location, value);
 }
 
-static stdcall void shader_uniform_vector3(
+static regparm void shader_uniform_vector3(
         GLuint program, const char* identifier, const vector3 value)
 {
     GLint location = gl_functions.glGetUniformLocation(program, identifier);
     gl_functions.glUniform3fv(location, 1, value);
 }
 
-static stdcall void shader_uniform_matrix3(
+static regparm void shader_uniform_matrix3(
         GLuint program, const char* identifier, const matrix3 value)
 {
     GLint location = gl_functions.glGetUniformLocation(program, identifier);
