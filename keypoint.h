@@ -22,254 +22,254 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 0 * 1000,
         .state = {
-            .position = { 0.00, 0.00, 4.30 },
+            .position = { 0.00f, 0.00f, 4.30f },
             .orientation = {
-                {  0.00,  0.00,  0.00 },
-                {  0.00,  0.00,  0.00 },
-                {  0.00,  0.00,  0.00 }
+                {  0.00f,  0.00f,  0.00f },
+                {  0.00f,  0.00f,  0.00f },
+                {  0.00f,  0.00f,  0.00f }
             },
-            .box_scale = 0.0,
-            .box_radius = 0.0,
-            .sphere_radius = 0.0,
+            .box_scale = 0.0f,
+            .box_radius = 0.0f,
+            .sphere_radius = 0.0f,
         }
     },
     {
         .time = 3 * 1000,
         .state = {
-            .position = { 0.00, 0.00, 4.30 },
+            .position = { 0.00f, 0.00f, 4.30f },
             .orientation = {
-                {  0.00,  0.00,  0.00 },
-                {  0.00,  0.00,  0.00 },
-                {  0.00,  0.00,  0.00 }
+                {  0.00f,  0.00f,  0.00f },
+                {  0.00f,  0.00f,  0.00f },
+                {  0.00f,  0.00f,  0.00f }
             },
-            .box_scale = 0.0,
-            .box_radius = 0.0,
-            .sphere_radius = 0.0,
+            .box_scale = 0.0f,
+            .box_radius = 0.0f,
+            .sphere_radius = 0.0f,
         }
     },
     {
         .time = 13 * 1000,
         .state = {
-            .position = { 0.23, -5.74, 7.96 },
+            .position = { 0.23f, -5.74f, 7.96f },
             .orientation = {
-                {  0.96, -0.04,  0.26 },
-                {  0.24,  0.54, -0.80 },
-                { -0.11,  0.83,  0.53 }
+                {  0.96f, -0.04f,  0.26f },
+                {  0.24f,  0.54f, -0.80f },
+                { -0.11f,  0.83f,  0.53f }
             },
-            .box_scale = -5.0,
-            .box_radius = 4.0,
-            .sphere_radius = 3.0
+            .box_scale = -5.0f,
+            .box_radius = 4.0f,
+            .sphere_radius = 3.0f
         }
     },
     {
         .time = 20 * 1000,
         .state = {
-            .position = { 2.51, -4.36, 6.77 },
+            .position = { 2.51f, -4.36f, 6.77f },
             .orientation = {
-                {  0.60, -0.00, -0.17 },
-                {  0.26,  0.03, -0.54 },
-                { -0.39,  0.41,  0.34 }
+                {  0.60f, -0.00f, -0.17f },
+                {  0.26f,  0.03f, -0.54f },
+                { -0.39f,  0.41f,  0.34f }
             },
-            .box_scale = -4.1,
-            .box_radius = 3.6,
-            .sphere_radius = 2.2
+            .box_scale = -4.1f,
+            .box_radius = 3.6f,
+            .sphere_radius = 2.2f
         }
     },
     {
         .time = 30 * 1000,
         .state = {
-            .position = { 5.09, -1.66, 5.23 },
+            .position = { 5.09f, -1.66f, 5.23f },
             .orientation = {
-                { -0.03,  0.08, -0.99 },
-                {  0.35, -0.92, -0.09 },
-                { -0.93, -0.35,  0.00 }
+                { -0.03f,  0.08f, -0.99f },
+                {  0.35f, -0.92f, -0.09f },
+                { -0.93f, -0.35f,  0.00f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = 0.75
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = 0.75f
         }
     },
     {
         .time = 40 * 1000,
         .state = {
-            .position = { 5.06, 3.74, 5.29 },
+            .position = { 5.06f, 3.74f, 5.29f },
             .orientation = {
-                { -0.30,  0.93, -0.08 },
-                {  0.04, -0.06, -0.98 },
-                { -0.94, -0.31, -0.01 }
+                { -0.30f,  0.93f, -0.08f },
+                {  0.04f, -0.06f, -0.98f },
+                { -0.94f, -0.31f, -0.01f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = 0.75
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = 0.75f
         }
     },
     {
         .time = 50 * 1000,
         .state = {
-            .position = { 5.08, 8.65, 5.31 },
+            .position = { 5.08f, 8.65f, 5.31f },
             .orientation = {
-                { -0.02,  0.85, 0.47 },
-                { -0.69, -0.34, 0.60 },
-                {  0.71, -0.32, 0.60 }
+                { -0.02f,  0.85f, 0.47f },
+                { -0.69f, -0.34f, 0.60f },
+                {  0.71f, -0.32f, 0.60f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = 0.75
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = 0.75f
         }
     },
     {
         .time = 60 * 1000,
         .state = {
-            .position = { 0.33, 7.38, -1.03 },
+            .position = { 0.33f, 7.38f, -1.03f },
             .orientation = {
-                { 0.54,  0.76,  0.23 },
-                { 0.17, -0.38,  0.86 },
-                { 0.77, -0.44, -0.37 }
+                { 0.54f,  0.76f,  0.23f },
+                { 0.17f, -0.38f,  0.86f },
+                { 0.77f, -0.44f, -0.37f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 70 * 1000,
         .state = {
-            .position = { -0.24, 5.19, -0.57 },
+            .position = { -0.24f, 5.19f, -0.57f },
             .orientation = {
-                { -0.04 , 0.90, -0.31 },
-                {  0.93, -0.02, -0.19 },
-                { -0.21, -0.31, -0.88 }
+                { -0.04f,  0.90f, -0.31f },
+                {  0.93f, -0.02f, -0.19f },
+                { -0.21f, -0.31f, -0.88f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 80 * 1000,
         .state = {
-            .position = { -0.14, 3.67, 0.15 },
+            .position = { -0.14f, 3.67f, 0.15f },
             .orientation = {
-                { -0.04,  0.94, -0.05 },
-                {  0.11, -0.04, -0.93 },
-                { -0.94, -0.04, -0.09 }
+                { -0.04f,  0.94f, -0.05f },
+                {  0.11f, -0.04f, -0.93f },
+                { -0.94f, -0.04f, -0.09f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 90 * 1000,
         .state = {
-            .position = { -0.25, 3.33, -0.70 },
+            .position = { -0.25f, 3.33f, -0.70f },
             .orientation = {
-                {  0.01,  0.93,  0.17 },
-                { -0.94,  0.02, -0.05 },
-                { -0.03, -0.17,  0.93 }
+                {  0.01f,  0.93f,  0.17f },
+                { -0.94f,  0.02f, -0.05f },
+                { -0.03f, -0.17f,  0.93f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 100 * 1000,
         .state = {
-            .position = { -0.40, 3.62, -2.33 },
+            .position = { -0.40f, 3.62f, -2.33f },
             .orientation = {
-                { -0.05,  0.91,  0.24 },
-                { -0.73,  0.11, -0.59 },
-                { -0.58, -0.21,  0.71 }
+                { -0.05f,  0.91f,  0.24f },
+                { -0.73f,  0.11f, -0.59f },
+                { -0.58f, -0.21f,  0.71f }
             },
-            .box_scale = -2.5,
-            .box_radius = 3.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 3.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 110 * 1000,
         .state = {
-            .position = { -0.69, 3.02, -3.72 },
+            .position = { -0.69f, 3.02f, -3.72f },
             .orientation = {
-                { -0.14,  0.65, -0.67 },
-                {  0.18, -0.64, -0.67 },
-                { -0.92, -0.21, -0.01 }
+                { -0.14f,  0.65f, -0.67f },
+                {  0.18f, -0.64f, -0.67f },
+                { -0.92f, -0.21f, -0.01f }
             },
-            .box_scale = -2.5,
-            .box_radius = 2.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 2.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 120 * 1000,
         .state = {
-            .position = { -1.05, 2.77, -4.57 },
+            .position = { -1.05f, 2.77f, -4.57f },
             .orientation = {
-                {  0.50,  0.79, -0.05 },
-                {  0.78, -0.49, -0.11 },
-                { -0.15,  0.02, -0.92 }
+                {  0.50f,  0.79f, -0.05f },
+                {  0.78f, -0.49f, -0.11f },
+                { -0.15f,  0.02f, -0.92f }
             },
-            .box_scale = -2.5,
-            .box_radius = 2.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 2.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 130 * 1000,
         .state = {
-            .position = { -1.33, -0.22, -4.94 },
+            .position = { -1.33f, -0.22f, -4.94f },
             .orientation = {
-                { -0.02,  0.66, -0.66 },
-                {  0.93, -0.01, -0.06 },
-                { -0.07, -0.66, -0.65 }
+                { -0.02f,  0.66f, -0.66f },
+                {  0.93f, -0.01f, -0.06f },
+                { -0.07f, -0.66f, -0.65f }
             },
-            .box_scale = -2.5,
-            .box_radius = 2.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 2.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 140 * 1000,
         .state = {
-            .position = { -0.88, -0.14, -3.26 },
+            .position = { -0.88f, -0.14f, -3.26f },
             .orientation = {
-                { -0.01,  0.89,  0.28 },
-                {  0.93,  0.02, -0.00 },
-                { -0.03,  0.28, -0.89 }
+                { -0.01f,  0.89f,  0.28f },
+                {  0.93f,  0.02f, -0.00f },
+                { -0.03f,  0.28f, -0.89f }
             },
-            .box_scale = -2.5,
-            .box_radius = 2.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 2.0f,
+            .sphere_radius = -2.0f
         }
     },
     {
         .time = 150 * 1000,
         .state = {
-            .position = { -2.48, -0.08, -1.67 },
+            .position = { -2.48f, -0.08f, -1.67f },
             .orientation = {
-                { -0.03, 0.85,  0.39 },
-                {  0.93, 0.03,  0.00 },
-                { -0.03, 0.39, -0.85 }
+                { -0.03f, 0.85f,  0.39f },
+                {  0.93f, 0.03f,  0.00f },
+                { -0.03f, 0.39f, -0.85f }
             },
-            .box_scale = -2.5,
-            .box_radius = 2.0,
-            .sphere_radius = -2.0
+            .box_scale = -2.5f,
+            .box_radius = 2.0f,
+            .sphere_radius = -2.0f
         }
     },
 
     {
         .time = 160 * 1000,
         .state = {
-            .position = { -2.48, -0.08, -1.67 },
+            .position = { -2.48f, -0.08f, -1.67f },
             .orientation = {
-                {  0.00,  0.00,  0.00 },
-                {  0.00,  0.00,  0.00 },
-                {  0.00,  0.00,  0.00 }
+                {  0.00f,  0.00f,  0.00f },
+                {  0.00f,  0.00f,  0.00f },
+                {  0.00f,  0.00f,  0.00f }
             },
-            .box_scale = 0.0,
-            .box_radius = 0.0,
-            .sphere_radius = 0.0
+            .box_scale = 0.0f,
+            .box_radius = 0.0f,
+            .sphere_radius = 0.0f
         }
     }
 };

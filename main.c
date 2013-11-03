@@ -218,14 +218,14 @@ static stdcall void mainloop(GLuint program)
         shader_uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
 
         gl_functions.glBegin(GL_QUADS);
-        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0);
-        gl_functions.glVertexAttrib2f(texcoord_location, 1.0, 1.0);
-        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0);
-        gl_functions.glVertexAttrib2f(texcoord_location, 1.0, 0.0);
-        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0);
-        gl_functions.glVertexAttrib2f(texcoord_location, 0.0, 0.0);
-        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0);
-        gl_functions.glVertexAttrib2f(texcoord_location, 0.0, 1.0);
+        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0f);
+        gl_functions.glVertexAttrib2f(texcoord_location, 1.0f, 1.0f);
+        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0f);
+        gl_functions.glVertexAttrib2f(texcoord_location, 1.0f, 0.0f);
+        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0f);
+        gl_functions.glVertexAttrib2f(texcoord_location, 0.0f, 0.0f);
+        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0f);
+        gl_functions.glVertexAttrib2f(texcoord_location, 0.0f, 1.0f);
         gl_functions.glEnd();
 
         gl_functions.glUseProgram(program);
