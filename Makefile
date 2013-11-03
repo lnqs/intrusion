@@ -26,7 +26,7 @@ COMPRESSED = intrusion
 all: $(COMPRESSED)
 
 $(COMPRESSED): $(EXECUTABLE)
-	echo '#!/bin/sh\ndd if="$$0" bs=1 skip=69|unxz>i;chmod +x i;./i;rm -f i;exit' > $@
+	echo '#!/bin/sh\ntail -n+3 "$$0"|unxz>i;chmod +x i;./i;rm -f i;exit' > $@
 	xz -c5 --format=lzma $< >> $@
 	chmod +x $@
 
