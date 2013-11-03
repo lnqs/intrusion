@@ -12,7 +12,7 @@
 // We use OpenGL to implicitly resize the text, therefore this defines the
 // text-scale. This is NOT relative to the window-size, since the size of the
 // letters isn't, but should have the same ratio
-#define OVERLAY_TEXTURE_WIDTH 512
+#define OVERLAY_TEXTURE_WIDTH 600
 #define OVERLAY_TEXTURE_HEIGHT ((int)(OVERLAY_TEXTURE_WIDTH / WINDOW_RATIO))
 
 #define MAX_SKEW 0.75

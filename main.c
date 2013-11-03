@@ -93,7 +93,7 @@ static stdcall void update_text(uint32_t time)
         current += 1;
         next += 1;
 
-        if (current->type == INPUT)
+        if (current->type == CONSOLE_TEXT_TYPE_INPUT)
         {
             console_print_input(current->text);
         }

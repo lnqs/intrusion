@@ -13,11 +13,9 @@ struct keypoint
 
 struct keypoint_text
 {
-    enum type { INPUT, OUTPUT };
-
     uint32_t time;
     const char* text;
-    enum type type;
+    enum console_text_type type;
 } packed;
 
 static const struct keypoint keypoint_points[] = {
@@ -281,127 +279,127 @@ static const struct keypoint_text keypoint_texts[] =
     {
         .time = 0 * 1000,
         .text = _("intrusion 0.13.1 loaded\n> "),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 2 * 1000,
         .text = _("connect\n"),
-        .type = INPUT
+        .type = CONSOLE_TEXT_TYPE_INPUT
     },
     {
         .time = 3 * 1000,
         .text = _("connecting...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 13 * 1000,
         .text = _("done\n> "),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 18 * 1000,
         .text = _("sysenter\n"),
-        .type = INPUT
+        .type = CONSOLE_TEXT_TYPE_INPUT
     },
     {
         .time = 20 * 1000,
         .text = _("searching entrypoint...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 58 * 1000,
         .text = _("entering...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 81 * 1000,
         .text = _("done\n> "),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 88 * 1000,
         .text = _("locate sg-245\n"),
-        .type = INPUT
+        .type = CONSOLE_TEXT_TYPE_INPUT
     },
     {
         .time = 89 * 1000,
         .text = _("searching data...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 100 * 1000,
         .text = _("trace detected!\nsearching data...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 105 * 1000,
         .text = _("trace distance 25%\nsearching data...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 120 * 1000,
         .text = _("trace distance 50%\nsearching data...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 124 * 1000,
         .text = _("^C\n> "),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 126 * 1000,
         .text = _("evade\n"),
-        .type = INPUT
+        .type = CONSOLE_TEXT_TYPE_INPUT
     },
     {
         .time = 128 * 1000,
         .text = _("evading tracer...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 132 * 1000,
         .text = _("trace distance 25%\nevading tracer...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 138 * 1000,
         .text = _("trace distance 50%\nevading tracer...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 140 * 1000,
         .text = _("trace distance 75%\nevading tracer...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 145 * 1000,
         .text = _("trace distance 90%\nevading tracer...\n"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 148 * 1000,
         .text = _("^C\n> "),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 150 * 1000,
         .text = _("disconnect\n"),
-        .type = INPUT
+        .type = CONSOLE_TEXT_TYPE_INPUT
     },
     {
         .time = 156 * 1000,
         .text = _("done\n> "),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     },
     {
         .time = 158 * 1000,
         .text = _("fuck it\n"),
-        .type = INPUT
+        .type = CONSOLE_TEXT_TYPE_INPUT
     },
     {
         .time = 159 * 1000,
         .text = _("command not found"),
-        .type = OUTPUT
+        .type = CONSOLE_TEXT_TYPE_OUTPUT
     }
 };
 

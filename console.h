@@ -5,6 +5,12 @@
 #include "clib.h"
 #include "glyphs.h"
 
+enum console_text_type
+{
+    CONSOLE_TEXT_TYPE_INPUT,
+    CONSOLE_TEXT_TYPE_OUTPUT
+};
+
 static uint8_t console_buffer[OVERLAY_TEXTURE_WIDTH * OVERLAY_TEXTURE_HEIGHT];
 static size_t console_current_x = 0;
 static size_t console_current_y = 0;
