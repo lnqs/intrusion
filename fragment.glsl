@@ -62,7 +62,7 @@ void main()
 {
     out_color = vec3(texture2D(uf_text_texture, texcoord).r);
 
-    if (out_color.r == 0.0 && int(mod(gl_FragCoord.y, 2.0)) == 0)
+    if (out_color.r == 0.0 && int(mod(gl_FragCoord.y, 3.0)) == 0)
     {
         // Since the following line of code isn't really readable -- it's the same as this
         //     float skew = rand(gl_FragCoord.xy) * uf_effect_params.x + 1.0 - uf_effect_params.x;
