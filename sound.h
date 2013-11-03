@@ -42,5 +42,10 @@ static stdcall void sound_play()
     sdl_functions.SDL_PauseAudio(0);
 }
 
+static stdcall void sound_stop()
+{
+    sdl_functions.SDL_PauseAudio(1);
+}
+
 #endif
 

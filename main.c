@@ -145,26 +145,35 @@ static stdcall bool update_keypoints(uint32_t time)
     return true;
 }
 
-static stdcall bool update_scene()
+static stdcall void update_scene()
 {
+    static bool done = false;
     static uint32_t initialization_time = 0;
 
-    if (initialization_time == 0)
+    if (!done)
     {
-        initialization_time = sdl_functions.SDL_GetTicks();
+        if (initialization_time == 0)
+        {
+            initialization_time = sdl_functions.SDL_GetTicks();
+        }
+
+        // +1 to prevent divisions by zero
+        uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
+
+        update_text(time);
+
+        if (console_update(time))
+        {
+            update_overlay_texture();
+        }
+
+        done = !update_keypoints(time);
+
+        if (done)
+        {
+            sound_stop();
+        }
     }
-
-    // +1 to prevent divisions by zero
-    uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
-
-    update_text(time);
-
-    if (console_update(time))
-    {
-        update_overlay_texture();
-    }
-
-    return update_keypoints(time);
 }
 
 static stdcall void output_info()
@@ -195,9 +204,10 @@ static stdcall void mainloop(GLuint program)
     GLuint position_location = gl_functions.glGetAttribLocation(program, uniform(in_position));
     GLuint texcoord_location = gl_functions.glGetAttribLocation(program, uniform(in_texcoord));
 
-    while (!exit_requested() && update_scene())
+    while (!exit_requested())
     {
         output_info();
+        update_scene();
 
         shader_uniform_vector3(program, uniform(uf_cam_position), scene_state.position);
         shader_uniform_matrix3(program, uniform(uf_cam_orientation), scene_state.orientation);
