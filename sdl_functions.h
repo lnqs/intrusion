@@ -37,7 +37,7 @@ static regparm void sdl_functions_initialize()
 {
     linker_load_library(sdl_functions_library);
 
-    for (int i = 0; i < sizeof(sdl_functions_hashes) / sizeof(gnu_hash_t); i++)
+    for (int i = 0; i < array_size(sdl_functions_hashes); i++)
     {
         ((void**)&sdl_functions)[i] = linker_lookup_symbol(
             sdl_functions_library, sdl_functions_hashes[i]);

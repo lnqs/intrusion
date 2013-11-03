@@ -115,7 +115,7 @@ static regparm bool update_keypoints(uint32_t time)
     static const struct keypoint* current = keypoint_points;
     const struct keypoint* next = current + 1;
 
-    if (time > keypoint_points[sizeof(keypoint_points) / sizeof(struct keypoint) - 1].time)
+    if (time > keypoint_points[array_size(keypoint_points) - 1].time)
     {
         return false;
     }

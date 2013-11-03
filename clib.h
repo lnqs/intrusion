@@ -8,7 +8,9 @@
 // regparm calls save some bytes at some calls, just use it everywhere for simplicity
 #define regparm __attribute__((regparm(3)))
 
-#define packed __attribute__((__packed__));
+#define packed __attribute__((packed))
+
+#define array_size(x) (sizeof(x) / sizeof(*x))
 
 // Implementing these functions here is smaller than jumping to the libc-ones.
 // Also, even though the compiler generates some overhead for the input-registers,

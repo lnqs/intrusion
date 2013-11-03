@@ -58,7 +58,7 @@ static const gnu_hash_t gl_functions_hashes[] = {
 
 static regparm void gl_functions_initialize()
 {
-    for (int i = 0; i < sizeof(gl_functions_hashes) / sizeof(gnu_hash_t); i++)
+    for (int i = 0; i < array_size(gl_functions_hashes); i++)
     {
         ((void**)&gl_functions)[i] =
             linker_lookup_symbol(&gl_functions_library, gl_functions_hashes[i]);
