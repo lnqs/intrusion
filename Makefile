@@ -40,7 +40,7 @@ $(SHADER_HEADER): $(SHADERS_PREPROCESSED)
 	sed -i 's/glsl_i/glsl/g' $@
 
 $(GLYPHS_HEADER): $(GLYPHS_IMAGE) $(SOURCES) $(HEADERS)
-	$(BUILD_GLYPHS) $^ > $@
+	$(BUILD_GLYPHS) $^ $@
 
 %.glsl.i: %.glsl
 	$(CPP) -C -P $< > $@

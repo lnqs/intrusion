@@ -8,6 +8,7 @@
 # to stdout, in form of an array in a C-headerfile.
 
 import sys
+import re
 from sets import Set
 from mako.template import Template
 from PIL import Image
@@ -20,8 +21,8 @@ START_ASCII_CODE = 32
 END_ASCII_CODE = 126
 
 OUTPUT_TEMPLATE = '''
-#ifndef GLYPHS_H
-#define GLYPHS_H
+#ifndef ${guard}
+#define ${guard}
 
 typedef ${glyph_ctype} glyph_t;
 
@@ -87,25 +88,28 @@ def get_used_letters(source_files):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print 'usage: {} IMAGE_FILE SOURCE_FILE [SOURCE_FILE ...]' \
+    if len(sys.argv) < 4:
+        print 'usage: {} IMAGE_FILE SOURCE_FILE [SOURCE_FILE ...] OUTPUT_FILE' \
             .format(sys.argv[0])
         sys.exit(1)
 
     image_file = sys.argv[1]
-    source_files = sys.argv[2:]
+    source_files = sys.argv[2:-1]
+    output_file = sys.argv[-1]
 
     used_letters = get_used_letters(source_files)
     glyphs = {c: encode_image(i)
               if c in used_letters else 0x0
               for (c, i) in get_glyphs(image_file)}
 
-    print Template(OUTPUT_TEMPLATE).render(
-        glyph_ctype=GLYPH_CTYPE,
-        glyphs_ascii_begin=START_ASCII_CODE,
-        glyphs_ascii_end=END_ASCII_CODE,
-        glyph_width=SCALE_X,
-        glyph_height=SCALE_Y,
-        glyphs=[(c, '0x{:0{}x}'.format(
-            g, 2 * GLYPH_CTYPE_LENGTH))
-            for (c, g) in sorted(glyphs.iteritems())])
+    with open(output_file, 'w') as f:
+        f.write(Template(OUTPUT_TEMPLATE).render(
+            guard=re.sub('[^A-Z]', '_', output_file.upper()),
+            glyph_ctype=GLYPH_CTYPE,
+            glyphs_ascii_begin=START_ASCII_CODE,
+            glyphs_ascii_end=END_ASCII_CODE,
+            glyph_width=SCALE_X,
+            glyph_height=SCALE_Y,
+            glyphs=[(c, '0x{:0{}x}'.format(
+                g, 2 * GLYPH_CTYPE_LENGTH))
+                for (c, g) in sorted(glyphs.iteritems())]))
