@@ -5,6 +5,8 @@
 #include "clib.h"
 #include "glyphs.h"
 
+extern char _some_null; // provided by linker-script
+
 enum console_text_type
 {
     CONSOLE_TEXT_TYPE_INPUT,
@@ -17,7 +19,7 @@ static size_t console_current_y = 0;
 
 static bool console_texture_needs_upload = false;
 
-static const char* console_input_position = "";
+static const char* console_input_position = &_some_null;
 static uint32_t console_next_input_char_time = 0;
 
 static regparm bool console_is_part_of_glyph(uint32_t glyph, size_t x, size_t y)

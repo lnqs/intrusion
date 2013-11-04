@@ -12,6 +12,7 @@ SECTIONS
     PROVIDE (_libc_filename = LOADADDR(.dynstr) + 1);
     /* Yay! screw_elf_header.py writes us strings to the elf-header, define symbols for them here! */
     PROVIDE (gl_functions_library = __executable_start + 46);
+    PROVIDE (_some_null = __executable_start + 4);
 
     . = SEGMENT_START("text-segment", 0x08048000) + SIZEOF_HEADERS;
 
