@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# Hashes the string passed as argument with the gnu hash-table hash-algorithm
-# and prints the hash. This has is used for symbol-lookups by linker.h.
+'''
+Hashes the string passed as argument with the gnu hash-table hash-algorithm
+and prints the hash. This has is used for symbol-lookups by linker.h.'''
 
 import sys
 

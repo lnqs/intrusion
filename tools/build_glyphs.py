@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-# This script takes an image file (anything PIL can read) and reads chunks of
-# 4 * 8 pixels from it, treating these as rasterized letters.
-# It expects the image to cover the ASCII-characters from 32 till 126.
-# Then, each letter it finds in the source, that is used in a string included
-# in _(), is encoded as bitmap in an int, and all of them are written
-# to stdout, in form of an array in a C-headerfile.
+'''
+This script takes an image file (anything PIL can read) and reads chunks of
+4 * 8 pixels from it, treating these as rasterized letters.
+It expects the image to cover the ASCII-characters from 32 till 126.
+Then, each letter it finds in the source, that is used in a string included
+in _(), is encoded as bitmap in an int, and all of them are written
+in form of an array to a C-headerfile.'''
 
 import sys
 import re

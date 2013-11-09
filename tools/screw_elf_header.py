@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-# This script does nasty stuff with the elf-header of our binary.
-# It sets bytes the kernel doesn't care about to zero for better compression
-# or puts strings used by the C code to it :o)
-# The offset and strings are hardcoded here. Keep in mind to update the
-# linker-script, when changing something about the strings!
+'''
+This script does nasty stuff with the elf-header of our binary.
+It sets bytes the kernel doesn't care about to zero for better compression
+or puts strings used by the C code to it :o)
+The offset and strings are hardcoded here. Keep in mind to update the
+linker-script, when changing something about the strings!'''
 
 import sys
 

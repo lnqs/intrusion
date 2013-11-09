@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 
-# Quite stupid script to find the best section-ordering for optimal
-# compression.
-# To do this, it takes a linkerscript with special comments and tries
-# to build all possible combinations, while searching for the smallest one.
-# Caution: It expects a section-definition to be one line!
+'''
+Quite stupid script to find the best section-ordering for optimal
+compression.
+To do this, it takes a linkerscript with special comments and tries
+to build all possible combinations, while searching for the smallest one.
+Caution: It expects a section-definition to be one line!
 
-# This script isn't ran automatically by Makefile, since it takes way too much
-# time (5 hours on my machine on a tmpfs. Some parallelization would be nice,
-# but, well, I'm too lazy).
+This script isn't ran automatically by Makefile, since it takes way too much
+time (5 hours on my machine on a tmpfs. Some parallelization would be nice,
+but, well, I'm too lazy).'''
 
 import sys
 import os
