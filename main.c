@@ -14,17 +14,7 @@
 #include "keypoint.h"
 #include "shader_code.h"
 
-// While we only one float here, we make it three continous one to be able to
-// pass it as vec3 to the shader.
-// This way, we don't need to import another glUniform*-call.
-struct effect_parameters
-{
-    float skew_multiplier;
-    float ignore[2];
-} packed;
-
 static struct scene_state scene_state;
-static struct effect_parameters effect_parameters;
 
 static regparm void setup_window()
 {
@@ -96,11 +86,6 @@ static regparm void update_text(uint32_t time)
 static regparm bool update_keypoints(uint32_t time)
 {
     // Transition to next keypoint is handled here.
-    // This function also adds a short 'skew' every time a keypoint is reached.
-    // Handling it this 'magic' way sucks, it would be nicer to have it as part
-    // of the keypoint-definition, but since it's only a short effect, we would
-    // have to add a new mechanism to read them from the keypoints, or a lot of
-    // additional points, both leading to way too much code.
 
     static const struct keypoint* current = keypoint_points;
     const struct keypoint* next = current + 1;
@@ -112,8 +97,6 @@ static regparm bool update_keypoints(uint32_t time)
 
     if (time > next->time)
     {
-        effect_parameters.skew_multiplier = MAX_SKEW;
-
         current += 1;
         next += 1;
     }
@@ -129,8 +112,6 @@ static regparm bool update_keypoints(uint32_t time)
     {
         state[i] = origin[i] + (destination[i] - origin[i]) * time_factor;
     }
-
-    effect_parameters.skew_multiplier /= (time - current->time) * SKEW_DECREASING_MULTIPLIER;
 
     return true;
 }
@@ -205,7 +186,6 @@ static regparm void mainloop(GLuint program)
         // we just treat them as vector to save some bytes.
         // It looks the same in memory anyway.
         shader_uniform_vector3(program, uniform(uf_fractal_params), (float*)&scene_state.box_scale);
-        shader_uniform_vector3(program, uniform(uf_effect_params), (float*)&effect_parameters);
 
         gl_functions.glBegin(GL_QUADS);
         gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0f);
