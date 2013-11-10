@@ -8,8 +8,8 @@ in vec2 texcoord;
 
 out vec3 out_color;
 
-uniform vec3 uf_cam_position;
 uniform mat3 uf_cam_orientation;
+uniform vec3 uf_cam_position;
 uniform vec3 uf_fractal_params; // box_scale, box_radius, sphere_radius
 uniform vec3 uf_effect_params; // only .x is used, for the 'skew-multiplier'
 
