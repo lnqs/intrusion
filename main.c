@@ -42,14 +42,12 @@ static regparm void cleanup()
 
 static regparm void create_overlay_texture(GLuint program)
 {
-    gl_functions.glActiveTexture(GL_TEXTURE0);
     shader_uniform_int(program, uniform(uf_text_texture), 0);
     gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
 static regparm void update_overlay_texture()
 {
-    gl_functions.glActiveTexture(GL_TEXTURE0);
     gl_functions.glTexImage2D(GL_TEXTURE_2D, 0, GL_R8,
             OVERLAY_TEXTURE_WIDTH, OVERLAY_TEXTURE_HEIGHT,
             0, GL_RED, GL_UNSIGNED_BYTE, console_buffer);
