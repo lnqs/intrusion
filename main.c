@@ -26,8 +26,6 @@ struct effect_parameters
 static struct scene_state scene_state;
 static struct effect_parameters effect_parameters;
 
-static GLuint overlay_texture;
-
 static regparm void setup_window()
 {
     sdl_functions.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
@@ -45,13 +43,8 @@ static regparm void cleanup()
 static regparm void create_overlay_texture(GLuint program)
 {
     gl_functions.glActiveTexture(GL_TEXTURE0);
-    gl_functions.glBindTexture(GL_TEXTURE_2D, overlay_texture);
-    gl_functions.glGenTextures(1, &overlay_texture);
-
     shader_uniform_int(program, uniform(uf_text_texture), 0);
-
     gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 static regparm void update_overlay_texture()

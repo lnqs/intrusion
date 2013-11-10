@@ -21,8 +21,6 @@ static struct
     void GLAPIENTRY (*glLinkProgram)(GLuint);
     void GLAPIENTRY (*glUseProgram)(GLuint);
     void GLAPIENTRY (*glActiveTexture)(GLenum);
-    void GLAPIENTRY (*glBindTexture)(GLenum, GLuint);
-    void GLAPIENTRY (*glGenTextures)(GLsizei, GLuint*);
     void GLAPIENTRY (*glTexImage2D)(GLenum, GLint, GLint, GLsizei, GLsizei, GLint, GLenum, GLenum, const GLvoid*);
     void GLAPIENTRY (*glTexParameteri)(GLenum, GLenum, GLint);
     GLint GLAPIENTRY (*glGetUniformLocation)(GLuint, const GLchar*);
@@ -44,8 +42,6 @@ static const gnu_hash_t gl_functions_hashes[] = {
     0x2fed8c1e, // glLinkProgram
     0x4f3ddefd, // glUseProgram
     0x9357fc85, // glActiveTexture
-    0x9ac194a6, // glBindTexture
-    0xa9f1b516, // glGenTextures
     0x4dc8e382, // glTexImage2D
     0xf4dfe433, // glTexParameteri
     0x4c1fa891, // glGetUniformLocation
