@@ -13,7 +13,7 @@
 #define uf_cam_orientation b
 #define uf_fractal_params c
 #define uf_effect_params d
-#define uf_text_texture e
+#define uf_overlay_texture e
 
 #define in_position f
 #define in_texcoord g

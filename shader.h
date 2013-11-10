@@ -24,13 +24,6 @@ static regparm GLuint shader_compile_program(
     return program;
 }
 
-static regparm void shader_uniform_int(
-        GLuint program, const char* identifier, int value)
-{
-    GLint location = gl_functions.glGetUniformLocation(program, identifier);
-    gl_functions.glUniform1i(location, value);
-}
-
 static regparm void shader_uniform_vector3(
         GLuint program, const char* identifier, const vector3 value)
 {

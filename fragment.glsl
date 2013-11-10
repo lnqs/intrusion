@@ -12,7 +12,12 @@ uniform vec3 uf_cam_position;
 uniform mat3 uf_cam_orientation;
 uniform vec3 uf_fractal_params; // box_scale, box_radius, sphere_radius
 uniform vec3 uf_effect_params; // only .x is used, for the 'skew-multiplier'
-uniform sampler2D uf_text_texture;
+
+// This is never set in the CPU-code, to save some code. Some searching on the
+// internet gave me the impression, that it is reliable initialized to the first
+// unit implicitly, but, well, I didn't find a clear statement. So let's just
+// cross fingers.
+uniform sampler2D uf_overlay_texture;
 
 
 // mutilated version of Marsaglia's MWC random number generator
@@ -60,7 +65,7 @@ int find_intersection(in vec3 ray_origin, in vec3 ray_direction)
 
 void main()
 {
-    out_color = vec3(texture2D(uf_text_texture, texcoord).r);
+    out_color = vec3(texture2D(uf_overlay_texture, texcoord).r);
 
     if (out_color.r == 0.0 && int(mod(gl_FragCoord.y, 3.0)) == 0)
     {

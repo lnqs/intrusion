@@ -40,9 +40,8 @@ static regparm void cleanup()
     sdl_functions.SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-static regparm void create_overlay_texture(GLuint program)
+static regparm void create_overlay_texture()
 {
-    shader_uniform_int(program, uniform(uf_text_texture), 0);
     gl_functions.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
@@ -234,7 +233,7 @@ void _start()
     sound_initialize();
 
     GLuint program = shader_compile_program(vertex_glsl, fragment_glsl);
-    create_overlay_texture(program);
+    create_overlay_texture();
 
     sound_play();
     mainloop(program);
