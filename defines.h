@@ -12,16 +12,18 @@
 // We use OpenGL to implicitly resize the text, therefore this defines the
 // text-scale. This is NOT relative to the window-size, since the size of the
 // letters isn't, but should have the same ratio
-#define OVERLAY_TEXTURE_WIDTH 600
+#define OVERLAY_TEXTURE_WIDTH 512
 #define OVERLAY_TEXTURE_HEIGHT ((int)(OVERLAY_TEXTURE_WIDTH / WINDOW_RATIO))
 
 #define MAX_SKEW 0.75f
-#define SKEW_DECREASING_MULTIPLIER 0.01f
+#define SKEW_DECREASING_MULTIPLIER 0.0100097656f
 
 #define GLYPH_SPACING 4
 #define CONSOLE_HEIGHT (OVERLAY_TEXTURE_HEIGHT / 2)
 #define CONSOLE_INPUT_DELAY 128
 
+// Don't use the fp.h here. These values are written to the shader, were
+// they're stored as text.
 #define EYE_DISTANCE 2.0
 #define MAX_DISTANCE 15.0
 #define ACCURACY 0.0005

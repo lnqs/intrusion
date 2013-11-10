@@ -22,11 +22,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 0 * 1000,
         .state = {
-            .position = { 0.00f, 0.00f, 4.30f },
+            .position = { 0.0f, 0.0f, 4.3f },
             .orientation = {
-                {  0.00f,  0.00f,  0.00f },
-                {  0.00f,  0.00f,  0.00f },
-                {  0.00f,  0.00f,  0.00f }
+                {  0.0f,  0.0f,  0.0f },
+                {  0.0f,  0.0f,  0.0f },
+                {  0.0f,  0.0f,  0.0f }
             },
             .box_scale = 0.0f,
             .box_radius = 0.0f,
@@ -38,9 +38,9 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { 0.00f, 0.00f, 4.30f },
             .orientation = {
-                {  0.00f,  0.00f,  0.00f },
-                {  0.00f,  0.00f,  0.00f },
-                {  0.00f,  0.00f,  0.00f }
+                {  0.0f,  0.0f,  0.0f },
+                {  0.0f,  0.0f,  0.0f },
+                {  0.0f,  0.0f,  0.0f }
             },
             .box_scale = 0.0f,
             .box_radius = 0.0f,
@@ -50,11 +50,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 13 * 1000,
         .state = {
-            .position = { 0.23f, -5.74f, 7.96f },
+            .position = { 0.2f, -5.7f, 7.9f },
             .orientation = {
-                {  0.96f, -0.04f,  0.26f },
-                {  0.24f,  0.54f, -0.80f },
-                { -0.11f,  0.83f,  0.53f }
+                {  0.9f, -0.0f,  0.2f },
+                {  0.2f,  0.5f, -0.8f },
+                { -0.1f,  0.8f,  0.5f }
             },
             .box_scale = -5.0f,
             .box_radius = 4.0f,
@@ -64,11 +64,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 20 * 1000,
         .state = {
-            .position = { 2.51f, -4.36f, 6.77f },
+            .position = { 2.5f, -4.3f, 6.7f },
             .orientation = {
-                {  0.60f, -0.00f, -0.17f },
-                {  0.26f,  0.03f, -0.54f },
-                { -0.39f,  0.41f,  0.34f }
+                {  0.6f, -0.0f, -0.1f },
+                {  0.2f,  0.0f, -0.5f },
+                { -0.3f,  0.4f,  0.3f }
             },
             .box_scale = -4.1f,
             .box_radius = 3.6f,
@@ -78,53 +78,53 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 30 * 1000,
         .state = {
-            .position = { 5.09f, -1.66f, 5.23f },
+            .position = { 5.0f, -1.6f, 5.2f },
             .orientation = {
-                { -0.03f,  0.08f, -0.99f },
-                {  0.35f, -0.92f, -0.09f },
-                { -0.93f, -0.35f,  0.00f }
+                { -0.0f,  0.0f, -0.9f },
+                {  0.3f, -0.9f, -0.0f },
+                { -0.9f, -0.3f,  0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
-            .sphere_radius = 0.75f
+            .sphere_radius = 0.7f
         }
     },
     {
         .time = 40 * 1000,
         .state = {
-            .position = { 5.06f, 3.74f, 5.29f },
+            .position = { 5.0f, 3.7f, 5.2f },
             .orientation = {
-                { -0.30f,  0.93f, -0.08f },
-                {  0.04f, -0.06f, -0.98f },
-                { -0.94f, -0.31f, -0.01f }
+                { -0.3f,  0.9f, -0.0f },
+                {  0.0f, -0.0f, -0.9f },
+                { -0.9f, -0.3f, -0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
-            .sphere_radius = 0.75f
+            .sphere_radius = 0.7f
         }
     },
     {
         .time = 50 * 1000,
         .state = {
-            .position = { 5.08f, 8.65f, 5.31f },
+            .position = { 5.0f, 8.6f, 5.3f },
             .orientation = {
-                { -0.02f,  0.85f, 0.47f },
-                { -0.69f, -0.34f, 0.60f },
-                {  0.71f, -0.32f, 0.60f }
+                { -0.0f,  0.8f, 0.4f },
+                { -0.6f, -0.3f, 0.6f },
+                {  0.7f, -0.3f, 0.6f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
-            .sphere_radius = 0.75f
+            .sphere_radius = 0.7f
         }
     },
     {
         .time = 60 * 1000,
         .state = {
-            .position = { 0.33f, 7.38f, -1.03f },
+            .position = { 0.3f, 7.3f, -1.0f },
             .orientation = {
-                { 0.54f,  0.76f,  0.23f },
-                { 0.17f, -0.38f,  0.86f },
-                { 0.77f, -0.44f, -0.37f }
+                { 0.5f,  0.7f,  0.2f },
+                { 0.1f, -0.3f,  0.8f },
+                { 0.7f, -0.4f, -0.3f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -134,11 +134,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 70 * 1000,
         .state = {
-            .position = { -0.24f, 5.19f, -0.57f },
+            .position = { -0.2f, 5.1f, -0.5f },
             .orientation = {
-                { -0.04f,  0.90f, -0.31f },
-                {  0.93f, -0.02f, -0.19f },
-                { -0.21f, -0.31f, -0.88f }
+                { -0.0f,  0.9f, -0.3f },
+                {  0.9f, -0.0f, -0.1f },
+                { -0.2f, -0.3f, -0.8f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -148,11 +148,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 80 * 1000,
         .state = {
-            .position = { -0.14f, 3.67f, 0.15f },
+            .position = { -0.1f, 3.6f, 0.1f },
             .orientation = {
-                { -0.04f,  0.94f, -0.05f },
-                {  0.11f, -0.04f, -0.93f },
-                { -0.94f, -0.04f, -0.09f }
+                { -0.0f,  0.9f, -0.0f },
+                {  0.1f, -0.0f, -0.9f },
+                { -0.9f, -0.0f, -0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -162,11 +162,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 90 * 1000,
         .state = {
-            .position = { -0.25f, 3.33f, -0.70f },
+            .position = { -0.2f, 3.3f, -0.7f },
             .orientation = {
-                {  0.01f,  0.93f,  0.17f },
-                { -0.94f,  0.02f, -0.05f },
-                { -0.03f, -0.17f,  0.93f }
+                {  0.0f,  0.9f,  0.1f },
+                { -0.9f,  0.0f, -0.0f },
+                { -0.0f, -0.1f,  0.9f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -176,11 +176,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 100 * 1000,
         .state = {
-            .position = { -0.40f, 3.62f, -2.33f },
+            .position = { -0.4f, 3.6f, -2.3f },
             .orientation = {
-                { -0.05f,  0.91f,  0.24f },
-                { -0.73f,  0.11f, -0.59f },
-                { -0.58f, -0.21f,  0.71f }
+                { -0.0f,  0.9f,  0.2f },
+                { -0.7f,  0.1f, -0.5f },
+                { -0.5f, -0.2f,  0.7f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -190,11 +190,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 110 * 1000,
         .state = {
-            .position = { -0.69f, 3.02f, -3.72f },
+            .position = { -0.6f, 3.0f, -3.7f },
             .orientation = {
-                { -0.14f,  0.65f, -0.67f },
-                {  0.18f, -0.64f, -0.67f },
-                { -0.92f, -0.21f, -0.01f }
+                { -0.1f,  0.6f, -0.6f },
+                {  0.1f, -0.6f, -0.6f },
+                { -0.9f, -0.2f, -0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -204,11 +204,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 120 * 1000,
         .state = {
-            .position = { -1.05f, 2.77f, -4.57f },
+            .position = { -1.0f, 2.7f, -4.5f },
             .orientation = {
-                {  0.50f,  0.79f, -0.05f },
-                {  0.78f, -0.49f, -0.11f },
-                { -0.15f,  0.02f, -0.92f }
+                {  0.5f,  0.7f, -0.0f },
+                {  0.7f, -0.4f, -0.1f },
+                { -0.1f,  0.0f, -0.9f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -218,11 +218,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 130 * 1000,
         .state = {
-            .position = { -1.33f, -0.22f, -4.94f },
+            .position = { -1.3f, -0.2f, -4.9f },
             .orientation = {
-                { -0.02f,  0.66f, -0.66f },
-                {  0.93f, -0.01f, -0.06f },
-                { -0.07f, -0.66f, -0.65f }
+                { -0.0f,  0.6f, -0.6f },
+                {  0.9f, -0.0f, -0.0f },
+                { -0.0f, -0.6f, -0.6f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -232,11 +232,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 140 * 1000,
         .state = {
-            .position = { -0.88f, -0.14f, -3.26f },
+            .position = { -0.8f, -0.1f, -3.2f },
             .orientation = {
-                { -0.01f,  0.89f,  0.28f },
-                {  0.93f,  0.02f, -0.00f },
-                { -0.03f,  0.28f, -0.89f }
+                { -0.0f,  0.8f,  0.2f },
+                {  0.9f,  0.0f, -0.0f },
+                { -0.0f,  0.2f, -0.8f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -246,11 +246,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 150 * 1000,
         .state = {
-            .position = { -2.48f, -0.08f, -1.67f },
+            .position = { -2.4f, -0.0f, -1.6f },
             .orientation = {
-                { -0.03f, 0.85f,  0.39f },
-                {  0.93f, 0.03f,  0.00f },
-                { -0.03f, 0.39f, -0.85f }
+                { -0.0f, 0.8f,  0.3f },
+                {  0.9f, 0.0f,  0.0f },
+                { -0.0f, 0.3f, -0.8f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -261,11 +261,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 160 * 1000,
         .state = {
-            .position = { -2.48f, -0.08f, -1.67f },
+            .position = { -2.4f, -0.0f, -1.6f },
             .orientation = {
-                {  0.00f,  0.00f,  0.00f },
-                {  0.00f,  0.00f,  0.00f },
-                {  0.00f,  0.00f,  0.00f }
+                {  0.0f,  0.0f,  0.0f },
+                {  0.0f,  0.0f,  0.0f },
+                {  0.0f,  0.0f,  0.0f }
             },
             .box_scale = 0.0f,
             .box_radius = 0.0f,
