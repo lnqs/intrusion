@@ -53,7 +53,7 @@ static const struct keypoint keypoint_points[] = {
             .position = { 0.2f, -5.7f, 7.9f },
             .orientation = {
                 {  0.9f,  0.2f, -0.1f },
-                { -0.0f,  0.5f,  0.8f },
+                {  0.0f,  0.5f,  0.8f },
                 {  0.2f, -0.8f,  0.5f }
             },
             .box_scale = -5.0f,
@@ -67,7 +67,7 @@ static const struct keypoint keypoint_points[] = {
             .position = { 2.5f, -4.3f, 6.7f },
             .orientation = {
                 {  0.6f,  0.2f, -0.3f },
-                { -0.0f,  0.0f,  0.4f },
+                {  0.0f,  0.0f,  0.4f },
                 { -0.1f, -0.5f,  0.3f }
             },
             .box_scale = -4.1f,
@@ -80,9 +80,9 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { 5.0f, -1.6f, 5.2f },
             .orientation = {
-                { -0.0f,  0.3f, -0.9f },
+                {  0.0f,  0.3f, -0.9f },
                 {  0.0f, -0.9f, -0.3f },
-                { -0.9f, -0.0f,  0.0f }
+                { -0.9f,  0.0f,  0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -95,8 +95,8 @@ static const struct keypoint keypoint_points[] = {
             .position = { 5.0f, 3.7f, 5.2f },
             .orientation = {
                 { -0.3f,  0.0f, -0.9f },
-                {  0.9f, -0.0f, -0.3f },
-                { -0.0f, -0.9f, -0.0f }
+                {  0.9f,  0.0f, -0.3f },
+                {  0.0f, -0.9f,  0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -108,7 +108,7 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { 5.0f, 8.6f, 5.3f },
             .orientation = {
-                { -0.0f,  0.8f, 0.4f },
+                {  0.0f,  0.8f, 0.4f },
                 { -0.6f, -0.3f, 0.6f },
                 {  0.7f, -0.3f, 0.6f }
             },
@@ -136,8 +136,8 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { -0.2f, 5.1f, -0.5f },
             .orientation = {
-                { -0.0f,  0.9f, -0.2f },
-                {  0.9f, -0.0f, -0.3f },
+                {  0.0f,  0.9f, -0.2f },
+                {  0.9f,  0.0f, -0.3f },
                 { -0.3f, -0.1f, -0.8f }
             },
             .box_scale = -2.5f,
@@ -150,9 +150,9 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { -0.1f, 3.6f, 0.1f },
             .orientation = {
-                { -0.0f,  0.1f, -0.9f },
-                {  0.9f, -0.0f, -0.0f },
-                { -0.0f, -0.9f, -0.0f }
+                {  0.0f,  0.1f, -0.9f },
+                {  0.9f,  0.0f,  0.0f },
+                {  0.0f, -0.9f,  0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -164,9 +164,9 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { -0.2f, 3.3f, -0.7f },
             .orientation = {
-                {  0.0f, -0.9f, -0.0f },
+                {  0.0f, -0.9f,  0.0f },
                 {  0.9f,  0.0f, -0.1f },
-                {  0.1f, -0.0f,  0.9f }
+                {  0.1f,  0.0f,  0.9f }
             },
             .box_scale = -2.5f,
             .box_radius = 3.0f,
@@ -178,7 +178,7 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { -0.4f, 3.6f, -2.3f },
             .orientation = {
-                { -0.0f, -0.7f, -0.5f },
+                {  0.0f, -0.7f, -0.5f },
                 {  0.9f,  0.1f, -0.2f },
                 {  0.2f, -0.5f,  0.7f }
             },
@@ -194,7 +194,7 @@ static const struct keypoint keypoint_points[] = {
             .orientation = {
                 { -0.1f,  0.1f, -0.9f },
                 {  0.6f, -0.6f, -0.2f },
-                { -0.6f, -0.6f, -0.0f }
+                { -0.6f, -0.6f,  0.0f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -208,7 +208,7 @@ static const struct keypoint keypoint_points[] = {
             .orientation = {
                 {  0.5f,  0.7f, -0.1f },
                 {  0.7f, -0.4f,  0.0f },
-                { -0.0f, -0.1f, -0.9f }
+                {  0.0f, -0.1f, -0.9f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -220,9 +220,9 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { -1.3f, -0.2f, -4.9f },
             .orientation = {
-                { -0.0f,  0.9f, -0.0f },
-                {  0.6f, -0.0f, -0.6f },
-                { -0.6f, -0.0f, -0.6f }
+                {  0.0f,  0.9f,  0.0f },
+                {  0.6f,  0.0f, -0.6f },
+                { -0.6f,  0.0f, -0.6f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -234,9 +234,9 @@ static const struct keypoint keypoint_points[] = {
         .state = {
             .position = { -0.8f, -0.1f, -3.2f },
             .orientation = {
-                { -0.0f,  0.9f, -0.0f },
+                {  0.0f,  0.9f,  0.0f },
                 {  0.8f,  0.0f,  0.2f },
-                {  0.2f, -0.0f, -0.8f }
+                {  0.2f,  0.0f, -0.8f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -246,11 +246,11 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 150 * 1000,
         .state = {
-            .position = { -2.4f, -0.0f, -1.6f },
+            .position = { -2.4f,  0.0f, -1.6f },
             .orientation = {
-                { -0.0f, 0.8f,  0.3f },
+                {  0.0f, 0.8f,  0.3f },
                 {  0.9f, 0.0f,  0.0f },
-                { -0.0f, 0.3f, -0.8f }
+                {  0.0f, 0.3f, -0.8f }
             },
             .box_scale = -2.5f,
             .box_radius = 2.0f,
@@ -261,7 +261,7 @@ static const struct keypoint keypoint_points[] = {
     {
         .time = 160 * 1000,
         .state = {
-            .position = { -2.4f, -0.0f, -1.6f },
+            .position = { -2.4f,  0.0f, -1.6f },
             .orientation = {
                 {  0.0f,  0.0f,  0.0f },
                 {  0.0f,  0.0f,  0.0f },
