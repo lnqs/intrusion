@@ -180,12 +180,10 @@ static regparm void mainloop(GLuint program)
         output_info();
         update_scene();
 
-        shader_uniform_vector3(program, uniform(uf_cam_position), scene_state.position);
-        shader_uniform_matrix3(program, uniform(uf_cam_orientation), scene_state.orientation);
-        // Since the three parameters follow each other in the struct,
-        // we just treat them as vector to save some bytes.
-        // It looks the same in memory anyway.
-        shader_uniform_vector3(program, uniform(uf_fractal_params), (float*)&scene_state.box_scale);
+        // We pass all scene-data with a single call to the shader, to save some
+        // bytes. This works, since it contains only floats.
+        shader_uniform_vector3(program, uniform(uf_cpu_data),
+                (float*)&scene_state, sizeof(scene_state) / sizeof(vector3));
 
         gl_functions.glBegin(GL_QUADS);
         gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0f);

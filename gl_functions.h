@@ -24,7 +24,6 @@ static struct
     void GLAPIENTRY (*glTexParameteri)(GLenum, GLenum, GLint);
     GLint GLAPIENTRY (*glGetUniformLocation)(GLuint, const GLchar*);
     void GLAPIENTRY (*glUniform3fv)(GLint, GLsizei, const GLfloat*);
-    void GLAPIENTRY (*glUniformMatrix3fv)(GLint, GLsizei, GLboolean, const GLfloat*);
     GLint GLAPIENTRY (*glGetAttribLocation)(GLuint, const GLchar*);
     void GLAPIENTRY (*glVertexAttrib2f)(GLuint, GLfloat, GLfloat);
 } gl_functions;
@@ -43,7 +42,6 @@ static const gnu_hash_t gl_functions_hashes[] = {
     0xf4dfe433, // glTexParameteri
     0x4c1fa891, // glGetUniformLocation
     0x509144a7, // glUniform3fv
-    0x17b296bc, // glUniformMatrix3fv
     0x9a887597, // glGetAttribLocation
     0x233f3994  // glVertexAttrib2f
 };

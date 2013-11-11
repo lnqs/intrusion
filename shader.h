@@ -25,17 +25,10 @@ static regparm GLuint shader_compile_program(
 }
 
 static regparm void shader_uniform_vector3(
-        GLuint program, const char* identifier, const vector3 value)
+        GLuint program, const char* identifier, const vector3 value, size_t count)
 {
     GLint location = gl_functions.glGetUniformLocation(program, identifier);
-    gl_functions.glUniform3fv(location, 1, value);
-}
-
-static regparm void shader_uniform_matrix3(
-        GLuint program, const char* identifier, const matrix3 value)
-{
-    GLint location = gl_functions.glGetUniformLocation(program, identifier);
-    gl_functions.glUniformMatrix3fv(location, 1, GL_TRUE, (const GLfloat*)value);
+    gl_functions.glUniform3fv(location, count, value);
 }
 
 #endif
