@@ -27,7 +27,7 @@ all: $(COMPRESSED)
 
 $(COMPRESSED): $(EXECUTABLE)
 	echo '#!/bin/sh\ntail -n+3 "$$0"|unxz>i;chmod +x i;./i;rm -f i;exit' > $@
-	xz -c5 --format=lzma $< >> $@
+	xz -c6 --format=lzma $< >> $@
 	chmod +x $@
 
 $(EXECUTABLE): $(LINKER_SCRIPT) $(OBJECTS) $(MAKEFILE_LIST)
