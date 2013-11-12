@@ -27,7 +27,7 @@ static regparm gnu_hash_t linker_gnu_hash(const char* s)
         h = h * 33 + *s;
     }
 
-    return h & 0xffffffff;
+    return h;
 }
 
 static regparm const struct link_map* linker_map_for_library(const char* library)

@@ -16,6 +16,10 @@
 
 static struct scene_state scene_state;
 
+// set by mainloop() when initialization is done, be able to substract that time
+// when calculating where in the scenes we are.
+static uint32_t initialization_time;
+
 static regparm void setup_window()
 {
     sdl_functions.SDL_SetVideoMode(RESOLUTION_X, RESOLUTION_Y, 0,
@@ -119,15 +123,9 @@ static regparm bool update_keypoints(uint32_t time)
 static regparm void update_scene()
 {
     static bool done = false;
-    static uint32_t initialization_time = 0;
 
     if (!done)
     {
-        if (initialization_time == 0)
-        {
-            initialization_time = sdl_functions.SDL_GetTicks();
-        }
-
         // +1 to prevent divisions by zero
         uint32_t time = sdl_functions.SDL_GetTicks() - initialization_time + 1;
 
@@ -145,6 +143,23 @@ static regparm void update_scene()
             sound_stop();
         }
     }
+}
+
+static regparm void draw_fullscreen_quad(GLuint program)
+{
+    GLuint position_location = gl_functions.glGetAttribLocation(program, uniform(in_position));
+    GLuint texcoord_location = gl_functions.glGetAttribLocation(program, uniform(in_texcoord));
+
+    gl_functions.glBegin(GL_QUADS);
+    gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0f);
+    gl_functions.glVertexAttrib2f(texcoord_location, 1.0f, 1.0f);
+    gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0f);
+    gl_functions.glVertexAttrib2f(texcoord_location, 1.0f, 0.0f);
+    gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0f);
+    gl_functions.glVertexAttrib2f(texcoord_location, 0.0f, 0.0f);
+    gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0f);
+    gl_functions.glVertexAttrib2f(texcoord_location, 0.0f, 1.0f);
+    gl_functions.glEnd();
 }
 
 static regparm void output_info()
@@ -170,11 +185,11 @@ static regparm void output_info()
 #endif
 }
 
-static regparm void mainloop(GLuint program)
+static regparm void mainloop()
 {
-    GLuint position_location = gl_functions.glGetAttribLocation(program, uniform(in_position));
-    GLuint texcoord_location = gl_functions.glGetAttribLocation(program, uniform(in_texcoord));
+    GLuint program = shader_compile_program(vertex_glsl, fragment_glsl);
 
+    initialization_time = sdl_functions.SDL_GetTicks();
     while (!exit_requested())
     {
         output_info();
@@ -185,19 +200,8 @@ static regparm void mainloop(GLuint program)
         shader_uniform_vector3(program, uniform(uf_cpu_data),
                 (float*)&scene_state, sizeof(scene_state) / sizeof(vector3));
 
-        gl_functions.glBegin(GL_QUADS);
-        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, -1.0f);
-        gl_functions.glVertexAttrib2f(texcoord_location, 1.0f, 1.0f);
-        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, -1.0f);
-        gl_functions.glVertexAttrib2f(texcoord_location, 1.0f, 0.0f);
-        gl_functions.glVertexAttrib2f(position_location, WINDOW_RATIO, 1.0f);
-        gl_functions.glVertexAttrib2f(texcoord_location, 0.0f, 0.0f);
-        gl_functions.glVertexAttrib2f(position_location, -WINDOW_RATIO, 1.0f);
-        gl_functions.glVertexAttrib2f(texcoord_location, 0.0f, 1.0f);
-        gl_functions.glEnd();
-
+        draw_fullscreen_quad(program);
         gl_functions.glUseProgram(program);
-
         sdl_functions.SDL_GL_SwapBuffers();
     }
 }
@@ -210,11 +214,10 @@ void _start()
     gl_functions_initialize();
     sound_initialize();
 
-    GLuint program = shader_compile_program(vertex_glsl, fragment_glsl);
     create_overlay_texture();
 
     sound_play();
-    mainloop(program);
+    mainloop();
 
     cleanup();
 

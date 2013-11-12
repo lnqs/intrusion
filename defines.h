@@ -15,14 +15,12 @@
 #define OVERLAY_TEXTURE_WIDTH 512
 #define OVERLAY_TEXTURE_HEIGHT ((int)(OVERLAY_TEXTURE_WIDTH / WINDOW_RATIO))
 
-#define GLYPH_SPACING 4
+#define GLYPH_SPACING 3
 #define CONSOLE_HEIGHT (OVERLAY_TEXTURE_HEIGHT / 2)
 #define CONSOLE_INPUT_DELAY 128
 
-// Don't use the fp.h here. These values are written to the shader, were
-// they're stored as text.
 #define EYE_DISTANCE 2.0
-#define MAX_DISTANCE 15.0
+#define MAX_DISTANCE 8.0
 #define ACCURACY 0.0005
 #define OBJECT_GLOW vec3(0.23, 0.21, 0.14)
 
