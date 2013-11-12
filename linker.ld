@@ -20,11 +20,11 @@ SECTIONS
     .interp         : { *(.interp) }
     .dynamic        : { *(.dynamic) }
     .dynsym         : { *(.dynsym) }
+    .got.plt        : { *(.got.plt) }
     .dynstr         : { *(.dynstr) }
+    .hash           : { *(.hash) }
     .data           : { *(.data .data.*) }
     .text           : { *(.text .text.*) }
-    .got.plt        : { *(.got.plt) }
-    .hash           : { *(.hash) }
     .bss            : { *(.bss .bss.*) }
 /* SECTIONS_END */
 
