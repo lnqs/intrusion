@@ -4,9 +4,9 @@
 // Some global compile-time options.
 // As preprocessor-defines, since some of them are used in shader-code
 
-#define RESOLUTION_X 800
-#define RESOLUTION_Y 600
-#define FULLSCREEN false
+#define RESOLUTION_X 1280
+#define RESOLUTION_Y 720
+#define FULLSCREEN true
 #define WINDOW_RATIO ((float)RESOLUTION_X / RESOLUTION_Y)
 
 // We use OpenGL to implicitly resize the text, therefore this defines the
