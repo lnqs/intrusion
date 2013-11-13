@@ -5,7 +5,7 @@
 #include "clib.h"
 #include "glyphs.h"
 
-extern char _some_null; // provided by linker-script
+extern const char _some_null; // provided by linker-script
 
 enum console_text_type
 {

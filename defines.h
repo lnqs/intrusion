@@ -9,6 +9,9 @@
 #define FULLSCREEN true
 #define WINDOW_RATIO ((float)RESOLUTION_X / RESOLUTION_Y)
 
+// Hardcoded in 4klang, don't change
+#define SOUND_CHANNELS 2
+
 // We use OpenGL to implicitly resize the text, therefore this defines the
 // text-scale. This is NOT relative to the window-size, since the size of the
 // letters isn't, but should have the same ratio
