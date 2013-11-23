@@ -25,7 +25,7 @@
 #define EYE_DISTANCE 2.0
 #define MAX_DISTANCE 8.0
 #define ACCURACY 0.0005
-#define OBJECT_GLOW vec3(0.23, 0.21, 0.14)
+#define OBJECT_GLOW vec3(0.36, 0.36, 0.24)
 
 #define MAX_ITERATIONS 12
 
