@@ -61,7 +61,7 @@ The core of _intrusion_ is a GLSL-shader, raymarching a [mandelbox](http://en.wi
 Since I had some space after the initial size-optimizations left, I added some text rendered to the framebuffer, telling a simple story.
 This is mostly done in CPU-code, by rendering to a texture, that is just copied to the frame-buffer by the shader.
 
-The sound was sequenced in [Reaper](http://www.reaper.fm/) and is rendered by [4klang](http://4klang.untergrund.net/), a synthesizer designed for use in 4k intros. The _intrusion_-specific code to output it is quite boring. It spawns a thread to render the samples and registers passes a callback to SDL to copy the data.
+The sound was sequenced in [Reaper](http://www.reaper.fm/) and is rendered by [4klang](http://4klang.untergrund.net/), a synthesizer designed for use in 4k intros. The _intrusion_-specific code to output it is quite boring. It spawns a thread to render the samples and passes a callback to SDL to copy the data.
 
 More interesting are the various tricks to keep the binary small.
 First of all, less code usually means -- surprise -- a smaller binary. While I'm pretty sure there's some potential left for shortening things, I think I found a good compromise between optimal and readable code.
@@ -100,8 +100,8 @@ A was thinking about implementing library loading directly in _intrusion_. But a
 Having the libraries loaded is the first step. Functions from it have to be called. Directly calling them isn't a good option. It causes the linker to add the function names and a reference to the library they're in to the dynamic-sections of the binary.
 
 To avoid this overhead, not the function-names are saved in the binary, but just a hash of them.
-Knowing, that a pointer to the _link\_map_, the datastructure used to store information about loaded libraries, is always the second entry of the _Global Offset Table_, we can use the linker-script to get a symbol to it.
-By traversing the _link\_map_, we can locate the tables of the libraries.
+Knowing, that a pointer to the \_link_map_, the datastructure used to store information about loaded libraries, is always the second entry of the _Global Offset Table_, we can use the linker-script to get a symbol to it.
+By traversing the \_link_map_, we can locate the tables of the libraries.
 
 Originally, I wrote code to use the gnu-hash-table of the library to lookup
 symbols. But I had to realize, that some libraries, the
@@ -109,15 +109,15 @@ NVIDIA-OpenGL-implementation, in my case, still use the old SYSV-style
 hash-tables.
 Instead of wasting space by having code to read both of them around, I decided
 for a much simpler approach:
-    When looking up a symbol, the symbol table is iterated, the symbol name is
-    hashed and compared with the stored hash.
-    This is slow, and leads to segfaults, when the symbol isn't present, since there
-    is no simple way to get the symbol-tables length, but, well, it is small :o)
+When looking up a symbol, the symbol table is iterated, the symbol name is
+hashed and compared with the stored hash.
+This is slow, and leads to segfaults, if the symbol isn't present, since there
+is no simple way to get the symbol-tables length, but, well, it is small :o)
 
-    This is done for every external function used -- with one exception.
-    One call using the usual mechanisms to libc is required, to prevent ld from
-    assuming no shared libraries are used at all and to remove the dynamic sections
-    of the binary.
+This is done for every external function used -- with one exception.
+One call using the usual mechanisms to libc is required, to prevent ld from
+assuming no shared libraries are used at all and to remove the dynamic sections
+of the binary.
 
 ### Abusing ELF
 There're some fields of ELF-headers, the Linux-kernel doesn't care about. Filling these with zeros violates the ELF-standard, but doesn't prevent the binary from being executed and allows the compression to do a better job. Therefore, a script is ran over the binary doing this after build.
@@ -169,4 +169,4 @@ great 4k-intro software-synthesizer
 fractals from [Fractal Forums](http://www.fractalforums.com/)
 - [Reaper](http://www.reaper.fm/) was used to sequence the sound
 - [GIMP](http://www.gimp.org/) was used to draw the font
-- ... and I visited a lot of OpenGL- and demo-related websites, I didn't kept track of.
+- ... and I visited a lot of OpenGL- and demo-related websites, I didn't keep track of.
